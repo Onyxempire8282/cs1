@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Test - All Pages</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f0f2f5; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .test-section { background: white; margin: 20px 0; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .page-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0; }
+        .page-link { display: block; padding: 15px; background: #f8f9fa; border-radius: 5px; text-decoration: none; color: #333; border: 2px solid #e9ecef; transition: all 0.3s; }
+        .page-link:hover { background: #e3f2fd; border-color: #2196f3; transform: translateY(-2px); }
+        .page-link h3 { margin: 0 0 5px 0; color: #1976d2; }
+        .page-link p { margin: 0; font-size: 14px; color: #666; }
+        .status { padding: 5px 10px; border-radius: 3px; font-size: 12px; font-weight: bold; margin-left: 10px; }
+        .status.enabled { background: #4caf50; color: white; }
+        .status.disabled { background: #f44336; color: white; }
+        .auth-controls { background: #fff3cd; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .btn { padding: 8px 16px; margin: 0 5px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn-demo { background: #ffeb3b; color: #333; }
+        .btn-auth { background: #4caf50; color: white; }
+        .btn-clear { background: #f44336; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧭 Global Sidebar Navigation Test</h1>
+        
+        <div class="test-section">
+            <h2>Authentication Control</h2>
+            <div class="auth-controls">
+                <p><strong>Current Status:</strong> <span id="auth-status">Loading...</span></p>
+                <button class="btn btn-demo" onclick="setDemoAuth()">Demo User</button>
+                <button class="btn btn-auth" onclick="setAuthUser()">Authenticated User</button>
+                <button class="btn btn-clear" onclick="clearAuth()">Clear Auth</button>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Test All Pages with Sidebar</h2>
+            <p>Click any page below to test the global sidebar navigation. All pages should now show the sidebar regardless of their original implementation.</p>
+            
+            <div class="page-grid">
+                <a href="../pages/dashboard.html" class="page-link" target="_blank">
+                    <h3>📊 Dashboard</h3>
+                    <p>Main dashboard with stats and activity</p>
+                    <span class="status enabled">SIDEBAR ENABLED</span>
+                </a>
+                
+                <a href="../pages/mileage.html" class="page-link" target="_blank">
+                    <h3>🚗 Mileage Calculator</h3>
+                    <p>Track and calculate mileage</p>
+                    <span class="status enabled">SIDEBAR ENABLED</span>
+                </a>
+                
+                <a href="../pages/routes.html" class="page-link" target="_blank">
+                    <h3>🗺️ Route Optimizer</h3>
+                    <p>Optimize routes for efficiency</p>
+                    <span class="status enabled">SIDEBAR ENABLED</span>
+                </a>
+                
+                <a href="../pages/jobs.html" class="page-link" target="_blank">
+                    <h3>📱 Mobile Sync</h3>
+                    <p>Sync jobs with mobile devices</p>
+                    <span class="status enabled">SIDEBAR ENABLED</span>
+                </a>
+                
+                <a href="../pages/autoforms.html" class="page-link" target="_blank">
+                    <h3>📄 AutoForms</h3>
+                    <p>Auto-fill PDF forms</p>
+                    <span class="status enabled">SIDEBAR ENABLED</span>
+                </a>
+                
+                <a href="../pages/comparables.html" class="page-link" target="_blank">
+                    <h3>🔍 Comparables</h3>
+                    <p>Compare similar vehicles</p>
+                    <span class="status enabled">SIDEBAR ENABLED</span>
+                </a>
+                
+                <a href="../pages/firms.html" class="page-link" target="_blank">
+                    <h3>🏢 Firms Directory</h3>
+                    <p>Browse insurance firms</p>
+                    <span class="status enabled">SIDEBAR ENABLED</span>
+                </a>
+                
+                <a href="../pages/gear.html" class="page-link" target="_blank">
+                    <h3>⚙️ Gear</h3>
+                    <p>Equipment and tools</p>
+                    <span class="status enabled">SIDEBAR ENABLED</span>
+                </a>
+                
+                <a href="../pages/help.html" class="page-link" target="_blank">
+                    <h3>❓ Help</h3>
+                    <p>Help and support resources</p>
+                    <span class="status enabled">SIDEBAR ENABLED</span>
+                </a>
+                
+                <a href="../pages/settings.html" class="page-link" target="_blank">
+                    <h3>⚙️ Settings</h3>
+                    <p>User preferences and configuration</p>
+                    <span class="status enabled">SIDEBAR ENABLED</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Expected Results</h2>
+            <ul>
+                <li>✅ All pages should display the sidebar on the left</li>
+                <li>✅ Sidebar should show user info in footer (avatar, name, role)</li>
+                <li>✅ Active page should be highlighted in sidebar</li>
+                <li>✅ Demo users should see demo banner at top</li>
+                <li>✅ Logout button should work from any page</li>
+                <li>✅ No duplicate sidebars should appear</li>
+                <li>✅ Navigation links should work correctly</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2>Implementation Notes</h2>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 12px;">
+                <strong>Changes Made:</strong><br>
+                1. Fixed authentication detection in navigation.js<br>
+                2. Added navigation.js import to all pages<br>
+                3. Removed hardcoded sidebars from firms.html and routes.html<br>
+                4. Global sidebar now shows on ALL authenticated pages<br>
+                5. Auto-redirects unauthenticated users to login
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateAuthStatus() {
+            const auth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
+            const statusEl = document.getElementById('auth-status');
+            
+            if (auth.demoMode) {
+                statusEl.innerHTML = '🎯 <strong>Demo User</strong> - ' + (auth.username || 'Demo User');
+                statusEl.style.color = '#ff9800';
+            } else if (auth.masterLogin) {
+                statusEl.innerHTML = '👑 <strong>Master Admin</strong> - ' + (auth.username || 'Master');
+                statusEl.style.color = '#f44336';
+            } else if (auth.email) {
+                statusEl.innerHTML = '✅ <strong>Authenticated</strong> - ' + (auth.username || 'User');
+                statusEl.style.color = '#4caf50';
+            } else {
+                statusEl.innerHTML = '❌ <strong>Not Authenticated</strong>';
+                statusEl.style.color = '#9e9e9e';
+            }
+        }
+
+        function setDemoAuth() {
+            const auth = {
+                email: 'demo@example.com',
+                username: 'Demo User',
+                demoMode: true,
+                demoExpiry: Date.now() + (7 * 24 * 60 * 60 * 1000),
+                timestamp: Date.now()
+            };
+            localStorage.setItem('claimcipher_auth', JSON.stringify(auth));
+            updateAuthStatus();
+        }
+
+        function setAuthUser() {
+            const auth = {
+                email: 'user@example.com',
+                username: 'Authenticated User',
+                demoMode: false,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('claimcipher_auth', JSON.stringify(auth));
+            updateAuthStatus();
+        }
+
+        function clearAuth() {
+            localStorage.removeItem('claimcipher_auth');
+            updateAuthStatus();
+        }
+
+        // Initialize
+        updateAuthStatus();
+    </script>
+</body>
+</html>

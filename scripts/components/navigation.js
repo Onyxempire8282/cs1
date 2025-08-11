@@ -482,16 +482,19 @@ class Navigation {
 
 // Auto-initialize sidebar on all pages
 document.addEventListener('DOMContentLoaded', function() {
-    // Check authentication first
+    // Check authentication status
     const auth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
-    if (!auth.authenticated && !window.location.pathname.includes('login.html')) {
+    const isAuthenticated = auth.email || auth.demoMode || auth.masterLogin;
+    
+    // Redirect unauthenticated users to login (except on login page)
+    if (!isAuthenticated && !window.location.pathname.includes('login.html')) {
         const pathPrefix = window.location.pathname.includes('/pages/') ? '../' : '';
         window.location.href = pathPrefix + 'login.html';
         return;
     }
     
-    // Initialize global sidebar on authenticated pages
-    if (auth.authenticated) {
+    // Initialize global sidebar on ALL authenticated pages
+    if (isAuthenticated) {
         Navigation.initializeGlobalSidebar();
     }
 });
