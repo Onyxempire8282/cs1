@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mileage Calculator - Claim Cipher</title>
+    <link rel="stylesheet" href="../styles/index.css">
+</head>
+<body>
+    <div class="page-mileage">
+        <header class="main__header">
+            <h1 class="main__title">Mileage Calculator</h1>
+            <p class="main__subtitle">Calculate mileage and add to your tax log</p>
+        </header>
+
+        <!-- Mileage Calculator Form -->
+        <div class="card">
+            <form class="mileage-form" id="mileage-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="firm-select">Firm</label>
+                        <select class="form-input" id="firm-select" required>
+                            <option value="">Select a firm...</option>
+                            <option value="sedgwick">Sedgwick Claims - $0.67/mile</option>
+                            <option value="acd">ACD Adjusters - $0.62/mile</option>
+                            <option value="independent">Independent - $0.70/mile</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="start-address">Start Address</label>
+                        <input type="text" class="form-input" id="start-address" placeholder="123 Main St, City, State" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="end-address">Destination</label>
+                        <input type="text" class="form-input" id="end-address" placeholder="456 Oak Ave, City, State" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="claim-number">Claim Number (Optional)</label>
+                        <input type="text" class="form-input" id="claim-number" placeholder="CLM-1234">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="trip-type">Trip Type</label>
+                        <select class="form-input" id="trip-type">
+                            <option value="round-trip">Round Trip</option>
+                            <option value="one-way">One Way</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn--primary">Calculate Mileage</button>
+                        <button type="reset" class="btn btn--secondary">Clear Form</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Mileage Result -->
+            <div class="mileage-result" id="mileage-result" style="display: none;">
+                <div class="result-card">
+                    <div class="result-summary">
+                        <div class="result-value" id="result-miles">0 miles</div>
+                        <div class="result-amount" id="result-amount">$0.00 reimbursement</div>
+                        <div class="result-details" id="result-details">
+                            <span class="result-rate">Rate: $0.00/mile</span>
+                            <span class="result-time">Est. time: 0 min</span>
+                        </div>
+                    </div>
+                    <div class="result-actions">
+                        <button class="btn btn--secondary btn--small" id="copy-result">Copy</button>
+                        <button class="btn btn--success btn--small" id="save-log">Save to Log</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tax Log -->
+        <div class="card">
+            <div class="card__header">
+                <h3 class="card__title">Recent Tax Log Entries</h3>
+                <div class="card__actions">
+                    <button class="btn btn--secondary btn--small" id="import-csv">Import CSV</button>
+                    <button class="btn btn--secondary btn--small" id="export-csv">Export CSV</button>
+                </div>
+            </div>
+            
+            <div class="tax-log-table">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Claim #</th>
+                                <th>Route</th>
+                                <th>Miles</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Aug 9, 2025</td>
+                                <td>CLM-4891</td>
+                                <td>Home → 123 Insurance Way</td>
+                                <td>23.1</td>
+                                <td class="amount-positive">$15.48</td>
+                                <td>
+                                    <button class="btn btn--ghost btn--small">Edit</button>
+                                    <button class="btn btn--ghost btn--small">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Aug 9, 2025</td>
+                                <td>CLM-4902</td>
+                                <td>123 Insurance Way → 456 Claim St</td>
+                                <td>18.7</td>
+                                <td class="amount-positive">$12.53</td>
+                                <td>
+                                    <button class="btn btn--ghost btn--small">Edit</button>
+                                    <button class="btn btn--ghost btn--small">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tax Log Summary -->
+            <div class="tax-log-summary">
+                <div class="summary-stats">
+                    <div class="summary-stat">
+                        <div class="summary-stat__label">Total Miles</div>
+                        <div class="summary-stat__value">247.3</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-stat__label">Total Amount</div>
+                        <div class="summary-stat__value">$165.69</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-stat__label">Avg per Trip</div>
+                        <div class="summary-stat__value">20.6 mi</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden file input for CSV import -->
+        <input type="file" id="csv-file-input" accept=".csv" style="display: none;">
+    </div>
+
+    <script type="module" src="../scripts/pages/mileage.js"></script>
+</body>
+</html>

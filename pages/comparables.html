@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparables - Claim Cipher</title>
+    <link rel="stylesheet" href="../styles/index.css">
+</head>
+<body>
+    <div class="page-comparables">
+        <header class="main__header">
+            <h1 class="main__title">Vehicle Comparables</h1>
+            <p class="main__subtitle">Find similar vehicles from multiple sources</p>
+            <span class="badge badge--pro">PRO FEATURE</span>
+        </header>
+
+        <div class="card">
+            <div class="card__header">
+                <h3 class="card__title">Search for Comparables</h3>
+            </div>
+            
+            <form class="comparables-form" id="comparables-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Year</label>
+                        <input type="number" class="form-input" placeholder="45000">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">ZIP Code</label>
+                        <input type="text" class="form-input" placeholder="27601">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--primary">Search Comparables</button>
+                    <button type="reset" class="btn btn--secondary">Clear</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card" id="comparables-results" style="display: none;">
+            <div class="card__header">
+                <h3 class="card__title">Comparable Vehicles Found</h3>
+                <button class="btn btn--success btn--small" id="export-comparables-pdf">Export PDF</button>
+            </div>
+            
+            <div class="comparables-grid">
+                <!-- Results will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../scripts/pages/comparables.js"></script>
+</body>
+</html>-input" min="1990" max="2030" placeholder="2021">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Make</label>
+                        <input type="text" class="form-input" placeholder="Honda">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Model</label>
+                        <input type="text" class="form-input" placeholder="Accord">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Trim (Optional)</label>
+                        <input type="text" class="form-input" placeholder="Sport">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mileage</label>
+                        <input type="number" class="form

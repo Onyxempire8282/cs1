@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoForms - Claim Cipher</title>
+    <link rel="stylesheet" href="../styles/index.css">
+</head>
+<body>
+    <div class="page-autoforms">
+        <header class="main__header">
+            <h1 class="main__title">AutoForms</h1>
+            <p class="main__subtitle">Auto-fill PDF forms from CCC estimates</p>
+        </header>
+
+        <div class="autoforms-layout">
+            <!-- Upload Section -->
+            <div class="upload-section">
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">Upload CCC Estimate</h3>
+                        <div class="card__actions">
+                            <button class="btn btn--secondary btn--small" id="clear-upload-btn">Clear</button>
+                        </div>
+                    </div>
+
+                    <div class="file-drop-zone" id="pdf-drop-zone">
+                        <div class="drop-zone-content">
+                            <div class="drop-zone-icon">📄</div>
+                            <div class="drop-zone-text">
+                                <strong>Drop your CCC estimate here</strong><br>
+                                <span>or click to browse files</span>
+                            </div>
+                            <button class="btn btn--primary" id="choose-file-btn">Choose File</button>
+                            <div class="drop-zone-note">
+                                Privacy: Files are not saved unless you choose to save them
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- File Info (Hidden by default) -->
+                    <div class="file-info" id="file-info" style="display: none;">
+                        <div class="file-details">
+                            <div class="file-icon">📄</div>
+                            <div class="file-meta">
+                                <div class="file-name" id="file-name">estimate.pdf</div>
+                                <div class="file-size" id="file-size">2.4 MB</div>
+                                <div class="file-status" id="file-status">Ready for processing</div>
+                            </div>
+                            <div class="file-actions">
+                                <button class="btn btn--ghost btn--small" id="remove-file-btn">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Target Form Template</label>
+                        <select class="form-input" id="form-template-select">
+                            <option value="bcif">BCIF - Basic Claim Information Form</option>
+                            <option value="acv">ACV - Actual Cash Value Worksheet</option>
+                            <option value="damage-estimate">Damage Estimate Form</option>
+                            <option value="custom">Custom Template</option>
+                        </select>
+                    </div>
+
+                    <div class="extract-actions">
+                        <button class="btn btn--success btn--full" id="extract-fill-btn" disabled>
+                            Extract & Auto-Fill
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Section -->
+            <div class="preview-section">
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">Form Preview</h3>
+                        <div class="preview-actions">
+                            <button class="btn btn--secondary btn--small" id="edit-fields-btn" disabled>Edit Fields</button>
+                            <button class="btn btn--primary btn--small" id="download-pdf-btn" disabled>Download PDF</button>
+                        </div>
+                    </div>
+
+                    <div class="pdf-preview" id="pdf-preview">
+                        <div class="preview-placeholder">
+                            <div class="preview-icon">📋</div>
+                            <div class="preview-text">
+                                Upload a CCC estimate to see the auto-filled form preview here
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Processing Status -->
+                    <div class="processing-status" id="processing-status" style="display: none;">
+                        <div class="status-header">
+                            <h4>Processing Status</h4>
+                            <div class="status-indicator" id="status-indicator">
+                                <div class="spinner"></div>
+                                <span>Processing...</span>
+                            </div>
+                        </div>
+                        <div class="status-steps">
+                            <div class="step step--active" id="step-extract">
+                                <div class="step-icon">📄</div>
+                                <div class="step-label">Extracting data</div>
+                            </div>
+                            <div class="step" id="step-map">
+                                <div class="step-icon">🔗</div>
+                                <div class="step-label">Mapping fields</div>
+                            </div>
+                            <div class="step" id="step-fill">
+                                <div class="step-icon">✏️</div>
+                                <div class="step-label">Filling form</div>
+                            </div>
+                            <div class="step" id="step-preview">
+                                <div class="step-icon">👁️</div>
+                                <div class="step-label">Generating preview</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Extracted Data Section -->
+        <div class="card" id="extracted-data-card" style="display: none;">
+            <div class="card__header">
+                <h3 class="card__title">Extracted Data</h3>
+                <div class="extraction-confidence">
+                    <span class="badge badge--success" id="confidence-badge">95% auto-mapped</span>
+                    <button class="btn btn--secondary btn--small" id="review-mappings-btn">Review Mappings</button>
+                </div>
+            </div>
+
+            <div class="extracted-data-grid" id="extracted-data">
+                <div class="data-section">
+                    <h4>Vehicle Information</h4>
+                    <div class="data-items">
+                        <div class="data-item">
+                            <span class="data-label">VIN:</span>
+                            <span class="data-value" contenteditable="true">1HGCV1F30JA123456</span>
+                            <div class="data-confidence">95%</div>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Year:</span>
+                            <span class="data-value" contenteditable="true">2021</span>
+                            <div class="data-confidence">98%</div>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Make:</span>
+                            <span class="data-value" contenteditable="true">Honda</span>
+                            <div class="data-confidence">99%</div>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Model:</span>
+                            <span class="data-value" contenteditable="true">Accord</span>
+                            <div class="data-confidence">97%</div>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Trim:</span>
+                            <span class="data-value" contenteditable="true">Sport</span>
+                            <div class="data-confidence">89%</div>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Mileage:</span>
+                            <span class="data-value" contenteditable="true">45,231</span>
+                            <div class="data-confidence">92%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-section">
+                    <h4>Claim Information</h4>
+                    <div class="data-items">
+                        <div class="data-item">
+                            <span class="data-label">Claim #:</span>
+                            <span class="data-value" contenteditable="true">CLM-4891</span>
+                            <div class="data-confidence">100%</div>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Date of Loss:</span>
+                            <span class="data-value" contenteditable="true">08/05/2025</span>
+                            <div class="data-confidence">94%</div>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Policy #:</span>
+                            <span class="data-value" contenteditable="true">POL-789123</span>
+                            <div class="data-confidence">87%</div>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Deductible:</span>
+                            <span class="data-value" contenteditable="true">$500</span>
+                            <div class="data-confidence">96%</div>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Total Loss:</span>
+                            <span class="data-value" contenteditable="true">$8,450</span>
+                            <div class="data-confidence">93%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-section">
+                    <h4>Owner Information</h4>
+                    <div class="data-items">
+                        <div class="data-item">
+                            <span class="data-label">Owner:</span>
+                            <span class="data-value" contenteditable="true">John Smith</span>
+                            <div class="data-confidence">91%</div>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Address:</span>
+                            <span class="data-value" contenteditable="true">123 Main St</span>
+                            <div class="data-confidence">88%</div>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">City, State:</span>
+                            <span class="data-value" contenteditable="true">Raleigh, NC 27601</span>
+                            <div class="data-confidence">95%</div>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Phone:</span>
+                            <span class="data-value" contenteditable="true">(919) 555-0123</span>
+                            <div class="data-confidence">84%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-actions">
+                <button class="btn btn--secondary" id="save-template-btn">Save as Template</button>
+                <button class="btn btn--primary" id="apply-changes-btn">Apply Changes</button>
+            </div>
+        </div>
+
+        <!-- Form History -->
+        <div class="card">
+            <div class="card__header">
+                <h3 class="card__title">Recent Forms</h3>
+                <button class="btn btn--secondary btn--small" id="clear-history-btn">Clear History</button>
+            </div>
+
+            <div class="form-history" id="form-history">
+                <div class="history-item">
+                    <div class="history-icon">📄</div>
+                    <div class="history-details">
+                        <div class="history-title">BCIF - CLM-4891</div>
+                        <div class="history-meta">2021 Honda Accord • Created today at 2:15 PM</div>
+                    </div>
+                    <div class="history-actions">
+                        <button class="btn btn--ghost btn--small">Download</button>
+                        <button class="btn btn--ghost btn--small">Edit</button>
+                    </div>
+                </div>
+
+                <div class="history-item">
+                    <div class="history-icon">📄</div>
+                    <div class="history-details">
+                        <div class="history-title">ACV Worksheet - CLM-4876</div>
+                        <div class="history-meta">2020 Ford F-150 • Created yesterday at 10:30 AM</div>
+                    </div>
+                    <div class="history-actions">
+                        <button class="btn btn--ghost btn--small">Download</button>
+                        <button class="btn btn--ghost btn--small">Edit</button>
+                    </div>
+                </div>
+
+                <div class="history-item">
+                    <div class="history-icon">📄</div>
+                    <div class="history-details">
+                        <div class="history-title">Damage Estimate - CLM-4902</div>
+                        <div class="history-meta">2019 Toyota Camry • Created Aug 8 at 4:45 PM</div>
+                    </div>
+                    <div class="history-actions">
+                        <button class="btn btn--ghost btn--small">Download</button>
+                        <button class="btn btn--ghost btn--small">Edit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden file input -->
+        <input type="file" id="pdf-file-input" accept=".pdf" style="display: none;">
+
+        <!-- Field Mapping Modal -->
+        <div class="modal" id="field-mapping-modal" style="display: none;">
+            <div class="modal__backdrop"></div>
+            <div class="modal__container modal__container--large">
+                <div class="modal__header">
+                    <h3 class="modal__title">Review Field Mappings</h3>
+                    <button class="btn btn--ghost btn--icon" id="close-mapping-modal">×</button>
+                </div>
+                <div class="modal__content">
+                    <div class="mapping-grid">
+                        <div class="mapping-section">
+                            <h4>Extracted Data</h4>
+                            <div class="extracted-fields" id="extracted-fields-list">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="mapping-arrows">
+                            <div class="mapping-arrow">→</div>
+                        </div>
+                        <div class="mapping-section">
+                            <h4>Form Fields</h4>
+                            <div class="form-fields" id="form-fields-list">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal__footer">
+                    <button class="btn btn--secondary" id="cancel-mapping-btn">Cancel</button>
+                    <button class="btn btn--primary" id="save-mapping-btn">Save Mappings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../scripts/pages/autoforms.js"></script>
+</body>
+</html>

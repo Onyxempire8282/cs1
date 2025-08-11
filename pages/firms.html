@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firms Directory - Claim Cipher</title>
+    <link rel="stylesheet" href="../styles/index.css">
+</head>
+<body>
+    <div class="page-firms">
+        <header class="main__header">
+            <h1 class="main__title">Firms Directory</h1>
+            <p class="main__subtitle">Browse insurance firms and contact information</p>
+        </header>
+
+        <div class="card">
+            <div class="card__header">
+                <h3 class="card__title">Search Firms</h3>
+            </div>
+            
+            <div class="search-filters">
+                <div class="search-input">
+                    <input type="text" class="form-input" placeholder="Search firms by name, location, or type..." id="firms-search">
+                </div>
+                
+                <div class="filter-grid">
+                    <select class="form-input" id="state-filter">
+                        <option value="">All States</option>
+                        <option value="NC">North Carolina</option>
+                        <option value="SC">South Carolina</option>
+                        <option value="VA">Virginia</option>
+                    </select>
+                    
+                    <select class="form-input" id="type-filter">
+                        <option value="">All Types</option>
+                        <option value="carrier">Insurance Carrier</option>
+                        <option value="independent">Independent Adjuster</option>
+                        <option value="tpa">Third Party Administrator</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__header">
+                <h3 class="card__title">Directory Listing</h3>
+                <span class="firms-count">247 firms found</span>
+            </div>
+            
+            <div class="firms-list" id="firms-list">
+                <!-- Firms will be populated here -->
+                <div class="firm-card">
+                    <div class="firm-header">
+                        <h4 class="firm-name">Sedgwick Claims Management</h4>
+                        <span class="badge badge--success">Active</span>
+                    </div>
+                    <div class="firm-details">
+                        <div class="firm-type">Insurance Carrier</div>
+                        <div class="firm-location">Raleigh, NC</div>
+                        <div class="firm-contact">
+                            <span>📞 (919) 555-0100</span>
+                            <span>📧 claims@sedgwick.com</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- More firms... -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../scripts/pages/firms.js"></script>
+</body>
+</html>

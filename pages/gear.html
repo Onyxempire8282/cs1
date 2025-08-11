@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gear - Claim Cipher</title>
+    <link rel="stylesheet" href="../styles/index.css">
+</head>
+<body>
+    <div class="page-gear">
+        <header class="main__header">
+            <h1 class="main__title">Recommended Gear</h1>
+            <p class="main__subtitle">Essential tools and equipment for insurance adjusters</p>
+        </header>
+
+        <div class="gear-categories">
+            <div class="category-tabs">
+                <button class="category-tab category-tab--active" data-category="cameras">📷 Cameras</button>
+                <button class="category-tab" data-category="tools">🔧 Tools</button>
+                <button class="category-tab" data-category="safety">🦺 Safety</button>
+                <button class="category-tab" data-category="tech">💻 Technology</button>
+            </div>
+        </div>
+
+        <div class="gear-grid" id="gear-grid">
+            <!-- Gear items will be populated here -->
+            <div class="gear-card">
+                <div class="gear-image">📷</div>
+                <div class="gear-info">
+                    <h4 class="gear-title">Professional DSLR Camera</h4>
+                    <div class="gear-price">$899 - $1,299</div>
+                    <div class="gear-description">High-quality images for damage documentation</div>
+                    <div class="gear-features">
+                        <span class="feature-tag">High Resolution</span>
+                        <span class="feature-tag">Weather Resistant</span>
+                    </div>
+                </div>
+                <div class="gear-actions">
+                    <button class="btn btn--primary btn--small">View Details</button>
+                    <button class="btn btn--secondary btn--small">Compare</button>
+                </div>
+            </div>
+            
+            <!-- More gear items... -->
+        </div>
+    </div>
+
+    <script type="module" src="../scripts/pages/gear.js"></script>
+</body>
+</html>

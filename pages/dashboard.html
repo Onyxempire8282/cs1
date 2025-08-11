@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Claim Cipher</title>
+    <link rel="stylesheet" href="../styles/index.css">
+</head>
+<body>
+    <div class="page-dashboard">
+        <header class="main__header">
+            <h1 class="main__title">Dashboard</h1>
+            <p class="main__subtitle">Welcome back! Here's your activity overview.</p>
+        </header>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card__value">247</div>
+                <div class="stat-card__label">Miles This Month</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__value">18</div>
+                <div class="stat-card__label">Routes Optimized</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__value">42</div>
+                <div class="stat-card__label">Jobs Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__value">$1,847</div>
+                <div class="stat-card__label">Total Earnings</div>
+            </div>
+        </div>
+
+        <!-- Dashboard Content Grid -->
+        <div class="dashboard-grid">
+            <!-- Recent Routes Card -->
+            <div class="card">
+                <div class="card__header">
+                    <h3 class="card__title">Recent Routes</h3>
+                    <button class="btn btn--secondary btn--small" onclick="window.app.loadPage('routes')">View All</button>
+                </div>
+                <div class="recent-routes">
+                    <div class="route-item">
+                        <div class="route-item__info">
+                            <h4>Downtown Route - Aug 9</h4>
+                            <p>8 stops • 47 miles • 3.2 hours</p>
+                        </div>
+                        <span class="badge badge--success">Completed</span>
+                    </div>
+                    <div class="route-item">
+                        <div class="route-item__info">
+                            <h4>Northside Loop - Aug 8</h4>
+                            <p>12 stops • 63 miles • 4.1 hours</p>
+                        </div>
+                        <span class="badge badge--success">Completed</span>
+                    </div>
+                    <div class="route-item">
+                        <div class="route-item__info">
+                            <h4>Weekend Claims - Aug 10</h4>
+                            <p>5 stops • 28 miles • 2.0 hours</p>
+                        </div>
+                        <span class="badge badge--warning">Planned</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Jobs Card -->
+            <div class="card">
+                <div class="card__header">
+                    <h3 class="card__title">Active Jobs</h3>
+                    <button class="btn btn--secondary btn--small" onclick="window.app.loadPage('jobs')">Mobile Sync</button>
+                </div>
+                <div class="active-jobs">
+                    <div class="job-item">
+                        <div class="job-item__info">
+                            <h4>2021 Honda Accord - #CLM-4891</h4>
+                            <p>Photos: 8/12 uploaded</p>
+                        </div>
+                        <div class="spinner"></div>
+                    </div>
+                    <div class="job-item">
+                        <div class="job-item__info">
+                            <h4>2019 Toyota Camry - #CLM-4902</h4>
+                            <p>Ready for summary</p>
+                        </div>
+                        <button class="btn btn--success btn--small">Generate</button>
+                    </div>
+                    <div class="job-item">
+                        <div class="job-item__info">
+                            <h4>2020 Ford F-150 - #CLM-4876</h4>
+                            <p>Pending assignment</p>
+                        </div>
+                        <button class="btn btn--primary btn--small">Assign</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Card -->
+            <div class="card">
+                <div class="card__header">
+                    <h3 class="card__title">Quick Actions</h3>
+                </div>
+                <div class="quick-actions">
+                    <button class="btn btn--primary btn--full" onclick="window.app.loadPage('mileage')">
+                        <span>🚗</span> Calculate Mileage
+                    </button>
+                    <button class="btn btn--primary btn--full" onclick="window.app.loadPage('routes')">
+                        <span>🗺️</span> Optimize Route
+                    </button>
+                    <button class="btn btn--primary btn--full" onclick="window.app.loadPage('autoforms')">
+                        <span>📄</span> Auto-Fill Form
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Activity Card -->
+            <div class="card">
+                <div class="card__header">
+                    <h3 class="card__title">Recent Activity</h3>
+                </div>
+                <div class="activity-feed">
+                    <div class="activity-item">
+                        <div class="activity-icon activity-icon--success">✓</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Route optimized</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon activity-icon--info">📱</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Photos synced from mobile</div>
+                            <div class="activity-time">4 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon activity-icon--warning">📄</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Form auto-filled</div>
+                            <div class="activity-time">Yesterday</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../scripts/pages/dashboard.js"></script>
+</body>
+</html>

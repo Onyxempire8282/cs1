@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Sync - Claim Cipher</title>
+    <link rel="stylesheet" href="../styles/index.css">
+</head>
+<body>
+    <div class="page-jobs">
+        <header class="main__header">
+            <h1 class="main__title">Mobile Sync</h1>
+            <p class="main__subtitle">Manage field inspections and sync photos from mobile devices</p>
+            <span class="badge badge--pro">PRO FEATURE</span>
+        </header>
+
+        <!-- Job Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card__value">3</div>
+                <div class="stat-card__label">Active Jobs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__value">12</div>
+                <div class="stat-card__label">Completed This Week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__value">247</div>
+                <div class="stat-card__label">Photos Synced</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__value">2</div>
+                <div class="stat-card__label">Pending Summaries</div>
+            </div>
+        </div>
+
+        <div class="jobs-layout">
+            <!-- Jobs List -->
+            <div class="jobs-sidebar">
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">Jobs</h3>
+                        <button class="btn btn--primary btn--small" id="create-job-btn">+ Create Job</button>
+                    </div>
+
+                    <!-- Job Filters -->
+                    <div class="job-filters">
+                        <div class="filter-tabs">
+                            <button class="filter-tab filter-tab--active" data-filter="all">All</button>
+                            <button class="filter-tab" data-filter="active">Active</button>
+                            <button class="filter-tab" data-filter="completed">Completed</button>
+                        </div>
+                        
+                        <div class="search-input">
+                            <input type="text" class="form-input" placeholder="Search jobs..." id="job-search">
+                        </div>
+                    </div>
+
+                    <!-- Jobs List -->
+                    <div class="job-list" id="jobs-list">
+                        <div class="job-card job-card--active" data-job-id="job-1">
+                            <div class="job-header">
+                                <h4 class="job-title">2021 Honda Accord</h4>
+                                <span class="badge badge--warning">In Progress</span>
+                            </div>
+                            <div class="job-details">
+                                <div class="job-detail">
+                                    <span class="detail-label">Claim:</span>
+                                    <span class="detail-value">CLM-4902</span>
+                                </div>
+                                <div class="job-detail">
+                                    <span class="detail-label">Device:</span>
+                                    <span class="detail-value">Samsung Galaxy S24</span>
+                                </div>
+                                <div class="job-detail">
+                                    <span class="detail-label">Progress:</span>
+                                    <span class="detail-value">12/12 photos</span>
+                                </div>
+                            </div>
+                            <div class="job-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="job-card" data-job-id="job-3">
+                            <div class="job-header">
+                                <h4 class="job-title">2020 Ford F-150</h4>
+                                <span class="badge">Pending</span>
+                            </div>
+                            <div class="job-details">
+                                <div class="job-detail">
+                                    <span class="detail-label">Claim:</span>
+                                    <span class="detail-value">CLM-4876</span>
+                                </div>
+                                <div class="job-detail">
+                                    <span class="detail-label">Location:</span>
+                                    <span class="detail-value">456 Oak Ave, Cary</span>
+                                </div>
+                                <div class="job-detail">
+                                    <span class="detail-label">Scheduled:</span>
+                                    <span class="detail-value">Today, 2:00 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Job Details Panel -->
+            <div class="job-details-panel">
+                <div class="card" id="job-details-card">
+                    <div class="card__header">
+                        <h3 class="card__title">2021 Honda Accord - CLM-4891</h3>
+                        <div class="card__actions">
+                            <button class="btn btn--secondary btn--small" id="request-missing-btn">📤 Request Missing</button>
+                            <button class="btn btn--primary btn--small" id="generate-summary-btn">📄 Generate Summary</button>
+                        </div>
+                    </div>
+
+                    <!-- Job Info -->
+                    <div class="job-info-grid">
+                        <div class="info-section">
+                            <h4>Vehicle Information</h4>
+                            <div class="info-list">
+                                <div class="info-item">
+                                    <span class="info-label">VIN:</span>
+                                    <span class="info-value">1HGCV1F30JA123456</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Year/Make/Model:</span>
+                                    <span class="info-value">2021 Honda Accord Sport</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Mileage:</span>
+                                    <span class="info-value">45,231 miles</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-section">
+                            <h4>Claim Details</h4>
+                            <div class="info-list">
+                                <div class="info-item">
+                                    <span class="info-label">Date of Loss:</span>
+                                    <span class="info-value">Aug 5, 2025</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Location:</span>
+                                    <span class="info-value">123 Main St, Raleigh, NC</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Adjuster:</span>
+                                    <span class="info-value">John Smith</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Photo Requirements Checklist -->
+                    <div class="photo-requirements">
+                        <h4>Photo Requirements</h4>
+                        <div class="requirements-grid">
+                            <div class="requirement-item requirement-item--complete">
+                                <div class="requirement-icon">✓</div>
+                                <div class="requirement-label">VIN Number</div>
+                            </div>
+                            <div class="requirement-item requirement-item--complete">
+                                <div class="requirement-icon">✓</div>
+                                <div class="requirement-label">Front View</div>
+                            </div>
+                            <div class="requirement-item requirement-item--complete">
+                                <div class="requirement-icon">✓</div>
+                                <div class="requirement-label">Rear View</div>
+                            </div>
+                            <div class="requirement-item requirement-item--complete">
+                                <div class="requirement-icon">✓</div>
+                                <div class="requirement-label">Driver Side</div>
+                            </div>
+                            <div class="requirement-item requirement-item--complete">
+                                <div class="requirement-icon">✓</div>
+                                <div class="requirement-label">Passenger Side</div>
+                            </div>
+                            <div class="requirement-item requirement-item--complete">
+                                <div class="requirement-icon">✓</div>
+                                <div class="requirement-label">Damage Areas</div>
+                            </div>
+                            <div class="requirement-item requirement-item--missing">
+                                <div class="requirement-icon">⏳</div>
+                                <div class="requirement-label">Odometer</div>
+                            </div>
+                            <div class="requirement-item requirement-item--missing">
+                                <div class="requirement-icon">⏳</div>
+                                <div class="requirement-label">Interior</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Photo Gallery -->
+                    <div class="photo-gallery">
+                        <h4>Photo Gallery</h4>
+                        <div class="gallery-grid" id="photo-gallery">
+                            <div class="photo-slot photo-slot--uploaded" data-type="vin">
+                                <div class="photo-content">
+                                    <div class="photo-icon">📷</div>
+                                    <div class="photo-label">VIN</div>
+                                    <div class="photo-timestamp">2 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="photo-slot photo-slot--uploaded" data-type="front">
+                                <div class="photo-content">
+                                    <div class="photo-icon">📷</div>
+                                    <div class="photo-label">Front</div>
+                                    <div class="photo-timestamp">2 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="photo-slot photo-slot--uploaded" data-type="rear">
+                                <div class="photo-content">
+                                    <div class="photo-icon">📷</div>
+                                    <div class="photo-label">Rear</div>
+                                    <div class="photo-timestamp">2 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="photo-slot photo-slot--uploaded" data-type="driver-side">
+                                <div class="photo-content">
+                                    <div class="photo-icon">📷</div>
+                                    <div class="photo-label">Driver Side</div>
+                                    <div class="photo-timestamp">2 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="photo-slot photo-slot--uploaded" data-type="passenger-side">
+                                <div class="photo-content">
+                                    <div class="photo-icon">📷</div>
+                                    <div class="photo-label">Pass. Side</div>
+                                    <div class="photo-timestamp">2 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="photo-slot photo-slot--uploaded" data-type="damage">
+                                <div class="photo-content">
+                                    <div class="photo-icon">📷</div>
+                                    <div class="photo-label">Damage 1</div>
+                                    <div class="photo-timestamp">1 hour ago</div>
+                                </div>
+                            </div>
+                            <div class="photo-slot photo-slot--pending" data-type="odometer">
+                                <div class="photo-content">
+                                    <div class="photo-icon">⏳</div>
+                                    <div class="photo-label">Odometer</div>
+                                    <div class="photo-status">Pending</div>
+                                </div>
+                            </div>
+                            <div class="photo-slot photo-slot--pending" data-type="interior">
+                                <div class="photo-content">
+                                    <div class="photo-icon">⏳</div>
+                                    <div class="photo-label">Interior</div>
+                                    <div class="photo-status">Pending</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sync Status -->
+                    <div class="sync-status">
+                        <h4>Sync Status</h4>
+                        <div class="status-grid">
+                            <div class="status-item">
+                                <span class="status-label">Photos Uploaded:</span>
+                                <span class="status-value status-value--warning">8 of 12</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">Last Sync:</span>
+                                <span class="status-value">2 minutes ago</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">Device Status:</span>
+                                <span class="status-value status-value--online">🟢 Online</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">Battery Level:</span>
+                                <span class="status-value">73%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Job Modal -->
+        <div class="modal" id="create-job-modal" style="display: none;">
+            <div class="modal__backdrop"></div>
+            <div class="modal__container">
+                <div class="modal__header">
+                    <h3 class="modal__title">Create New Job</h3>
+                    <button class="btn btn--ghost btn--icon" id="close-create-modal">×</button>
+                </div>
+                <div class="modal__content">
+                    <form id="create-job-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label form-label--required">Vehicle Year</label>
+                                <input type="number" class="form-input" min="1900" max="2030" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label form-label--required">Make</label>
+                                <input type="text" class="form-input" placeholder="Honda" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label form-label--required">Model</label>
+                                <input type="text" class="form-input" placeholder="Accord" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Trim</label>
+                                <input type="text" class="form-input" placeholder="Sport">
+                            </div>
+                            <div class="form-group form-group--span-2">
+                                <label class="form-label form-label--required">Claim Number</label>
+                                <input type="text" class="form-input" placeholder="CLM-1234" required>
+                            </div>
+                            <div class="form-group form-group--span-2">
+                                <label class="form-label">VIN</label>
+                                <input type="text" class="form-input" placeholder="1HGCV1F30JA123456" maxlength="17">
+                            </div>
+                            <div class="form-group form-group--span-2">
+                                <label class="form-label">Inspection Address</label>
+                                <input type="text" class="form-input" placeholder="123 Main St, City, State">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Scheduled Date</label>
+                                <input type="date" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Scheduled Time</label>
+                                <input type="time" class="form-input">
+                            </div>
+                            <div class="form-group form-group--span-2">
+                                <label class="form-label">Assign to Device</label>
+                                <select class="form-input">
+                                    <option value="">Assign later</option>
+                                    <option value="device-1">iPhone 14 Pro - John's Device</option>
+                                    <option value="device-2">Samsung Galaxy S24 - Field Device</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal__footer">
+                    <button class="btn btn--secondary" id="cancel-create-btn">Cancel</button>
+                    <button class="btn btn--primary" id="save-job-btn">Create Job</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../scripts/pages/jobs.js"></script>
+</body>
+</html>-label">Claim:</span>
+                                    <span class="detail-value">CLM-4891</span>
+                                </div>
+                                <div class="job-detail">
+                                    <span class="detail-label">Device:</span>
+                                    <span class="detail-value">iPhone 14 Pro</span>
+                                </div>
+                                <div class="job-detail">
+                                    <span class="detail-label">Progress:</span>
+                                    <span class="detail-value">8/12 photos</span>
+                                </div>
+                            </div>
+                            <div class="job-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 67%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="job-card" data-job-id="job-2">
+                            <div class="job-header">
+                                <h4 class="job-title">2019 Toyota Camry</h4>
+                                <span class="badge badge--success">Complete</span>
+                            </div>
+                            <div class="job-details">
+                                <div class="job-detail">
+                                    <span class="detail

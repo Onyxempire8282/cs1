@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Claim Cipher</title>
+    <link rel="stylesheet" href="../styles/index.css">
+</head>
+<body>
+    <div class="page-settings">
+        <header class="main__header">
+            <h1 class="main__title">Settings</h1>
+            <p class="main__subtitle">Manage your profile, security, and business settings</p>
+        </header>
+
+        <!-- Settings Navigation -->
+        <div class="settings-tabs">
+            <button class="settings-tab settings-tab--active" data-tab="profile">
+                <span class="tab-icon">👤</span>
+                <span class="tab-label">Profile</span>
+            </button>
+            <button class="settings-tab" data-tab="security">
+                <span class="tab-icon">🔒</span>
+                <span class="tab-label">Security</span>
+            </button>
+            <button class="settings-tab" data-tab="business">
+                <span class="tab-icon">🏢</span>
+                <span class="tab-label">Business</span>
+            </button>
+            <button class="settings-tab" data-tab="billing">
+                <span class="tab-icon">💳</span>
+                <span class="tab-label">Billing</span>
+            </button>
+            <button class="settings-tab" data-tab="notifications">
+                <span class="tab-icon">🔔</span>
+                <span class="tab-label">Notifications</span>
+            </button>
+        </div>
+
+        <div class="settings-content">
+            <!-- Profile Panel -->
+            <div class="settings-panel settings-panel--active" id="profile-panel">
+                <div class="panel-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">Profile Information</h3>
+                        </div>
+                        
+                        <form class="settings-form" id="profile-form">
+                            <div class="profile-avatar-section">
+                                <div class="avatar-container">
+                                    <div class="avatar avatar--large">JS</div>
+                                    <button class="btn btn--secondary btn--small avatar-change-btn">Change Avatar</button>
+                                </div>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" class="form-input" value="John" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Last Name</label>
+                                    <input type="text" class="form-input" value="Smith" required>
+                                </div>
+                                <div class="form-group form-group--span-2">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" class="form-input" value="john.smith@example.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-input" value="(919) 555-0123">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Timezone</label>
+                                    <select class="form-input">
+                                        <option value="America/New_York" selected>Eastern Time (UTC-5)</option>
+                                        <option value="America/Chicago">Central Time (UTC-6)</option>
+                                        <option value="America/Denver">Mountain Time (UTC-7)</option>
+                                        <option value="America/Los_Angeles">Pacific Time (UTC-8)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group form-group--span-2">
+                                    <label class="form-label">Company/Organization</label>
+                                    <input type="text" class="form-input" placeholder="Your company name">
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn--success">Save Changes</button>
+                                <button type="button" class="btn btn--secondary">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">Preferences</h3>
+                        </div>
+
+                        <div class="preferences-list">
+                            <div class="preference-item">
+                                <div class="preference-info">
+                                    <div class="preference-label">Dark Mode</div>
+                                    <div class="preference-description">Use dark theme throughout the application</div>
+                                </div>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="dark-mode-toggle" checked>
+                                    <label for="dark-mode-toggle">Dark Mode</label>
+                                </div>
+                            </div>
+
+                            <div class="preference-item">
+                                <div class="preference-info">
+                                    <div class="preference-label">Auto-save Forms</div>
+                                    <div class="preference-description">Automatically save form progress every 30 seconds</div>
+                                </div>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="auto-save-toggle" checked>
+                                    <label for="auto-save-toggle">Auto-save</label>
+                                </div>
+                            </div>
+
+                            <div class="preference-item">
+                                <div class="preference-info">
+                                    <div class="preference-label">Keyboard Shortcuts</div>
+                                    <div class="preference-description">Enable keyboard shortcuts for quick navigation</div>
+                                </div>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="shortcuts-toggle" checked>
+                                    <label for="shortcuts-toggle">Shortcuts</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Panel -->
+            <div class="settings-panel" id="security-panel">
+                <div class="panel-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">Password & Authentication</h3>
+                        </div>
+
+                        <div class="security-section">
+                            <div class="security-item">
+                                <div class="security-info">
+                                    <div class="security-label">Password</div>
+                                    <div class="security-description">Last changed 30 days ago</div>
+                                </div>
+                                <button class="btn btn--secondary">Change Password</button>
+                            </div>
+
+                            <div class="security-item">
+                                <div class="security-info">
+                                    <div class="security-label">Two-Factor Authentication</div>
+                                    <div class="security-description">
+                                        <span class="badge badge--success">✓ Enabled</span>
+                                        TOTP app configured
+                                    </div>
+                                </div>
+                                <div class="security-actions">
+                                    <button class="btn btn--secondary btn--small">View Recovery Codes</button>
+                                    <button class="btn btn--secondary btn--small">Reconfigure</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">Active Sessions</h3>
+                        </div>
+
+                        <div class="sessions-list">
+                            <div class="session-item session-item--current">
+                                <div class="session-icon">💻</div>
+                                <div class="session-info">
+                                    <div class="session-title">Chrome on Windows</div>
+                                    <div class="session-details">
+                                        <span class="session-location">Raleigh, NC</span>
+                                        <span class="session-current">Current session</span>
+                                    </div>
+                                    <div class="session-time">Active now</div>
+                                </div>
+                                <div class="session-status">
+                                    <span class="status-indicator status-indicator--online">🟢</span>
+                                </div>
+                            </div>
+
+                            <div class="session-item">
+                                <div class="session-icon">📱</div>
+                                <div class="session-info">
+                                    <div class="session-title">Mobile App - iPhone</div>
+                                    <div class="session-details">
+                                        <span class="session-location">Raleigh, NC</span>
+                                    </div>
+                                    <div class="session-time">Last seen 2 hours ago</div>
+                                </div>
+                                <div class="session-actions">
+                                    <button class="btn btn--error btn--small">Revoke</button>
+                                </div>
+                            </div>
+
+                            <div class="session-item">
+                                <div class="session-icon">💻</div>
+                                <div class="session-info">
+                                    <div class="session-title">Safari on macOS</div>
+                                    <div class="session-details">
+                                        <span class="session-location">Durham, NC</span>
+                                    </div>
+                                    <div class="session-time">Last seen 3 days ago</div>
+                                </div>
+                                <div class="session-actions">
+                                    <button class="btn btn--error btn--small">Revoke</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Panel -->
+            <div class="settings-panel" id="business-panel">
+                <div class="panel-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">Firms & Mileage Rates</h3>
+                            <button class="btn btn--primary btn--small" id="add-firm-btn">+ Add Firm</button>
+                        </div>
+
+                        <div class="firms-list" id="firms-list">
+                            <div class="firm-item">
+                                <div class="firm-info">
+                                    <div class="firm-name">Sedgwick Claims</div>
+                                    <div class="firm-details">
+                                        <span class="firm-rate">$0.67 per mile</span>
+                                        <span class="firm-type">Insurance Carrier</span>
+                                    </div>
+                                </div>
+                                <div class="firm-actions">
+                                    <button class="btn btn--secondary btn--small">Edit</button>
+                                    <button class="btn btn--ghost btn--small">Delete</button>
+                                </div>
+                            </div>
+
+                            <div class="firm-item">
+                                <div class="firm-info">
+                                    <div class="firm-name">ACD Adjusters</div>
+                                    <div class="firm-details">
+                                        <span class="firm-rate">$0.62 per mile</span>
+                                        <span class="firm-type">Independent Adjuster</span>
+                                    </div>
+                                </div>
+                                <div class="firm-actions">
+                                    <button class="btn btn--secondary btn--small">Edit</button>
+                                    <button class="btn btn--ghost btn--small">Delete</button>
+                                </div>
+                            </div>
+
+                            <div class="firm-item">
+                                <div class="firm-info">
+                                    <div class="firm-name">Independent Rate</div>
+                                    <div class="firm-details">
+                                        <span class="firm-rate">$0.70 per mile</span>
+                                        <span class="firm-type">Self-Employed</span>
+                                    </div>
+                                </div>
+                                <div class="firm-actions">
+                                    <button class="btn btn--secondary btn--small">Edit</button>
+                                    <button class="btn btn--ghost btn--small">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">Route Optimization Rules</h3>
+                        </div>
+                        
+                        <form class="settings-form" id="route-rules-form">
+                            <div class="form-group">
+                                <label class="form-label">Max Radius (miles)</label>
+                                <input type="number" class="form-input" value="50" min="1" max="200">
+                                <div class="form-help">Maximum distance from route center before spillover</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Max Stops per Day</label>
+                                <input type="number" class="form-input" value="10" min="1" max="30">
+                                <div class="form-help">Maximum number of stops to schedule in a single day</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Spillover Rule</label>
+                                <select class="form-input">
+                                    <option value="tomorrow" selected>Tomorrow</option>
+                                    <option value="next-business-day">Next Business Day</option>
+                                    <option value="monday">Monday</option>
+                                    <option value="tuesday">Tuesday</option>
+                                    <option value="wednesday">Wednesday</option>
+                                    <option value="thursday">Thursday</option>
+                                    <option value="friday">Friday</option>
+                                </select>
+                                <div class="form-help">When stops exceed limits, assign to this day</div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn--success">Save Rules</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Billing Panel -->
+            <div class="settings-panel" id="billing-panel">
+                <div class="panel-grid">
+                    <!-- Current Plan -->
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">Current Plan</h3>
+                            <span class="badge badge--pro">PRO DEMO</span>
+                        </div>
+
+                        <div class="current-plan-info">
+                            <div class="plan-details">
+                                <div class="plan-name">Pro Plan (Demo)</div>
+                                <div class="plan-price">$50/month</div>
+                                <div class="plan-description">Full access to all Pro features during demo period</div>
+                            </div>
+                            
+                            <div class="plan-status">
+                                <div class="demo-countdown">
+                                    <div class="countdown-label">Demo expires in:</div>
+                                    <div class="countdown-time">6 days, 14 hours</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="plan-actions">
+                            <button class="btn btn--primary">Upgrade to Pro</button>
+                            <button class="btn btn--secondary">Contact Sales</button>
+                        </div>
+                    </div>
+
+                    <!-- Available Plans -->
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">Available Plans</h3>
+                        </div>
+
+                        <div class="plans-grid">
+                            <div class="plan-card">
+                                <div class="plan-header">
+                                    <h4 class="plan-title">Basic</h4>
+                                    <div class="plan-pricing">
+                                        <span class="plan-price">$30</span>
+                                        <span class="plan-period">/month</span>
+                                    </div>
+                                </div>
+                                <div class="plan-features">
+                                    <div class="feature-item">✓ Mileage Calculator</div>
+                                    <div class="feature-item">✓ Route Optimizer</div>
+                                    <div class="feature-item">✓ AutoForms</div>
+                                    <div class="feature-item">✓ Help & Gear</div>
+                                    <div class="feature-item">✓ Firms Directory</div>
+                                </div>
+                                <button class="btn btn--secondary btn--full">Current Plan Alternative</button>
+                            </div>
+
+                            <div class="plan-card plan-card--featured">
+                                <div class="plan-badge">CURRENT</div>
+                                <div class="plan-header">
+                                    <h4 class="plan-title">Pro</h4>
+                                    <div class="plan-pricing">
+                                        <span class="plan-price">$50</span>
+                                        <span class="plan-period">/month</span>
+                                    </div>
+                                </div>
+                                <div class="plan-features">
+                                    <div class="feature-item">✓ Everything in Basic</div>
+                                    <div class="feature-item">✓ Calendar Sync</div>
+                                    <div class="feature-item">✓ Mobile Sync</div>
+                                    <div class="feature-item">✓ Comparables</div>
+                                    <div class="feature-item">✓ CSV Automations</div>
+                                </div>
+                                <button class="btn btn--primary btn--full">Upgrade Now</button>
+                            </div>
+
+                            <div class="plan-card">
+                                <div class="plan-header">
+                                    <h4 class="plan-title">Master</h4>
+                                    <div class="plan-pricing">
+                                        <span class="plan-price">Contact</span>
+                                        <span class="plan-period">Us</span>
+                                    </div>
+                                </div>
+                                <div class="plan-features">
+                                    <div class="feature-item">✓ Everything in Pro</div>
+                                    <div class="feature-item">✓ Unlimited Access</div>
+                                    <div class="feature-item">✓ Priority Support</div>
+                                    <div class="feature-item">✓ Custom Features</div>
+                                </div>
+                                <button class="btn btn--secondary btn--full">Contact Sales</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Billing History -->
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">Billing History</h3>
+                            <button class="btn btn--secondary btn--small">Download All</button>
+                        </div>
+
+                        <div class="billing-history">
+                            <div class="billing-item">
+                                <div class="billing-icon">📄</div>
+                                <div class="billing-info">
+                                    <div class="billing-description">Pro Plan - Demo Started</div>
+                                    <div class="billing-date">Aug 4, 2025</div>
+                                </div>
+                                <div class="billing-amount">$0.00</div>
+                                <div class="billing-actions">
+                                    <button class="btn btn--ghost btn--small">View</button>
+                                </div>
+                            </div>
+
+                            <div class="empty-state">
+                                <div class="empty-state__icon">📋</div>
+                                <div class="empty-state__title">No billing history</div>
+                                <div class="empty-state__description">
+                                    You're currently on a demo. Billing history will appear after you upgrade.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications Panel -->
+            <div class="settings-panel" id="notifications-panel">
+                <div class="panel-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">Email Notifications</h3>
+                        </div>
+
+                        <div class="notification-categories">
+                            <div class="category-section">
+                                <h4>Account & Security</h4>
+                                <div class="notification-list">
+                                    <div class="notification-item">
+                                        <div class="notification-info">
+                                            <div class="notification-label">Login alerts</div>
+                                            <div class="notification-description">Get notified of new sign-ins</div>
+                                        </div>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="login-alerts" checked>
+                                            <label for="login-alerts">Login alerts</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="notification-item">
+                                        <div class="notification-info">
+                                            <div class="notification-label">Security updates</div>
+                                            <div class="notification-description">Important security announcements</div>
+                                        </div>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="security-updates" checked>
+                                            <label for="security-updates">Security updates</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="category-section">
+                                <h4>Job & Route Updates</h4>
+                                <div class="notification-list">
+                                    <div class="notification-item">
+                                        <div class="notification-info">
+                                            <div class="notification-label">Job assignments</div>
+                                            <div class="notification-description">When new jobs are assigned to your devices</div>
+                                        </div>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="job-assignments" checked>
+                                            <label for="job-assignments">Job assignments</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="notification-item">
+                                        <div class="notification-info">
+                                            <div class="notification-label">Sync status</div>
+                                            <div class="notification-description">Photo upload and sync notifications</div>
+                                        </div>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="sync-status">
+                                            <label for="sync-status">Sync status</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="category-section">
+                                <h4>Billing & Subscription</h4>
+                                <div class="notification-list">
+                                    <div class="notification-item">
+                                        <div class="notification-info">
+                                            <div class="notification-label">Payment receipts</div>
+                                            <div class="notification-description">Monthly billing confirmations</div>
+                                        </div>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="payment-receipts" checked>
+                                            <label for="payment-receipts">Payment receipts</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="notification-item">
+                                        <div class="notification-info">
+                                            <div class="notification-label">Plan changes</div>
+                                            <div class="notification-description">Upgrades and plan modifications</div>
+                                        </div>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="plan-changes" checked>
+                                            <label for="plan-changes">Plan changes</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">Push Notifications</h3>
+                        </div>
+
+                        <div class="push-notification-status">
+                            <div class="status-info">
+                                <div class="status-icon">🔔</div>
+                                <div class="status-details">
+                                    <div class="status-title">Browser notifications enabled</div>
+                                    <div class="status-description">You'll receive real-time updates in your browser</div>
+                                </div>
+                            </div>
+                            <button class="btn btn--secondary">Manage Permissions</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../scripts/pages/settings.js"></script>
+</body>
+</html>
