@@ -4,9 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mileage Calculator - Claim Cipher</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../styles/normalize.css">
+    <link rel="stylesheet" href="../styles/variables.css">
+    <link rel="stylesheet" href="../styles/components/header.css">
+    <link rel="stylesheet" href="../styles/components/sidebar.css">
+    <link rel="stylesheet" href="../styles/components/cards.css">
+    <link rel="stylesheet" href="../styles/components/buttons.css">
+    <link rel="stylesheet" href="../styles/components/forms.css">
+    <link rel="stylesheet" href="../styles/components/navigation.css">
+    <link rel="stylesheet" href="../styles/pages/mileage.css">
     <link rel="stylesheet" href="../styles/index.css">
 </head>
 <body>
+    <!-- Demo Banner -->
+    <div class="demo-banner">
+         Pro Demo Active - <span id="demo-countdown">6 days, 14 hours remaining</span>
+        <button class="btn btn--primary btn--small" style="margin-left: 16px;">Upgrade Now</button>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="sidebar__logo">Claim Cipher</div>
+        <ul class="sidebar__nav">
+            <li class="sidebar__nav-item">
+                <a href="../index.html" class="sidebar__nav-link">
+                    <span></span> Dashboard
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="mileage.html" class="sidebar__nav-link active">
+                    <span></span> Mileage Calculator
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="routes.html" class="sidebar__nav-link">
+                    <span></span> Route Optimizer
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="jobs.html" class="sidebar__nav-link">
+                    <span></span> Mobile Sync
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="autoforms.html" class="sidebar__nav-link">
+                    <span></span> AutoForms
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="comparables.html" class="sidebar__nav-link">
+                    <span></span> Comparables
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="firms.html" class="sidebar__nav-link">
+                    <span></span> Firms Directory
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="gear.html" class="sidebar__nav-link">
+                    <span></span> Gear
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="help.html" class="sidebar__nav-link">
+                    <span></span> Help
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="settings.html" class="sidebar__nav-link">
+                    <span></span> Settings
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main">
     <div class="page-mileage">
         <header class="main__header">
             <h1 class="main__title">Mileage Calculator</h1>
@@ -149,7 +227,24 @@
         <!-- Hidden file input for CSV import -->
         <input type="file" id="csv-file-input" accept=".csv" style="display: none;">
     </div>
+    </main>
 
-    <script type="module" src="../scripts/pages/mileage.js"></script>
+    <!-- Toast Notification (hidden by default) -->
+    <div class="toast" id="toast">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <span></span>
+            <div>
+                <div style="font-weight: 600;">Success!</div>
+                <div style="font-size: 14px; color: var(--text-secondary);">Mileage calculated successfully</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../scripts/utils/constants.js"></script>
+    <script src="../scripts/utils/helpers.js"></script>
+    <script src="../scripts/components/demo-banner.js"></script>
+    <script src="../scripts/components/toast.js"></script>
+    <script src="../scripts/pages/mileage.js"></script>
 </body>
 </html>
