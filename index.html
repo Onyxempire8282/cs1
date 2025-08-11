@@ -90,8 +90,60 @@
 
     <!-- Main Content Area -->
     <main class="main">
-        <!-- Dynamic content will be loaded here -->
-        <div id="page-content"></div>
+        <!-- Welcome content for the home page -->
+        <div class="page-dashboard">
+            <header class="main__header">
+                <h1 class="main__title">Welcome to Claim Cipher</h1>
+                <p class="main__subtitle">Your comprehensive insurance adjuster toolkit</p>
+            </header>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card__value">247</div>
+                    <div class="stat-card__label">Miles This Month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card__value">18</div>
+                    <div class="stat-card__label">Routes Optimized</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card__value">42</div>
+                    <div class="stat-card__label">Jobs Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card__value">$1,847</div>
+                    <div class="stat-card__label">Total Earnings</div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">Quick Actions</h3>
+                    </div>
+                    <div class="quick-actions">
+                        <a href="pages/mileage.html" class="btn btn--primary">Calculate Mileage</a>
+                        <a href="pages/routes.html" class="btn btn--secondary">Plan Routes</a>
+                        <a href="pages/autoforms.html" class="btn btn--secondary">Auto-Fill Forms</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">Recent Activity</h3>
+                    </div>
+                    <div class="recent-activity">
+                        <div class="activity-item">
+                            <div class="activity-item__info">
+                                <h4>Downtown Route - Aug 9</h4>
+                                <p>8 stops • 47 miles • 3.2 hours</p>
+                            </div>
+                            <span class="badge badge--success">Completed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- Toast Notification (hidden by default) -->
@@ -108,16 +160,7 @@
     <!-- Scripts -->
     <script src="scripts/utils/constants.js"></script>
     <script src="scripts/utils/helpers.js"></script>
-    <script src="scripts/utils/api.js"></script>
-    <script src="scripts/components/navigation.js"></script>
     <script src="scripts/components/demo-banner.js"></script>
     <script src="scripts/components/toast.js"></script>
-    <script src="scripts/pages/dashboard.js"></script>
-    <script src="scripts/pages/mileage.js"></script>
-    <script src="scripts/pages/routes.js"></script>
-    <script src="scripts/pages/jobs.js"></script>
-    <script src="scripts/pages/autoforms.js"></script>
-    <script src="scripts/pages/settings.js"></script>
-    <script src="scripts/index.js"></script>
 </body>
 </html>
