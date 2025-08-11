@@ -3,168 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claim Cipher - Insurance Adjuster Tools</title>
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles/normalize.css">
-    <link rel="stylesheet" href="styles/variables.css">
-    <link rel="stylesheet" href="styles/components/header.css">
-    <link rel="stylesheet" href="styles/components/sidebar.css">
-    <link rel="stylesheet" href="styles/components/cards.css">
-    <link rel="stylesheet" href="styles/components/buttons.css">
-    <link rel="stylesheet" href="styles/components/forms.css">
-    <link rel="stylesheet" href="styles/components/navigation.css">
-    <link rel="stylesheet" href="styles/pages/dashboard.css">
-    <link rel="stylesheet" href="styles/pages/mileage.css">
-    <link rel="stylesheet" href="styles/pages/routes.css">
-    <link rel="stylesheet" href="styles/pages/jobs.css">
-    <link rel="stylesheet" href="styles/pages/autoforms.css">
-    <link rel="stylesheet" href="styles/pages/settings.css">
-    <link rel="stylesheet" href="styles/index.css">
+    <title>Claim Cipher - Loading...</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: white;
+        }
+        .loading-container {
+            text-align: center;
+            padding: 40px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-width: 300px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+        .loading-text {
+            font-size: 16px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script>
+        // Immediate authentication check and redirect
+        (function() {
+            const auth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
+            
+            if (auth.authenticated) {
+                // Check if demo expired
+                if (auth.demoMode && auth.demoExpiry && Date.now() > auth.demoExpiry) {
+                    localStorage.removeItem('claimcipher_auth');
+                    window.location.href = './login.html';
+                } else {
+                    window.location.href = './pages/dashboard.html';
+                }
+            } else {
+                window.location.href = './login.html';
+            }
+        })();
+    </script>
 </head>
 <body>
-    <!-- Demo Banner -->
-    <div class="demo-banner">
-         Pro Demo Active - <span id="demo-countdown">6 days, 14 hours remaining</span>
-        <button class="btn btn--primary btn--small" style="margin-left: 16px;">Upgrade Now</button>
+    <div class="loading-container">
+        <div class="logo">Claim Cipher</div>
+        <div class="loading-text">Checking authentication...</div>
+        <div class="spinner"></div>
     </div>
-
-    <!-- Sidebar Navigation -->
-    <nav class="sidebar" style="display: flex; flex-direction: column;">
-        <div>
-            <div class="sidebar__logo">Claim Cipher</div>
-            <ul class="sidebar__nav">
-                <li class="sidebar__nav-item">
-                    <a href="index.html" class="sidebar__nav-link active">
-                        <span></span> Dashboard
-                    </a>
-                </li>
-                <li class="sidebar__nav-item">
-                    <a href="pages/mileage.html" class="sidebar__nav-link">
-                        <span></span> Mileage Calculator
-                    </a>
-                </li>
-                <li class="sidebar__nav-item">
-                    <a href="pages/routes.html" class="sidebar__nav-link">
-                        <span></span> Route Optimizer
-                    </a>
-                </li>
-                <li class="sidebar__nav-item">
-                    <a href="pages/jobs.html" class="sidebar__nav-link">
-                        <span></span> Mobile Sync
-                        <span class="badge badge--pro">PRO</span>
-                    </a>
-                </li>
-                <li class="sidebar__nav-item">
-                    <a href="pages/autoforms.html" class="sidebar__nav-link">
-                        <span></span> AutoForms
-                    </a>
-                </li>
-                <li class="sidebar__nav-item">
-                    <a href="pages/comparables.html" class="sidebar__nav-link">
-                        <span></span> Comparables
-                        <span class="badge badge--pro">PRO</span>
-                    </a>
-                </li>
-                <li class="sidebar__nav-item">
-                    <a href="pages/firms.html" class="sidebar__nav-link">
-                        <span></span> Firms Directory
-                    </a>
-                </li>
-                <li class="sidebar__nav-item">
-                    <a href="pages/gear.html" class="sidebar__nav-link">
-                        <span></span> Gear
-                    </a>
-                </li>
-                <li class="sidebar__nav-item">
-                    <a href="pages/help.html" class="sidebar__nav-link">
-                        <span></span> Help
-                    </a>
-                </li>
-                <li class="sidebar__nav-item">
-                    <a href="pages/settings.html" class="sidebar__nav-link">
-                        <span></span> Settings
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Main Content Area -->
-    <main class="main">
-        <!-- Welcome content for the home page -->
-        <div class="page-dashboard">
-            <header class="main__header">
-                <h1 class="main__title">Welcome to Claim Cipher</h1>
-                <p class="main__subtitle">Your comprehensive insurance adjuster toolkit</p>
-            </header>
-
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-card__value">247</div>
-                    <div class="stat-card__label">Miles This Month</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-card__value">18</div>
-                    <div class="stat-card__label">Routes Optimized</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-card__value">42</div>
-                    <div class="stat-card__label">Jobs Completed</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-card__value">$1,847</div>
-                    <div class="stat-card__label">Total Earnings</div>
-                </div>
-            </div>
-
-            <div class="dashboard-grid">
-                <div class="card">
-                    <div class="card__header">
-                        <h3 class="card__title">Quick Actions</h3>
-                    </div>
-                    <div class="quick-actions">
-                        <a href="pages/mileage.html" class="btn btn--primary">Calculate Mileage</a>
-                        <a href="pages/routes.html" class="btn btn--secondary">Plan Routes</a>
-                        <a href="pages/autoforms.html" class="btn btn--secondary">Auto-Fill Forms</a>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card__header">
-                        <h3 class="card__title">Recent Activity</h3>
-                    </div>
-                    <div class="recent-activity">
-                        <div class="activity-item">
-                            <div class="activity-item__info">
-                                <h4>Downtown Route - Aug 9</h4>
-                                <p>8 stops • 47 miles • 3.2 hours</p>
-                            </div>
-                            <span class="badge badge--success">Completed</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Toast Notification (hidden by default) -->
-    <div class="toast" id="toast">
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <span></span>
-            <div>
-                <div style="font-weight: 600;">Success!</div>
-                <div style="font-size: 14px; color: var(--text-secondary);">Route optimized successfully</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script src="scripts/utils/constants.js"></script>
-    <script src="scripts/utils/helpers.js"></script>
-    <script src="scripts/utils/auth.js"></script>
-    <script src="scripts/utils/transitions.js"></script>
-    <script src="scripts/components/demo-banner.js"></script>
-    <script src="scripts/components/toast.js"></script>
 </body>
 </html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Test - Claim Cipher</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8fafc;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 { color: #1e40af; margin-bottom: 30px; }
+        h2 { color: #374151; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px; }
+        .test-section { margin-bottom: 30px; }
+        .test-result { 
+            padding: 12px; 
+            border-radius: 6px; 
+            margin: 10px 0; 
+            font-weight: 500;
+        }
+        .pass { background: #d1fae5; border: 1px solid #a7f3d0; color: #065f46; }
+        .fail { background: #fee2e2; border: 1px solid #fecaca; color: #991b1b; }
+        .info { background: #e0f2fe; border: 1px solid #b3e5fc; color: #0277bd; }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover { background: #2563eb; }
+        .credentials {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔐 Authentication System Test</h1>
+        
+        <div class="test-section">
+            <h2>Master Login Credentials</h2>
+            <div class="credentials">
+                Email: inspects@flav8r.net<br>
+                Password: ClaimCipher2025!Master
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Authentication Tests</h2>
+            <button onclick="testMasterLogin()">Test Master Login</button>
+            <button onclick="testUserLogin()">Test User Login</button>
+            <button onclick="testDemoLogin()">Test Demo Login</button>
+            <button onclick="clearAuth()">Clear Auth</button>
+            <button onclick="checkCurrentAuth()">Check Current Auth</button>
+        </div>
+
+        <div class="test-section">
+            <h2>Test Results</h2>
+            <div id="results"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Navigation Tests</h2>
+            <button onclick="window.location.href='login.html'">Go to Login Page</button>
+            <button onclick="window.location.href='index.html'">Go to Dashboard</button>
+            <button onclick="window.location.href='pages/firms.html'">Go to Firms</button>
+        </div>
+    </div>
+
+    <script>
+        // Test authentication manager functions
+        const testAuthManager = {
+            attemptMasterLogin: (email, password) => {
+                const masterCredentials = {
+                    email: 'inspects@flav8r.net',
+                    password: 'ClaimCipher2025!Master'
+                };
+                
+                if (email === masterCredentials.email && password === masterCredentials.password) {
+                    const authData = {
+                        authenticated: true,
+                        masterLogin: true,
+                        demoMode: false,
+                        username: 'Master Admin',
+                        email: email,
+                        loginTime: Date.now(),
+                        permissions: 'full'
+                    };
+                    localStorage.setItem('claimcipher_auth', JSON.stringify(authData));
+                    return { success: true, type: 'master' };
+                }
+                return { success: false };
+            },
+            
+            attemptUserLogin: (email, password) => {
+                if (email && password && email.includes('@') && password.length >= 6) {
+                    const authData = {
+                        authenticated: true,
+                        masterLogin: false,
+                        demoMode: false,
+                        username: email.split('@')[0],
+                        email: email,
+                        loginTime: Date.now(),
+                        permissions: 'user'
+                    };
+                    localStorage.setItem('claimcipher_auth', JSON.stringify(authData));
+                    return { success: true, type: 'user' };
+                }
+                return { success: false };
+            },
+            
+            attemptDemoLogin: () => {
+                const demoExpiry = Date.now() + (7 * 24 * 60 * 60 * 1000);
+                const authData = {
+                    authenticated: true,
+                    masterLogin: false,
+                    demoMode: true,
+                    demoExpiry: demoExpiry,
+                    username: 'Demo User',
+                    email: 'demo@claimcipher.com',
+                    loginTime: Date.now(),
+                    permissions: 'demo'
+                };
+                localStorage.setItem('claimcipher_auth', JSON.stringify(authData));
+                return { success: true, type: 'demo' };
+            }
+        };
+
+        const results = document.getElementById('results');
+
+        function addResult(message, status) {
+            const div = document.createElement('div');
+            div.className = `test-result ${status}`;
+            div.innerHTML = `${status === 'pass' ? '✅' : status === 'fail' ? '❌' : 'ℹ️'} ${message}`;
+            results.appendChild(div);
+        }
+
+        function testMasterLogin() {
+            const result = testAuthManager.attemptMasterLogin('inspects@flav8r.net', 'ClaimCipher2025!Master');
+            if (result.success && result.type === 'master') {
+                addResult('Master login successful', 'pass');
+            } else {
+                addResult('Master login failed', 'fail');
+            }
+        }
+
+        function testUserLogin() {
+            const result = testAuthManager.attemptUserLogin('test@example.com', 'password123');
+            if (result.success && result.type === 'user') {
+                addResult('User login successful', 'pass');
+            } else {
+                addResult('User login failed', 'fail');
+            }
+        }
+
+        function testDemoLogin() {
+            const result = testAuthManager.attemptDemoLogin();
+            if (result.success && result.type === 'demo') {
+                addResult('Demo login successful', 'pass');
+            } else {
+                addResult('Demo login failed', 'fail');
+            }
+        }
+
+        function clearAuth() {
+            localStorage.removeItem('claimcipher_auth');
+            addResult('Authentication cleared', 'info');
+        }
+
+        function checkCurrentAuth() {
+            const auth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
+            if (auth.authenticated) {
+                const type = auth.masterLogin ? 'Master' : auth.demoMode ? 'Demo' : 'User';
+                const expiry = auth.demoMode && auth.demoExpiry ? 
+                    ` (expires: ${new Date(auth.demoExpiry).toLocaleDateString()})` : '';
+                addResult(`Currently authenticated as: ${type} - ${auth.username}${expiry}`, 'info');
+            } else {
+                addResult('Not currently authenticated', 'info');
+            }
+        }
+
+        // Auto-check current auth on load
+        checkCurrentAuth();
+    </script>
+</body>
+</html>

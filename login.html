@@ -360,144 +360,355 @@
     </div>
 
     <script>
-        // Authentication system
-        const AUTH_CONFIG = {
-            masterUsername: 'admin',
-            masterPassword: 'cipher2025',
-            demoMode: false
-        };
-
+        // Auth toggle functionality
+        const loginToggle = document.getElementById('login-toggle');
+        const signupToggle = document.getElementById('signup-toggle');
         const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
         const demoBtn = document.getElementById('demo-btn');
         const errorMessage = document.getElementById('error-message');
-        const signinBtn = document.getElementById('signin-btn');
-        const passwordToggle = document.getElementById('password-toggle');
-        const passwordInput = document.getElementById('password');
-        const rememberMeCheckbox = document.getElementById('remember-me');
 
-        // Password toggle functionality
-        passwordToggle.addEventListener('click', () => {
-            const isPassword = passwordInput.type === 'password';
-            passwordInput.type = isPassword ? 'text' : 'password';
-            passwordToggle.textContent = isPassword ? '🙈' : '👁️';
-            passwordToggle.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
-        });
-
-        // Handle login form submission
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const rememberMe = rememberMeCheckbox.checked;
-            
-            // Show loading state
-            setLoadingState(true);
-            hideError();
-            
-            try {
-                // Simulate network delay for better UX
-                await delay(800);
+        // Create AuthManager instance for login handling
+        const loginAuthManager = {
+            attemptMasterLogin: (email, password) => {
+                const masterCredentials = {
+                    email: 'inspects@flav8r.net',
+                    password: 'ClaimCipher2025!Master'
+                };
                 
-                if (username === AUTH_CONFIG.masterUsername && password === AUTH_CONFIG.masterPassword) {
-                    // Master login - full access
+                if (email === masterCredentials.email && password === masterCredentials.password) {
                     const authData = {
                         authenticated: true,
-                        username: username,
+                        masterLogin: true,
                         demoMode: false,
+                        username: 'Master Admin',
+                        email: email,
                         loginTime: Date.now(),
-                        rememberMe: rememberMe
+                        permissions: 'full'
+                    };
+                    localStorage.setItem('claimcipher_auth', JSON.stringify(authData));
+                    return { success: true, type: 'master' };
+                }
+                return { success: false };
+            },
+            
+            attemptUserLogin: (email, password) => {
+                // Accept any valid email/password for demo purposes
+                if (email && password && email.includes('@') && password.length >= 6) {
+                    const authData = {
+                        authenticated: true,
+                        masterLogin: false,
+                        demoMode: false,
+                        username: email.split('@')[0],
+                        email: email,
+                        loginTime: Date.now(),
+                        permissions: 'user'
+                    };
+                    localStorage.setItem('claimcipher_auth', JSON.stringify(authData));
+                    return { success: true, type: 'user' };
+                }
+                return { success: false };
+            },
+            
+            attemptDemoLogin: () => {
+                const demoExpiry = Date.now() + (7 * 24 * 60 * 60 * 1000);
+                const authData = {
+                    authenticated: true,
+                    masterLogin: false,
+                    demoMode: true,
+                    demoExpiry: demoExpiry,
+                    username: 'Demo User',
+                    email: 'demo@claimcipher.com',
+                    loginTime: Date.now(),
+                    permissions: 'demo'
+                };
+                localStorage.setItem('claimcipher_auth', JSON.stringify(authData));
+                return { success: true, type: 'demo' };
+            }
+        };
+
+        // Toggle between login and signup forms
+        if (loginToggle && signupToggle) {
+            loginToggle.addEventListener('click', () => {
+                loginToggle.classList.add('active');
+                signupToggle.classList.remove('active');
+                if (loginForm) loginForm.style.display = 'block';
+                if (signupForm) signupForm.style.display = 'none';
+                hideError();
+            });
+
+            signupToggle.addEventListener('click', () => {
+                signupToggle.classList.add('active');
+                loginToggle.classList.remove('active');
+                if (signupForm) signupForm.style.display = 'block';
+                if (loginForm) loginForm.style.display = 'none';
+                hideError();
+            });
+        }
+
+        // Password toggle functionality
+        function setupPasswordToggle(toggleId, inputId) {
+            const toggle = document.getElementById(toggleId);
+            const input = document.getElementById(inputId);
+            
+            if (toggle && input) {
+                toggle.addEventListener('click', () => {
+                    const isPassword = input.type === 'password';
+                    input.type = isPassword ? 'text' : 'password';
+                    toggle.textContent = isPassword ? '🙈' : '👁️';
+                    toggle.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+                });
+            }
+        }
+
+        // Setup password toggles
+        setupPasswordToggle('password-toggle', 'login-password');
+        setupPasswordToggle('signup-password-toggle', 'signup-password');
+
+        // Real-time email validation
+        function setupEmailValidation(inputId) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            
+            input.addEventListener('input', (e) => {
+                const email = e.target.value;
+                const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                
+                input.classList.toggle('invalid', email && !isValid);
+                input.classList.toggle('valid', isValid);
+            });
+        }
+
+        setupEmailValidation('login-email');
+        setupEmailValidation('signup-email');
+
+        // Handle login form submission
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const email = document.getElementById('login-email')?.value;
+                const password = document.getElementById('login-password')?.value;
+                const rememberMe = document.getElementById('remember-me')?.checked;
+                
+                // Basic validation
+                if (!email || !password) {
+                    showError('Please fill in all required fields');
+                    return;
+                }
+                
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    showError('Please enter a valid email address');
+                    return;
+                }
+                
+                setLoadingState(true, 'signin');
+                hideError();
+                
+                try {
+                    await delay(1200); // Simulate network delay
+                    
+                    // Try master login first
+                    let result = loginAuthManager.attemptMasterLogin(email, password);
+                    
+                    if (!result.success) {
+                        // Try regular user login
+                        result = loginAuthManager.attemptUserLogin(email, password);
+                    }
+                    
+                    if (result.success) {
+                        if (rememberMe) {
+                            const auth = JSON.parse(localStorage.getItem('claimcipher_auth'));
+                            auth.rememberMe = true;
+                            localStorage.setItem('claimcipher_auth', JSON.stringify(auth));
+                        }
+                        
+                        const successMessage = result.type === 'master' ? 
+                            '🎉 Master login successful!' : 
+                            '✅ Login successful!';
+                        showSuccess(successMessage);
+                        
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1500);
+                    } else {
+                        showError('Invalid email or password. Try the demo mode or create an account.');
+                    }
+                    
+                } catch (error) {
+                    showError('Login failed. Please check your connection and try again.');
+                } finally {
+                    setLoadingState(false, 'signin');
+                }
+            });
+        }
+
+        // Handle signup form submission
+        if (signupForm) {
+            signupForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const name = document.getElementById('signup-name')?.value;
+                const email = document.getElementById('signup-email')?.value;
+                const company = document.getElementById('signup-company')?.value;
+                const phone = document.getElementById('signup-phone')?.value;
+                const password = document.getElementById('signup-password')?.value;
+                const confirmPassword = document.getElementById('confirm-password')?.value;
+                const agreeTerms = document.getElementById('agree-terms')?.checked;
+                
+                // Comprehensive validation
+                if (!name || !email || !password || !confirmPassword) {
+                    showError('Please fill in all required fields');
+                    return;
+                }
+                
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    showError('Please enter a valid email address');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    showError('Password must be at least 6 characters long');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showError('Passwords do not match');
+                    return;
+                }
+                
+                if (!agreeTerms) {
+                    showError('Please agree to the Terms of Service and Privacy Policy');
+                    return;
+                }
+                
+                setLoadingState(true, 'signup');
+                hideError();
+                
+                try {
+                    await delay(2000); // Simulate account creation
+                    
+                    const authData = {
+                        authenticated: true,
+                        masterLogin: false,
+                        demoMode: false,
+                        username: name,
+                        email: email,
+                        company: company,
+                        phone: phone,
+                        loginTime: Date.now(),
+                        permissions: 'user'
                     };
                     
                     localStorage.setItem('claimcipher_auth', JSON.stringify(authData));
+                    showSuccess('🎉 Account created successfully! Welcome to Claim Cipher!');
                     
-                    // Add success feedback before redirect
-                    showSuccess('Login successful! Redirecting...');
-                    await delay(500);
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
                     
-                    window.location.href = 'index.html';
-                } else {
-                    throw new Error('Invalid credentials');
+                } catch (error) {
+                    showError('Account creation failed. Please try again.');
+                } finally {
+                    setLoadingState(false, 'signup');
                 }
-            } catch (error) {
-                setLoadingState(false);
-                if (error.message === 'Invalid credentials') {
-                    showError('Invalid username or password. Please try again.');
-                } else {
-                    showError('Login failed. Please check your connection and try again.');
-                }
-            }
-        });
-
-        // Handle demo mode
-        demoBtn.addEventListener('click', async () => {
-            setDemoLoading(true);
-            
-            try {
-                await delay(500);
-                
-                localStorage.setItem('claimcipher_auth', JSON.stringify({
-                    authenticated: true,
-                    username: 'demo_user',
-                    demoMode: true,
-                    loginTime: Date.now(),
-                    demoExpiry: Date.now() + (6 * 24 * 60 * 60 * 1000) // 6 days
-                }));
-                
-                window.location.href = 'index.html';
-            } catch (error) {
-                setDemoLoading(false);
-                showError('Failed to start demo mode. Please try again.');
-            }
-        });
-
-        function setLoadingState(loading) {
-            signinBtn.disabled = loading;
-            if (loading) {
-                signinBtn.classList.add('loading');
-            } else {
-                signinBtn.classList.remove('loading');
-            }
+            });
         }
 
-        function setDemoLoading(loading) {
-            demoBtn.disabled = loading;
-            demoBtn.textContent = loading ? 'Starting Demo...' : 'Start Demo (6 days remaining)';
+        // Handle demo mode
+        if (demoBtn) {
+            demoBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                
+                demoBtn.disabled = true;
+                demoBtn.innerHTML = '<div class="spinner"></div> Starting Demo...';
+                
+                try {
+                    await delay(1000);
+                    
+                    const result = loginAuthManager.attemptDemoLogin();
+                    
+                    if (result.success) {
+                        showSuccess('🚀 Demo mode activated! Exploring Claim Cipher...');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1500);
+                    }
+                    
+                } catch (error) {
+                    showError('Failed to start demo mode. Please try again.');
+                    demoBtn.disabled = false;
+                    demoBtn.textContent = 'Start Demo (6 days remaining)';
+                }
+            });
+        }
+
+        // Utility functions
+        function setLoadingState(loading, formType = 'signin') {
+            const btn = document.getElementById(formType === 'signin' ? 'signin-btn' : 'signup-btn');
+            if (!btn) return;
+            
+            const loadingState = btn.querySelector('.loading-state');
+            const btnText = btn.querySelector('.btn-text');
+            
+            if (loading) {
+                btn.disabled = true;
+                if (loadingState) loadingState.style.display = 'flex';
+                if (btnText) btnText.style.display = 'none';
+                btn.classList.add('loading');
+            } else {
+                btn.disabled = false;
+                if (loadingState) loadingState.style.display = 'none';
+                if (btnText) btnText.style.display = 'block';
+                btn.classList.remove('loading');
+            }
         }
 
         function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-            
-            // Auto-hide after 5 seconds
-            setTimeout(() => {
-                hideError();
-            }, 5000);
+            if (errorMessage) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                errorMessage.className = 'error-message show';
+                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
         }
 
         function hideError() {
-            errorMessage.style.display = 'none';
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+                errorMessage.className = 'error-message';
+            }
         }
 
         function showSuccess(message) {
-            // Create temporary success message
             const successMessage = document.createElement('div');
+            successMessage.className = 'success-message';
+            successMessage.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 18px;">✅</span>
+                    <span>${message}</span>
+                </div>
+            `;
             successMessage.style.cssText = `
-                background: #d1fae5;
-                border: 1px solid #a7f3d0;
-                color: #065f46;
-                padding: 12px;
-                border-radius: 6px;
+                background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+                border: 1px solid #c3e6cb;
+                color: #155724;
+                padding: 16px 20px;
+                border-radius: 8px;
                 margin-bottom: 20px;
                 font-size: 14px;
+                font-weight: 500;
+                animation: slideIn 0.3s ease-out;
             `;
-            successMessage.textContent = message;
             
-            errorMessage.parentNode.insertBefore(successMessage, errorMessage);
-            
-            setTimeout(() => {
-                successMessage.remove();
-            }, 3000);
+            if (errorMessage) {
+                errorMessage.parentNode.insertBefore(successMessage, errorMessage);
+                
+                setTimeout(() => {
+                    successMessage.style.animation = 'fadeOut 0.3s ease-out';
+                    setTimeout(() => successMessage.remove(), 300);
+                }, 4000);
+            }
         }
 
         function delay(ms) {
@@ -515,11 +726,62 @@
             }
         }
 
-        // Load remembered username if exists
-        const savedAuth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
-        if (savedAuth.rememberMe && savedAuth.username) {
-            document.getElementById('username').value = savedAuth.username;
-            rememberMeCheckbox.checked = true;
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateY(-10px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+            
+            .form-input.valid {
+                border-color: #28a745;
+                box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.1);
+            }
+            
+            .form-input.invalid {
+                border-color: #dc3545;
+                box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1);
+            }
+            
+            .btn.loading {
+                opacity: 0.7;
+                cursor: not-allowed;
+            }
+            
+            .error-message.show {
+                animation: slideIn 0.3s ease-out;
+            }
+            
+            .spinner {
+                width: 16px;
+                height: 16px;
+                border: 2px solid #ffffff40;
+                border-top: 2px solid #ffffff;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                display: inline-block;
+            }
+            
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Mobile optimizations
+        if (window.innerWidth <= 480) {
+            const loginContainer = document.querySelector('.login-container');
+            const loginCard = document.querySelector('.login-card');
+            
+            if (loginContainer) loginContainer.style.padding = '16px';
+            if (loginCard) loginCard.style.padding = '24px 20px';
         }
     </script>
 </body>

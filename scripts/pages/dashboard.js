@@ -5,6 +5,7 @@ import { storageHelpers, dateHelpers, numberHelpers } from '../utils/helpers.js'
 class DashboardPage {
     constructor() {
         this.refreshInterval = null;
+        this.userType = this.getUserType(); // Determine user type early
         this.statsData = {
             milesThisMonth: 0,
             routesOptimized: 0,
@@ -16,16 +17,71 @@ class DashboardPage {
         this.recentRoutes = [];
     }
 
+    getUserType() {
+        const auth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
+        if (auth.demoMode) return 'demo';
+        if (auth.masterLogin) return 'master';
+        return 'authenticated';
+    }
+
     init() {
         this.loadDashboardData();
         this.setupEventListeners();
+        this.updateUserInterface();
         this.updateStats();
         this.updateRecentActivity();
         this.updateActiveJobs();
         this.updateRecentRoutes();
         this.startAutoRefresh();
         
-        console.log('📊 Dashboard page initialized');
+        console.log(`📊 Dashboard page initialized for ${this.userType} user`);
+    }
+
+    updateUserInterface() {
+        // Set user type attribute on body
+        document.body.setAttribute('data-user-type', this.userType);
+        
+        if (this.userType === 'demo') {
+            this.showDemoNotice();
+        } else {
+            this.hideDemoNotice();
+        }
+        
+        // Update dashboard subtitle based on user type
+        this.updateDashboardSubtitle();
+    }
+
+    updateDashboardSubtitle() {
+        const subtitleEl = document.getElementById('dashboard-subtitle');
+        if (!subtitleEl) return;
+        
+        const auth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
+        const userName = auth.username || 'User';
+        
+        switch (this.userType) {
+            case 'demo':
+                subtitleEl.textContent = `Welcome to the demo! Here's what you'll be able to track.`;
+                break;
+            case 'master':
+                subtitleEl.textContent = `Welcome back, ${userName}! You have full system access.`;
+                break;
+            default:
+                subtitleEl.textContent = `Welcome back, ${userName}! Here's your activity overview.`;
+        }
+    }
+
+    showDemoNotice() {
+        const demoNotice = document.getElementById('demo-notice');
+        if (demoNotice) {
+            demoNotice.style.display = 'block';
+        }
+    }
+
+    hideDemoNotice() {
+        const demoNotice = document.getElementById('demo-notice');
+        if (demoNotice) {
+            demoNotice.style.display = 'none';
+        }
     }
 
     setupEventListeners() {
@@ -75,11 +131,72 @@ class DashboardPage {
     }
 
     loadDashboardData() {
-        // Load data from localStorage or generate sample data
-        this.statsData = storageHelpers.getItem('dashboard-stats', this.generateSampleStats());
-        this.recentActivity = storageHelpers.getItem('recent-activity', this.generateSampleActivity());
-        this.activeJobs = storageHelpers.getItem('active-jobs', this.generateSampleJobs());
-        this.recentRoutes = storageHelpers.getItem('recent-routes', this.generateSampleRoutes());
+        if (this.userType === 'demo') {
+            // Load demo/example data
+            this.loadDemoData();
+        } else {
+            // Load actual user data from storage or API
+            this.loadUserData();
+        }
+    }
+
+    loadDemoData() {
+        // Demo users see example data to understand the functionality
+        this.statsData = this.generateSampleStats();
+        this.recentActivity = this.generateSampleActivity();
+        this.activeJobs = this.generateSampleJobs();
+        this.recentRoutes = this.generateSampleRoutes();
+        
+        console.log('📊 Demo data loaded');
+    }
+
+    loadUserData() {
+        // Authenticated users see their actual data
+        this.statsData = storageHelpers.getItem(`dashboard-stats-${this.getUserId()}`, {
+            milesThisMonth: 0,
+            routesOptimized: 0,
+            jobsCompleted: 0,
+            totalEarnings: 0
+        });
+        
+        this.recentActivity = storageHelpers.getItem(`recent-activity-${this.getUserId()}`, []);
+        this.activeJobs = storageHelpers.getItem(`active-jobs-${this.getUserId()}`, []);
+        this.recentRoutes = storageHelpers.getItem(`recent-routes-${this.getUserId()}`, []);
+        
+        // If user has no data yet, show empty state or onboarding
+        if (this.recentActivity.length === 0) {
+            this.recentActivity = this.generateWelcomeActivity();
+        }
+        
+        console.log('📊 User data loaded');
+    }
+
+    getUserId() {
+        const auth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
+        return auth.email ? auth.email.replace(/[^a-zA-Z0-9]/g, '_') : 'default_user';
+    }
+
+    generateWelcomeActivity() {
+        return [
+            {
+                id: 1,
+                type: 'info',
+                icon: '🎉',
+                title: 'Welcome to Claim Cipher!',
+                description: 'Your dashboard will show real activity as you use the tools',
+                timestamp: new Date().toISOString(),
+                relatedPage: 'dashboard'
+            },
+            {
+                id: 2,
+                type: 'info',
+                icon: '🚗',
+                title: 'Start tracking mileage',
+                description: 'Use the Mileage Calculator to log your first trip',
+                timestamp: new Date().toISOString(),
+                relatedPage: 'mileage'
+            }
+        ];
     }
 
     generateSampleStats() {

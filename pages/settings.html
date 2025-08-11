@@ -5,6 +5,173 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - Claim Cipher</title>
     <link rel="stylesheet" href="../styles/index.css">
+    <style>
+        /* Firms & Body Shops Styles */
+        .firms-controls, .bodyshops-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .firms-dropdown, .bodyshops-dropdown {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex: 1;
+        }
+
+        .firms-cards, .bodyshops-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .firms-cards.hidden, .bodyshops-cards.hidden {
+            display: none;
+        }
+
+        .bodyshops-content.hidden {
+            display: none;
+        }
+
+        .firm-card, .bodyshop-card {
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 16px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .firm-card__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .firm-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .firm-type {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .firm-rate {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .rate-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .rate-unit {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .firm-details p {
+            margin: 4px 0;
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .firm-card__actions, .firm-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .card__toggle {
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        .toggle-switch input[type="checkbox"] {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .card__actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .firms-controls, .bodyshops-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .firms-dropdown, .bodyshops-dropdown {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .firms-cards, .bodyshops-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="page-settings">
@@ -26,6 +193,10 @@
             <button class="settings-tab" data-tab="business">
                 <span class="tab-icon">🏢</span>
                 <span class="tab-label">Business</span>
+            </button>
+            <button class="settings-tab" data-tab="firms-rates">
+                <span class="tab-icon">💰</span>
+                <span class="tab-label">Firms & Rates</span>
             </button>
             <button class="settings-tab" data-tab="billing">
                 <span class="tab-icon">💳</span>
@@ -215,6 +386,145 @@
                                 </div>
                                 <div class="session-actions">
                                     <button class="btn btn--error btn--small">Revoke</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Firms & Rates Panel -->
+            <div class="settings-panel" id="firms-rates-panel">
+                <div class="panel-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">Law Firms & Negotiated Rates</h3>
+                            <div class="card__actions">
+                                <button class="btn btn--primary btn--small" id="add-firm-btn">+ Add Firm</button>
+                                <button class="btn btn--secondary btn--small" id="import-firms-btn">Import Rates</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Firms Controls -->
+                        <div class="firms-controls">
+                            <div class="firms-dropdown">
+                                <select id="firms-filter" class="form-input">
+                                    <option value="">All Firms</option>
+                                    <option value="sedgwick">Sedgwick Claims</option>
+                                    <option value="acd">ACD Adjusters</option>
+                                    <option value="independent">Independent Rate</option>
+                                </select>
+                                <button class="btn btn--secondary btn--small" id="toggle-firms-display">Show Cards</button>
+                            </div>
+                        </div>
+
+                        <!-- Firms Cards (Hidden by default, shown when filtered) -->
+                        <div id="firms-cards" class="firms-cards hidden">
+                            <div class="firm-card">
+                                <div class="firm-card__header">
+                                    <h4 class="firm-name">Sedgwick Claims</h4>
+                                    <span class="firm-type">Insurance Carrier</span>
+                                </div>
+                                <div class="firm-card__content">
+                                    <div class="firm-rate">
+                                        <span class="rate-value">$0.67</span>
+                                        <span class="rate-unit">per mile</span>
+                                    </div>
+                                    <div class="firm-details">
+                                        <p>Contact: claims@sedgwick.com</p>
+                                        <p>Primary adjuster group</p>
+                                    </div>
+                                </div>
+                                <div class="firm-card__actions">
+                                    <button class="btn btn--secondary btn--small">Edit</button>
+                                    <button class="btn btn--ghost btn--small">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Firms List (Default view) -->
+                        <div class="firms-list" id="firms-list">
+                            <div class="firm-item">
+                                <div class="firm-info">
+                                    <div class="firm-name">Sedgwick Claims</div>
+                                    <div class="firm-details">
+                                        <span class="firm-rate">$0.67 per mile</span>
+                                        <span class="firm-type">Insurance Carrier</span>
+                                    </div>
+                                </div>
+                                <div class="firm-actions">
+                                    <button class="btn btn--secondary btn--small">Edit</button>
+                                    <button class="btn btn--ghost btn--small">Delete</button>
+                                </div>
+                            </div>
+
+                            <div class="firm-item">
+                                <div class="firm-info">
+                                    <div class="firm-name">ACD Adjusters</div>
+                                    <div class="firm-details">
+                                        <span class="firm-rate">$0.62 per mile</span>
+                                        <span class="firm-type">Independent Adjuster</span>
+                                    </div>
+                                </div>
+                                <div class="firm-actions">
+                                    <button class="btn btn--secondary btn--small">Edit</button>
+                                    <button class="btn btn--ghost btn--small">Delete</button>
+                                </div>
+                            </div>
+
+                            <div class="firm-item">
+                                <div class="firm-info">
+                                    <div class="firm-name">Independent Rate</div>
+                                    <div class="firm-details">
+                                        <span class="firm-rate">$0.70 per mile</span>
+                                        <span class="firm-type">Self-Employed</span>
+                                    </div>
+                                </div>
+                                <div class="firm-actions">
+                                    <button class="btn btn--secondary btn--small">Edit</button>
+                                    <button class="btn btn--ghost btn--small">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Body Shops Section (Optional) -->
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">Body Shop Information</h3>
+                            <div class="card__toggle">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="enable-bodyshops">
+                                    <span class="toggle-slider"></span>
+                                    Enable Body Shop Tracking
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div id="bodyshops-content" class="bodyshops-content hidden">
+                            <div class="bodyshops-controls">
+                                <div class="bodyshops-dropdown">
+                                    <select id="bodyshops-filter" class="form-input">
+                                        <option value="">All Body Shops</option>
+                                        <option value="certified-auto">Certified Auto Body</option>
+                                        <option value="precision-collision">Precision Collision</option>
+                                    </select>
+                                    <button class="btn btn--secondary btn--small" id="toggle-bodyshops-display">Show Cards</button>
+                                </div>
+                                <button class="btn btn--primary btn--small" id="add-bodyshop-btn">+ Add Body Shop</button>
+                            </div>
+                            
+                            <div id="bodyshops-cards" class="bodyshops-cards hidden">
+                                <!-- Dynamic body shop cards will be inserted here -->
+                            </div>
+
+                            <div class="bodyshops-list" id="bodyshops-list">
+                                <div class="empty-state">
+                                    <div class="empty-state__icon">🔧</div>
+                                    <div class="empty-state__title">No body shops added</div>
+                                    <div class="empty-state__description">
+                                        Add body shops to track repair locations and build relationships
+                                    </div>
                                 </div>
                             </div>
                         </div>

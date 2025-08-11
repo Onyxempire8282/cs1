@@ -6,6 +6,188 @@ class Navigation {
         this.sidebarElement = null;
         this.mobileToggleBtn = null;
         this.overlay = null;
+        this.currentPath = window.location.pathname;
+    }
+
+    static generateSidebarHTML() {
+        const auth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
+        const userName = auth.username || 'User';
+        const userRole = auth.demoMode ? 'Demo Mode' : auth.masterLogin ? 'Master Admin' : 'Pro User';
+        const userAvatar = userName.substring(0, 2).toUpperCase();
+        
+        // Determine relative path prefix based on current location
+        const isInPagesFolder = window.location.pathname.includes('/pages/');
+        const pathPrefix = isInPagesFolder ? '../' : '';
+        
+        return `
+            <!-- Demo Banner (shown only for demo users) -->
+            <div class="demo-banner" id="demo-banner" style="display: none;">
+                🎯 Pro Demo Active - <span id="demo-countdown">6 days, 14 hours remaining</span>
+                <button class="btn btn--primary btn--small" style="margin-left: 16px;" onclick="window.location.href='${pathPrefix}login.html'">Upgrade Now</button>
+            </div>
+
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar" id="sidebar">
+                <div>
+                    <div class="sidebar__logo">
+                        <a href="${pathPrefix}pages/dashboard.html">Claim Cipher</a>
+                    </div>
+                    <ul class="sidebar__nav">
+                        <li class="sidebar__nav-item">
+                            <a href="${pathPrefix}pages/dashboard.html" class="sidebar__nav-link" data-page="dashboard">
+                                <span>📊</span> Dashboard
+                            </a>
+                        </li>
+                        <li class="sidebar__nav-item">
+                            <a href="${pathPrefix}pages/mileage.html" class="sidebar__nav-link" data-page="mileage">
+                                <span>🚗</span> Mileage Calculator
+                            </a>
+                        </li>
+                        <li class="sidebar__nav-item">
+                            <a href="${pathPrefix}pages/routes.html" class="sidebar__nav-link" data-page="routes">
+                                <span>🗺️</span> Route Optimizer
+                            </a>
+                        </li>
+                        <li class="sidebar__nav-item">
+                            <a href="${pathPrefix}pages/jobs.html" class="sidebar__nav-link" data-page="jobs">
+                                <span>📱</span> Mobile Sync
+                                <span class="badge badge--pro">PRO</span>
+                            </a>
+                        </li>
+                        <li class="sidebar__nav-item">
+                            <a href="${pathPrefix}pages/autoforms.html" class="sidebar__nav-link" data-page="autoforms">
+                                <span>📄</span> AutoForms
+                            </a>
+                        </li>
+                        <li class="sidebar__nav-item">
+                            <a href="${pathPrefix}pages/comparables.html" class="sidebar__nav-link" data-page="comparables">
+                                <span>🔍</span> Comparables
+                                <span class="badge badge--pro">PRO</span>
+                            </a>
+                        </li>
+                        <li class="sidebar__nav-item">
+                            <a href="${pathPrefix}pages/firms.html" class="sidebar__nav-link" data-page="firms">
+                                <span>🏢</span> Firms Directory
+                            </a>
+                        </li>
+                        <li class="sidebar__nav-item">
+                            <a href="${pathPrefix}pages/gear.html" class="sidebar__nav-link" data-page="gear">
+                                <span>⚙️</span> Gear
+                            </a>
+                        </li>
+                        <li class="sidebar__nav-item">
+                            <a href="${pathPrefix}pages/help.html" class="sidebar__nav-link" data-page="help">
+                                <span>❓</span> Help
+                            </a>
+                        </li>
+                        <li class="sidebar__nav-item">
+                            <a href="${pathPrefix}pages/settings.html" class="sidebar__nav-link" data-page="settings">
+                                <span>⚙️</span> Settings
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- User info and logout -->
+                <div class="sidebar__footer">
+                    <div class="sidebar__user" id="sidebar-user">
+                        <div class="user-avatar" id="user-avatar">${userAvatar}</div>
+                        <div class="user-info">
+                            <div class="user-name" id="user-name">${userName}</div>
+                            <div class="user-role" id="user-role">${userRole}</div>
+                        </div>
+                    </div>
+                    <button class="sidebar__logout" id="logout-btn">
+                        <span>🚪</span> Logout
+                    </button>
+                </div>
+            </nav>
+        `;
+    }
+
+    static initializeGlobalSidebar() {
+        // Add sidebar to all pages that don't have it
+        if (!document.getElementById('sidebar')) {
+            document.body.insertAdjacentHTML('afterbegin', Navigation.generateSidebarHTML());
+            
+            // Initialize sidebar functionality
+            const nav = new Navigation();
+            nav.init();
+            nav.setupGlobalSidebar();
+            
+            // Setup authentication and demo banner logic
+            nav.initializeUserContext();
+        }
+    }
+
+    setupGlobalSidebar() {
+        // Show sidebar on ALL pages (as per requirement)
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+            sidebar.style.display = 'block';
+            this.setActiveNavigationFromPath();
+        }
+    }
+
+    initializeUserContext() {
+        const auth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
+        const userType = auth.demoMode ? 'demo' : 'authenticated';
+        
+        // Set user type attribute on body
+        document.body.setAttribute('data-user-type', userType);
+        
+        // Show/hide demo elements
+        const demoBanner = document.getElementById('demo-banner');
+        
+        if (userType === 'demo' && demoBanner) {
+            demoBanner.style.display = 'flex';
+            this.updateDemoCountdown();
+        }
+        
+        // Setup logout handler
+        this.setupLogoutHandler();
+    }
+
+    updateDemoCountdown() {
+        const auth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
+        if (!auth.demoExpiry) return;
+        
+        const timeLeft = auth.demoExpiry - Date.now();
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        
+        const countdownEl = document.getElementById('demo-countdown');
+        if (countdownEl) {
+            countdownEl.textContent = `${days} days, ${hours} hours remaining`;
+        }
+    }
+
+    setupLogoutHandler() {
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('claimcipher_auth');
+                const pathPrefix = window.location.pathname.includes('/pages/') ? '../' : '';
+                window.location.href = pathPrefix + 'login.html';
+            });
+        }
+    }
+
+    setActiveNavigationFromPath() {
+        const path = window.location.pathname;
+        let currentPage = 'dashboard';
+        
+        if (path.includes('/mileage.html')) currentPage = 'mileage';
+        else if (path.includes('/routes.html')) currentPage = 'routes';
+        else if (path.includes('/jobs.html')) currentPage = 'jobs';
+        else if (path.includes('/autoforms.html')) currentPage = 'autoforms';
+        else if (path.includes('/comparables.html')) currentPage = 'comparables';
+        else if (path.includes('/firms.html')) currentPage = 'firms';
+        else if (path.includes('/gear.html')) currentPage = 'gear';
+        else if (path.includes('/help.html')) currentPage = 'help';
+        else if (path.includes('/settings.html')) currentPage = 'settings';
+        
+        this.setActiveLink(currentPage);
     }
 
     init() {
@@ -297,5 +479,21 @@ class Navigation {
         console.log('🧭 Navigation destroyed');
     }
 }
+
+// Auto-initialize sidebar on all pages
+document.addEventListener('DOMContentLoaded', function() {
+    // Check authentication first
+    const auth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
+    if (!auth.authenticated && !window.location.pathname.includes('login.html')) {
+        const pathPrefix = window.location.pathname.includes('/pages/') ? '../' : '';
+        window.location.href = pathPrefix + 'login.html';
+        return;
+    }
+    
+    // Initialize global sidebar on authenticated pages
+    if (auth.authenticated) {
+        Navigation.initializeGlobalSidebar();
+    }
+});
 
 export default Navigation;
