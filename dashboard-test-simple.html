@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Dashboard Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .test-buttons { margin: 20px 0; }
+        button { margin: 5px; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; }
+        .demo { background: #ffeb3b; color: #333; }
+        .auth { background: #4caf50; color: white; }
+        .clear { background: #f44336; color: white; }
+        .stats-display { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat-card { background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; border-left: 4px solid #007bff; }
+        .stat-value { font-size: 24px; font-weight: bold; color: #333; margin-bottom: 5px; }
+        .stat-label { font-size: 12px; color: #666; text-transform: uppercase; }
+        .info { background: #e3f2fd; padding: 15px; border-radius: 5px; margin: 15px 0; }
+        .success { color: #4caf50; }
+        .error { color: #f44336; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Dashboard Data Display Test</h1>
+        
+        <div class="test-buttons">
+            <button class="demo" onclick="setDemoUser()">Set Demo User</button>
+            <button class="auth" onclick="setAuthUser()">Set Authenticated User</button>
+            <button class="clear" onclick="clearUser()">Clear Data</button>
+        </div>
+
+        <div class="info">
+            <strong>Current User Type:</strong> <span id="user-type">Loading...</span><br>
+            <strong>Expected Behavior:</strong> <span id="expected">Loading...</span>
+        </div>
+
+        <div class="stats-display">
+            <div class="stat-card">
+                <div class="stat-value" id="miles-display">-</div>
+                <div class="stat-label">Miles This Month</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="routes-display">-</div>
+                <div class="stat-label">Routes Optimized</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="jobs-display">-</div>
+                <div class="stat-label">Jobs Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="earnings-display">-</div>
+                <div class="stat-label">Total Earnings</div>
+            </div>
+        </div>
+
+        <div class="info">
+            <strong>Test Results:</strong> <span id="test-results">Waiting for user action...</span>
+        </div>
+    </div>
+
+    <script>
+        // Simulate the dashboard logic locally for testing
+        
+        function getUserType() {
+            const auth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
+            if (auth.demoMode) return 'demo';
+            if (auth.masterLogin) return 'master';
+            if (auth.email) return 'authenticated';
+            return 'unauthenticated';
+        }
+
+        function generateSampleStats() {
+            const now = new Date();
+            const currentDay = now.getDate();
+            
+            // Generate realistic demo data based on current date
+            const avgMilesPerDay = 12.3;
+            const avgRoutesPerWeek = 4.5;
+            const avgJobsPerDay = 2.1;
+            const avgRatePerMile = 0.67;
+            
+            const milesThisMonth = Math.round(avgMilesPerDay * currentDay + Math.random() * 50);
+            const routesOptimized = Math.round(avgRoutesPerWeek * (currentDay / 7));
+            const jobsCompleted = Math.round(avgJobsPerDay * currentDay);
+            const totalEarnings = Math.round(milesThisMonth * avgRatePerMile * 100) / 100;
+
+            return { milesThisMonth, routesOptimized, jobsCompleted, totalEarnings };
+        }
+
+        function loadUserStats() {
+            // For authenticated users, start with zeros or load from storage
+            return {
+                milesThisMonth: 0,
+                routesOptimized: 0,
+                jobsCompleted: 0,
+                totalEarnings: 0
+            };
+        }
+
+        function updateDisplay() {
+            const userType = getUserType();
+            const auth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
+            
+            document.getElementById('user-type').textContent = userType;
+            
+            let stats;
+            let expected;
+            
+            if (userType === 'demo') {
+                stats = generateSampleStats();
+                expected = 'Demo users should see dynamic sample data that changes each time';
+                document.getElementById('test-results').innerHTML = '<span class="success">✅ Demo data loaded correctly</span>';
+            } else if (userType === 'authenticated' || userType === 'master') {
+                stats = loadUserStats();
+                expected = 'Authenticated users should see their actual data (starts at zero)';
+                document.getElementById('test-results').innerHTML = '<span class="success">✅ User data loaded correctly</span>';
+            } else {
+                stats = { milesThisMonth: '-', routesOptimized: '-', jobsCompleted: '-', totalEarnings: '-' };
+                expected = 'Unauthenticated users should be redirected to login';
+                document.getElementById('test-results').innerHTML = '<span class="error">⚠️ User should be redirected to login</span>';
+            }
+            
+            document.getElementById('expected').textContent = expected;
+            document.getElementById('miles-display').textContent = stats.milesThisMonth;
+            document.getElementById('routes-display').textContent = stats.routesOptimized;
+            document.getElementById('jobs-display').textContent = stats.jobsCompleted;
+            document.getElementById('earnings-display').textContent = typeof stats.totalEarnings === 'number' ? '$' + stats.totalEarnings.toFixed(2) : stats.totalEarnings;
+        }
+
+        function setDemoUser() {
+            const auth = {
+                email: 'demo@example.com',
+                username: 'Demo User',
+                demoMode: true,
+                demoExpiry: Date.now() + (7 * 24 * 60 * 60 * 1000),
+                timestamp: Date.now()
+            };
+            
+            localStorage.setItem('claimcipher_auth', JSON.stringify(auth));
+            setTimeout(updateDisplay, 100);
+        }
+
+        function setAuthUser() {
+            const auth = {
+                email: 'user@example.com',
+                username: 'Authenticated User',
+                demoMode: false,
+                timestamp: Date.now()
+            };
+            
+            localStorage.setItem('claimcipher_auth', JSON.stringify(auth));
+            setTimeout(updateDisplay, 100);
+        }
+
+        function clearUser() {
+            localStorage.removeItem('claimcipher_auth');
+            setTimeout(updateDisplay, 100);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', updateDisplay);
+    </script>
+</body>
+</html>

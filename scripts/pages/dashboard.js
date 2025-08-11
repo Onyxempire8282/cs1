@@ -338,10 +338,10 @@ class DashboardPage {
     updateStats() {
         // Update stat cards with current data
         const statElements = {
-            milesThisMonth: document.querySelector('.stat-card:nth-child(1) .stat-card__value'),
-            routesOptimized: document.querySelector('.stat-card:nth-child(2) .stat-card__value'),
-            jobsCompleted: document.querySelector('.stat-card:nth-child(3) .stat-card__value'),
-            totalEarnings: document.querySelector('.stat-card:nth-child(4) .stat-card__value')
+            milesThisMonth: document.getElementById('miles-stat'),
+            routesOptimized: document.getElementById('routes-stat'),
+            jobsCompleted: document.getElementById('jobs-stat'),
+            totalEarnings: document.getElementById('earnings-stat')
         };
 
         // Animate the numbers

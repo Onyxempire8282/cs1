@@ -1,6 +1,83 @@
 ﻿// Helper Utility Functions
 import { VALIDATION_RULES, LOCAL_STORAGE_KEYS } from './constants.js';
 
+// Local Storage Helpers
+export const storageHelpers = {
+    // Get item from localStorage with fallback
+    getItem(key, fallback = null) {
+        try {
+            const item = localStorage.getItem(key);
+            return item ? JSON.parse(item) : fallback;
+        } catch (error) {
+            console.warn('Error reading from localStorage:', error);
+            return fallback;
+        }
+    },
+
+    // Set item in localStorage
+    setItem(key, value) {
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+            return true;
+        } catch (error) {
+            console.warn('Error writing to localStorage:', error);
+            return false;
+        }
+    },
+
+    // Remove item from localStorage
+    removeItem(key) {
+        try {
+            localStorage.removeItem(key);
+            return true;
+        } catch (error) {
+            console.warn('Error removing from localStorage:', error);
+            return false;
+        }
+    },
+
+    // Clear all localStorage
+    clear() {
+        try {
+            localStorage.clear();
+            return true;
+        } catch (error) {
+            console.warn('Error clearing localStorage:', error);
+            return false;
+        }
+    }
+};
+
+// Number Formatting Helpers
+export const numberHelpers = {
+    // Format currency
+    formatCurrency(amount, currency = 'USD') {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: currency
+        }).format(amount);
+    },
+
+    // Format number with commas
+    formatNumber(number) {
+        return new Intl.NumberFormat('en-US').format(number);
+    },
+
+    // Format percentage
+    formatPercentage(decimal, decimals = 1) {
+        return new Intl.NumberFormat('en-US', {
+            style: 'percent',
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals
+        }).format(decimal);
+    },
+
+    // Round to decimal places
+    roundTo(number, decimals = 2) {
+        return Math.round(number * Math.pow(10, decimals)) / Math.pow(10, decimals);
+    }
+};
+
 // Date and Time Helpers
 export const dateHelpers = {
     // Format date for display
@@ -79,4 +156,19 @@ export const dateHelpers = {
     // Get next business day
     getNextBusinessDay(date = new Date()) {
         const result = new Date(date);
-        result.setDate(result.getDate() +
+        result.setDate(result.getDate() + 1);
+        
+        // If it's a weekend, move to Monday
+        while (result.getDay() === 0 || result.getDay() === 6) {
+            result.setDate(result.getDate() + 1);
+        }
+        
+        return result;
+    },
+
+    // Check if date is business day
+    isBusinessDay(date) {
+        const day = new Date(date).getDay();
+        return day !== 0 && day !== 6;
+    }
+};

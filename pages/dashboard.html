@@ -269,9 +269,17 @@
         }
 
         // Initialize page with user context
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             initializeUserContext();
             setupLogoutHandler();
+            
+            // Initialize the dashboard page module
+            try {
+                const dashboardModule = await import('../scripts/pages/dashboard.js');
+                dashboardModule.default.init();
+            } catch (error) {
+                console.error('Failed to initialize dashboard module:', error);
+            }
         });
 
         function initializeUserContext() {
