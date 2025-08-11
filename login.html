@@ -103,6 +103,75 @@
             font-size: 14px;
             display: none;
         }
+        
+        .loading-state {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #e2e8f0;
+            border-top: 2px solid var(--primary-500);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px;
+        }
+        
+        .password-group {
+            position: relative;
+        }
+        
+        .form-input[type="password"] {
+            padding-right: 40px;
+        }
+        
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .form-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+        }
+        
+        .btn .btn-text {
+            display: flex;
+        }
+        
+        .btn.loading .btn-text {
+            display: none;
+        }
+        
+        .btn.loading .loading-state {
+            display: flex;
+        }
     </style>
 </head>
 <body>
@@ -116,15 +185,34 @@
             <form id="login-form">
                 <div class="form-group">
                     <label class="form-label" for="username">Username</label>
-                    <input type="text" class="form-input" id="username" required>
+                    <input type="text" class="form-input" id="username" required autocomplete="username">
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label" for="password">Password</label>
-                    <input type="password" class="form-input" id="password" required>
+                    <div class="password-group">
+                        <input type="password" class="form-input" id="password" required autocomplete="current-password">
+                        <button type="button" class="password-toggle" id="password-toggle" aria-label="Toggle password visibility">
+                            👁️
+                        </button>
+                    </div>
                 </div>
                 
-                <button type="submit" class="btn btn--primary btn--full">Sign In</button>
+                <div class="form-group">
+                    <label class="form-checkbox">
+                        <input type="checkbox" id="remember-me">
+                        <span class="checkmark"></span>
+                        Remember me
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn--primary btn--full" id="signin-btn">
+                    <span class="btn-text">Sign In</span>
+                    <div class="loading-state" id="loading-state">
+                        <div class="spinner"></div>
+                        <span>Signing in...</span>
+                    </div>
+                </button>
             </form>
             
             <div class="divider">
@@ -152,49 +240,138 @@
         const loginForm = document.getElementById('login-form');
         const demoBtn = document.getElementById('demo-btn');
         const errorMessage = document.getElementById('error-message');
+        const signinBtn = document.getElementById('signin-btn');
+        const passwordToggle = document.getElementById('password-toggle');
+        const passwordInput = document.getElementById('password');
+        const rememberMeCheckbox = document.getElementById('remember-me');
+
+        // Password toggle functionality
+        passwordToggle.addEventListener('click', () => {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            passwordToggle.textContent = isPassword ? '🙈' : '👁️';
+            passwordToggle.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+        });
 
         // Handle login form submission
-        loginForm.addEventListener('submit', (e) => {
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+            const rememberMe = rememberMeCheckbox.checked;
             
-            if (username === AUTH_CONFIG.masterUsername && password === AUTH_CONFIG.masterPassword) {
-                // Master login - full access
-                localStorage.setItem('claimcipher_auth', JSON.stringify({
-                    authenticated: true,
-                    username: username,
-                    demoMode: false,
-                    loginTime: Date.now()
-                }));
+            // Show loading state
+            setLoadingState(true);
+            hideError();
+            
+            try {
+                // Simulate network delay for better UX
+                await delay(800);
                 
-                window.location.href = 'index.html';
-            } else {
-                showError('Invalid username or password');
+                if (username === AUTH_CONFIG.masterUsername && password === AUTH_CONFIG.masterPassword) {
+                    // Master login - full access
+                    const authData = {
+                        authenticated: true,
+                        username: username,
+                        demoMode: false,
+                        loginTime: Date.now(),
+                        rememberMe: rememberMe
+                    };
+                    
+                    localStorage.setItem('claimcipher_auth', JSON.stringify(authData));
+                    
+                    // Add success feedback before redirect
+                    showSuccess('Login successful! Redirecting...');
+                    await delay(500);
+                    
+                    window.location.href = 'index.html';
+                } else {
+                    throw new Error('Invalid credentials');
+                }
+            } catch (error) {
+                setLoadingState(false);
+                if (error.message === 'Invalid credentials') {
+                    showError('Invalid username or password. Please try again.');
+                } else {
+                    showError('Login failed. Please check your connection and try again.');
+                }
             }
         });
 
         // Handle demo mode
-        demoBtn.addEventListener('click', () => {
-            localStorage.setItem('claimcipher_auth', JSON.stringify({
-                authenticated: true,
-                username: 'demo_user',
-                demoMode: true,
-                loginTime: Date.now(),
-                demoExpiry: Date.now() + (6 * 24 * 60 * 60 * 1000) // 6 days
-            }));
+        demoBtn.addEventListener('click', async () => {
+            setDemoLoading(true);
             
-            window.location.href = 'index.html';
+            try {
+                await delay(500);
+                
+                localStorage.setItem('claimcipher_auth', JSON.stringify({
+                    authenticated: true,
+                    username: 'demo_user',
+                    demoMode: true,
+                    loginTime: Date.now(),
+                    demoExpiry: Date.now() + (6 * 24 * 60 * 60 * 1000) // 6 days
+                }));
+                
+                window.location.href = 'index.html';
+            } catch (error) {
+                setDemoLoading(false);
+                showError('Failed to start demo mode. Please try again.');
+            }
         });
+
+        function setLoadingState(loading) {
+            signinBtn.disabled = loading;
+            if (loading) {
+                signinBtn.classList.add('loading');
+            } else {
+                signinBtn.classList.remove('loading');
+            }
+        }
+
+        function setDemoLoading(loading) {
+            demoBtn.disabled = loading;
+            demoBtn.textContent = loading ? 'Starting Demo...' : 'Start Demo (6 days remaining)';
+        }
 
         function showError(message) {
             errorMessage.textContent = message;
             errorMessage.style.display = 'block';
             
+            // Auto-hide after 5 seconds
             setTimeout(() => {
-                errorMessage.style.display = 'none';
+                hideError();
             }, 5000);
+        }
+
+        function hideError() {
+            errorMessage.style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            // Create temporary success message
+            const successMessage = document.createElement('div');
+            successMessage.style.cssText = `
+                background: #d1fae5;
+                border: 1px solid #a7f3d0;
+                color: #065f46;
+                padding: 12px;
+                border-radius: 6px;
+                margin-bottom: 20px;
+                font-size: 14px;
+            `;
+            successMessage.textContent = message;
+            
+            errorMessage.parentNode.insertBefore(successMessage, errorMessage);
+            
+            setTimeout(() => {
+                successMessage.remove();
+            }, 3000);
+        }
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
 
         // Check if already authenticated
@@ -206,6 +383,13 @@
             } else {
                 window.location.href = 'index.html';
             }
+        }
+
+        // Load remembered username if exists
+        const savedAuth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
+        if (savedAuth.rememberMe && savedAuth.username) {
+            document.getElementById('username').value = savedAuth.username;
+            rememberMeCheckbox.checked = true;
         }
     </script>
 </body>

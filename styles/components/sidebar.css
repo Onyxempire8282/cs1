@@ -12,6 +12,47 @@
     overflow-y: auto;
     z-index: var(--z-dropdown);
     transition: transform var(--transition-normal);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Mobile Menu Toggle */
+.sidebar__mobile-toggle {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: calc(var(--z-dropdown) + 1);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-base);
+    padding: 8px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+
+.sidebar__mobile-toggle span {
+    width: 20px;
+    height: 2px;
+    background: var(--text-primary);
+    transition: all var(--transition-fast);
+}
+
+.sidebar__mobile-toggle--active span:first-child {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.sidebar__mobile-toggle--active span:nth-child(2) {
+    opacity: 0;
+}
+
+.sidebar__mobile-toggle--active span:last-child {
+    transform: rotate(-45deg) translate(7px, -6px);
 }
 
 .sidebar__logo {
@@ -200,6 +241,66 @@
 }
 
 /* Overlay for mobile menu */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: calc(var(--z-dropdown) - 1);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-fast);
+}
+
+.sidebar-overlay--show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        z-index: var(--z-modal);
+    }
+    
+    .sidebar--open {
+        transform: translateX(0);
+    }
+    
+    .sidebar__mobile-toggle {
+        display: flex;
+    }
+    
+    .main {
+        margin-left: 0 !important;
+        padding-top: 64px;
+    }
+    
+    .demo-banner {
+        padding-left: 64px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 100%;
+        max-width: 320px;
+    }
+    
+    .login-card {
+        padding: 24px !important;
+        margin: 16px !important;
+    }
+    
+    .demo-banner {
+        font-size: 14px;
+        padding: 8px 64px 8px 16px;
+    }
+}
+
 @media (max-width: 768px) {
     .sidebar-overlay {
         position: fixed;

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route Optimizer - Claim Cipher</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../styles/normalize.css">
+    <link rel="stylesheet" href="../styles/variables.css">
+    <link rel="stylesheet" href="../styles/components/header.css">
+    <link rel="stylesheet" href="../styles/components/sidebar.css">
+    <link rel="stylesheet" href="../styles/components/cards.css">
+    <link rel="stylesheet" href="../styles/components/buttons.css">
+    <link rel="stylesheet" href="../styles/components/forms.css">
+    <link rel="stylesheet" href="../styles/components/navigation.css">
+    <link rel="stylesheet" href="../styles/pages/routes.css">
+    <link rel="stylesheet" href="../styles/index.css">
+</head>
+<body>
+    <!-- Demo Banner -->
+    <div class="demo-banner">
+         Pro Demo Active - <span id="demo-countdown">6 days, 14 hours remaining</span>
+        <button class="btn btn--primary btn--small" style="margin-left: 16px;">Upgrade Now</button>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" style="display: flex; flex-direction: column;">
+        <div>
+            <div class="sidebar__logo">Claim Cipher</div>
+            <ul class="sidebar__nav">
+                <li class="sidebar__nav-item">
+                    <a href="../index.html" class="sidebar__nav-link">
+                        <span></span> Dashboard
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="mileage.html" class="sidebar__nav-link">
+                        <span></span> Mileage Calculator
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="routes.html" class="sidebar__nav-link active">
+                        <span></span> Route Optimizer
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="jobs.html" class="sidebar__nav-link">
+                        <span></span> Mobile Sync
+                        <span class="badge badge--pro">PRO</span>
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="autoforms.html" class="sidebar__nav-link">
+                        <span></span> AutoForms
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="comparables.html" class="sidebar__nav-link">
+                        <span></span> Comparables
+                        <span class="badge badge--pro">PRO</span>
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="firms.html" class="sidebar__nav-link">
+                        <span></span> Firms Directory
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="gear.html" class="sidebar__nav-link">
+                        <span></span> Gear
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="help.html" class="sidebar__nav-link">
+                        <span></span> Help
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="settings.html" class="sidebar__nav-link">
+                        <span></span> Settings
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main">
+        <div class="page-routes">
+            <header class="main__header">
+                <h1 class="main__title">Route Optimizer</h1>
+                <p class="main__subtitle">Group stops within 50-mile radius and optimize your daily routes</p>
+            </header>
+
+            <div class="card">
+                <div class="route-controls">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Start Address</label>
+                            <input type="text" class="form-input" value="Home" placeholder="Enter starting location">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Route Rules</label>
+                            <div class="rule-badges">
+                                <span class="badge">Max 50mi radius</span>
+                                <span class="badge">Max 10 stops/day</span>
+                                <span class="badge">Spillover: Tomorrow</span>
+                                <button class="btn btn--secondary btn--small">Edit Rules</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="add-stop-form">
+                        <div class="form-group">
+                            <label class="form-label">Add Stops</label>
+                            <div class="input-group">
+                                <input type="text" class="form-input" placeholder="Enter address or claim location" id="new-stop-address">
+                                <input type="text" class="form-input" placeholder="Claim #" id="new-stop-claim" style="width: 120px;">
+                                <button class="btn btn--primary" id="add-stop-btn">Add Stop</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="route-actions">
+                        <button class="btn btn--secondary">Import from CSV</button>
+                        <button class="btn btn--primary" id="optimize-routes-btn">Optimize Routes</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-container">
+                <div class="map-placeholder">
+                    <div class="map-icon">🗺️</div>
+                    <div>Interactive map will display optimized routes with color-coded polylines</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification (hidden by default) -->
+    <div class="toast" id="toast">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <span></span>
+            <div>
+                <div style="font-weight: 600;">Success!</div>
+                <div style="font-size: 14px; color: var(--text-secondary);">Route optimized successfully</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../scripts/utils/constants.js"></script>
+    <script src="../scripts/utils/helpers.js"></script>
+    <script src="../scripts/utils/auth.js"></script>
+    <script src="../scripts/utils/transitions.js"></script>
+    <script src="../scripts/components/demo-banner.js"></script>
+    <script src="../scripts/components/toast.js"></script>
+    <script src="../scripts/pages/routes.js"></script>
+</body>
+</html>
