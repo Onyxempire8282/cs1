@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixed Mileage Test</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card h2 {
+            color: #60a5fa;
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+        
+        .form-grid {
+            display: grid;
+            gap: 16px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .form-row label {
+            font-weight: 500;
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+        
+        .form-row input,
+        .form-row select {
+            padding: 12px 16px;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            background: rgba(15, 23, 42, 0.8);
+            color: #e2e8f0;
+            font-size: 14px;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        
+        .form-row input:focus,
+        .form-row select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background: rgba(15, 23, 42, 0.9);
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 5px;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(75, 85, 99, 0.8);
+            color: #e2e8f0;
+            border: 1px solid rgba(156, 163, 175, 0.3);
+        }
+        
+        .result {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid #475569;
+        }
+        
+        .result.success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+            color: #6ee7b7;
+        }
+        
+        .result.error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+            color: #fca5a5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center; margin-bottom: 30px; color: #60a5fa; font-size: 28px;">
+            🚗 Fixed Mileage Calculator Test
+        </h1>
+        
+        <div class="card">
+            <h2>📍 Distance Calculator</h2>
+            <div class="form-grid">
+                <div class="form-row">
+                    <label for="firm">Firm:</label>
+                    <select id="firm">
+                        <option value="">Select a firm...</option>
+                        <option value="FirmG">Sedgwick - $0.67/mile (60 free miles)</option>
+                        <option value="FirmA">AMA - $0.67/mile (50 free miles)</option>
+                        <option value="FirmB">A-TEAM - $0.55/mile (60 free miles)</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <label for="origin">From:</label>
+                    <input type="text" id="origin" value="715 SANDHILL DR, DUDLEY, NC 28333" readonly>
+                </div>
+                
+                <div class="form-row">
+                    <label for="destination">To:</label>
+                    <input type="text" id="destination" placeholder="Enter destination (try: Raleigh, NC)" autocomplete="off">
+                </div>
+                
+                <div class="form-row">
+                    <label for="miles">Miles:</label>
+                    <input type="text" id="miles" readonly placeholder="Will auto-calculate">
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <button class="btn btn-primary" onclick="testCalculation()">
+                    🗺️ Calculate Distance
+                </button>
+                <button class="btn btn-secondary" onclick="clearForm()">
+                    🗑️ Clear
+                </button>
+            </div>
+            
+            <div id="result" class="result">
+                Click "Calculate Distance" to test...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Your API key
+        const API_KEY = "AIzaSyDR51CGOXEyVz8Dy-6hU7kdaqbq8-CTkBs";
+        const ORIGIN = "715 SANDHILL DR, DUDLEY, NC 28333";
+        
+        function showResult(message, type = '') {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = message;
+            resultDiv.className = `result ${type}`;
+        }
+        
+        function testCalculation() {
+            const destination = document.getElementById('destination').value.trim();
+            const firm = document.getElementById('firm').value;
+            
+            console.log('Button clicked!');
+            console.log('Destination:', destination);
+            console.log('Firm:', firm);
+            
+            if (!destination) {
+                showResult('❌ Please enter a destination address', 'error');
+                return;
+            }
+            
+            if (!firm) {
+                showResult('❌ Please select a firm first', 'error');
+                return;
+            }
+            
+            showResult('🔄 Calculating distance... (This is a test simulation)', '');
+            
+            // Simulate calculation
+            setTimeout(() => {
+                const fakeDistance = Math.floor(Math.random() * 50) + 50; // 50-100 miles
+                document.getElementById('miles').value = fakeDistance + ' miles';
+                
+                // Calculate billing
+                const firms = {
+                    "FirmA": { name: "AMA", freeMiles: 50, rate: 0.67 },
+                    "FirmB": { name: "A-TEAM", freeMiles: 60, rate: 0.55 },
+                    "FirmG": { name: "Sedgwick", freeMiles: 60, rate: 0.67 }
+                };
+                
+                const firmData = firms[firm];
+                const billable = Math.max(0, fakeDistance - firmData.freeMiles);
+                const cost = billable * firmData.rate;
+                
+                const resultText = `✅ Success! ${fakeDistance} miles to ${destination}\\n💰 ${firmData.name}: (${fakeDistance} - ${firmData.freeMiles} free) = ${billable} × $${firmData.rate.toFixed(2)} = $${cost.toFixed(2)}`;
+                
+                showResult(resultText, 'success');
+                
+            }, 1500);
+        }
+        
+        function clearForm() {
+            document.getElementById('destination').value = '';
+            document.getElementById('miles').value = '';
+            document.getElementById('firm').value = '';
+            showResult('Form cleared. Enter a destination to test.', '');
+        }
+        
+        // Test that JavaScript is working
+        console.log('✅ JavaScript loaded successfully');
+        showResult('Ready to test! Select a firm and enter a destination.', '');
+    </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Mileage Calculator</title>
+    <style>
+        body {
+            background: #1a1a1a;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .form-section {
+            background: #333;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        input, select, button {
+            padding: 10px;
+            margin: 5px;
+            background: #555;
+            color: white;
+            border: 1px solid #777;
+            border-radius: 4px;
+        }
+        button {
+            background: #007bff;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .debug-log {
+            background: #222;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid #444;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Debug Mileage Calculator</h1>
+    
+    <div class="form-section">
+        <h3>Test 1: No Form Element</h3>
+        <div>
+            <label>Destination:</label>
+            <input type="text" id="dest1" placeholder="Enter destination" value="Raleigh, NC">
+            <button type="button" onclick="testCalculate1()">Calculate (No Form)</button>
+        </div>
+    </div>
+    
+    <div class="form-section">
+        <h3>Test 2: Form with preventDefault</h3>
+        <form id="testForm2" onsubmit="return false;">
+            <label>Destination:</label>
+            <input type="text" id="dest2" placeholder="Enter destination" value="Raleigh, NC">
+            <button type="button" onclick="testCalculate2()">Calculate (Form)</button>
+        </form>
+    </div>
+    
+    <div class="form-section">
+        <h3>Test 3: Your Actual Code</h3>
+        <form id="actual-form" onsubmit="return false;">
+            <select id="firm">
+                <option value="">Select firm...</option>
+                <option value="FirmG">Sedgwick - $0.67/mile (60 free)</option>
+            </select>
+            <input type="text" id="origin" value="715 SANDHILL DR, DUDLEY, NC 28333" readonly>
+            <input type="text" id="destination" placeholder="Enter destination" value="Raleigh, NC">
+            <input type="number" id="totalMiles" readonly>
+            <button type="button" onclick="actualCalculateDistance()">🗺️ Calculate Distance</button>
+        </form>
+    </div>
+    
+    <div class="form-section">
+        <h3>Debug Log</h3>
+        <div id="debugLog" class="debug-log"></div>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+    
+    <script>
+        // Debug logging
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logDiv = document.getElementById('debugLog');
+            logDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(`[DEBUG] ${message}`);
+        }
+        
+        function clearLog() {
+            document.getElementById('debugLog').innerHTML = '';
+        }
+        
+        // Test functions
+        function testCalculate1() {
+            log('testCalculate1() called - NO FORM');
+            const dest = document.getElementById('dest1').value;
+            log(`Destination: ${dest}`);
+            log('Function completed successfully');
+            return false;
+        }
+        
+        function testCalculate2() {
+            log('testCalculate2() called - WITH FORM');
+            const dest = document.getElementById('dest2').value;
+            log(`Destination: ${dest}`);
+            log('Function completed successfully');
+            return false;
+        }
+        
+        // Your actual function (simplified)
+        function actualCalculateDistance() {
+            log('actualCalculateDistance() called');
+            
+            const origin = document.getElementById('origin').value;
+            const destination = document.getElementById('destination').value;
+            
+            log(`Origin: ${origin}`);
+            log(`Destination: ${destination}`);
+            
+            if (!destination.trim()) {
+                log('ERROR: No destination entered');
+                return false;
+            }
+            
+            // Simulate calculation
+            const fakeDistance = 85.2;
+            document.getElementById('totalMiles').value = fakeDistance;
+            log(`Calculated distance: ${fakeDistance} miles`);
+            log('Function completed successfully');
+            return false;
+        }
+        
+        // Prevent all form submissions
+        document.addEventListener('DOMContentLoaded', function() {
+            log('Page loaded');
+            
+            // Add form listeners
+            document.getElementById('testForm2').addEventListener('submit', function(e) {
+                log('Form2 submit event triggered - PREVENTING');
+                e.preventDefault();
+                return false;
+            });
+            
+            document.getElementById('actual-form').addEventListener('submit', function(e) {
+                log('Actual form submit event triggered - PREVENTING');
+                e.preventDefault();
+                return false;
+            });
+            
+            log('Form listeners added');
+        });
+        
+        // Global error handler
+        window.addEventListener('error', function(e) {
+            log(`JavaScript Error: ${e.message}`);
+        });
+        
+        // Log initial state
+        log('Debug page initialized');
+    </script>
+</body>
+</html>

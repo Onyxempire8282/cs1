@@ -638,11 +638,12 @@
     .photo-slot--uploading {
         animation: none;
     }
-} grid;
-    grid-template-columns: 350px 1fr;
-    gap: var(--spacing-3);
-    margin-top: var(--spacing-3);
-}
+    .grid {
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: var(--spacing-3);
+        margin-top: var(--spacing-3);
+    }
 
 .jobs-sidebar {
     display: flex;

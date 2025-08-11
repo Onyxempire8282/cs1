@@ -14,6 +14,8 @@ function initGoogleMaps() {
         return;
     }
     
+    console.log("✅ Google Maps API available");
+    
     // Initialize services
     directionsService = new google.maps.DirectionsService();
     directionsRenderer = new google.maps.DirectionsRenderer({
@@ -25,6 +27,8 @@ function initGoogleMaps() {
         }
     });
     geocoder = new google.maps.Geocoder();
+    
+    console.log("✅ Services initialized");
 
     // Initialize map with dark theme
     map = new google.maps.Map(document.getElementById("map"), {
@@ -85,9 +89,13 @@ function initGoogleMaps() {
 function calculateDistance() {
     console.log("🔍 Calculate Distance clicked!");
     
+    // Prevent any default behavior
+    event?.preventDefault();
+    
     if (!isGoogleMapsLoaded) {
+        console.warn("Google Maps not loaded yet");
         showToast("Google Maps is still loading, please wait...", "warning");
-        return;
+        return false;
     }
     
     const origin = document.getElementById("origin").value || ORIGIN;

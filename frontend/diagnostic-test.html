@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mileage Calculator - Diagnostic Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1f2937;
+            color: #e5e7eb;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .diagnostic-section {
+            background: #374151;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid #4b5563;
+        }
+        
+        .diagnostic-section h2 {
+            color: #60a5fa;
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #4b5563;
+        }
+        
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status-good {
+            color: #10b981;
+        }
+        
+        .status-error {
+            color: #ef4444;
+        }
+        
+        .status-warning {
+            color: #f59e0b;
+        }
+        
+        .test-form {
+            display: grid;
+            gap: 16px;
+            margin-top: 20px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .form-row label {
+            font-weight: 500;
+        }
+        
+        .form-row input,
+        .form-row select {
+            padding: 12px;
+            border: 1px solid #6b7280;
+            border-radius: 6px;
+            background: #4b5563;
+            color: #e5e7eb;
+            font-size: 14px;
+        }
+        
+        .form-row input:focus,
+        .form-row select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+        
+        .result-box {
+            background: #065f46;
+            border: 1px solid #059669;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .error-box {
+            background: #7f1d1d;
+            border: 1px solid #dc2626;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        
+        #map {
+            width: 100%;
+            height: 400px;
+            background: #111827;
+            border-radius: 8px;
+            border: 1px solid #4b5563;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 16px;
+        }
+        
+        .console-log {
+            background: #111827;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 16px;
+        }
+        
+        .log-entry {
+            padding: 2px 0;
+            border-bottom: 1px solid #1f2937;
+        }
+        
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .log-info { color: #60a5fa; }
+        .log-success { color: #10b981; }
+        .log-error { color: #ef4444; }
+        .log-warning { color: #f59e0b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚗 Mileage Calculator - Diagnostic Test</h1>
+        <p style="margin-bottom: 24px; color: #9ca3af;">This page will help diagnose why your mileage calculator isn't working properly.</p>
+        
+        <!-- System Check -->
+        <div class="diagnostic-section">
+            <h2>🔍 System Diagnostic</h2>
+            <div class="status-item">
+                <span>API Key Status:</span>
+                <span id="api-key-status" class="status-warning">Checking...</span>
+            </div>
+            <div class="status-item">
+                <span>Google Maps API:</span>
+                <span id="maps-api-status" class="status-warning">Loading...</span>
+            </div>
+            <div class="status-item">
+                <span>Distance Matrix Service:</span>
+                <span id="distance-service-status" class="status-warning">Waiting...</span>
+            </div>
+            <div class="status-item">
+                <span>Places Autocomplete:</span>
+                <span id="places-status" class="status-warning">Waiting...</span>
+            </div>
+            <div class="status-item">
+                <span>Browser Console Errors:</span>
+                <span id="console-errors" class="status-good">None detected</span>
+            </div>
+        </div>
+        
+        <!-- Configuration -->
+        <div class="diagnostic-section">
+            <h2>⚙️ Current Configuration</h2>
+            <div class="status-item">
+                <span>API Key:</span>
+                <span style="font-family: monospace; font-size: 12px;">AIzaSyDR51CGOXEyVz8Dy-6hU7kdaqbq8-CTkBs</span>
+            </div>
+            <div class="status-item">
+                <span>Default Origin:</span>
+                <span>715 SANDHILL DR, DUDLEY, NC 28333</span>
+            </div>
+            <div class="status-item">
+                <span>File Location:</span>
+                <span id="current-url">Loading...</span>
+            </div>
+        </div>
+        
+        <!-- Mileage Test Form -->
+        <div class="diagnostic-section">
+            <h2>🧪 Mileage Calculator Test</h2>
+            <div class="test-form">
+                <div class="form-row">
+                    <label>Firm:</label>
+                    <select id="firm">
+                        <option value="">Select a firm...</option>
+                        <option value="FirmG">Sedgwick - $0.67/mile (60 free)</option>
+                        <option value="FirmA">AMA - $0.67/mile (50 free)</option>
+                        <option value="FirmB">A-TEAM - $0.55/mile (60 free)</option>
+                        <option value="FirmC">Claim Solution - $0.63/mile (50 free)</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <label>From:</label>
+                    <input type="text" id="origin" value="715 SANDHILL DR, DUDLEY, NC 28333" style="font-size: 12px;">
+                </div>
+                
+                <div class="form-row">
+                    <label>To:</label>
+                    <input type="text" id="destination" placeholder="Enter destination address (try: Raleigh, NC)">
+                </div>
+                
+                <div class="form-row">
+                    <label>Trip Type:</label>
+                    <select id="trip-type">
+                        <option value="round-trip">Round Trip</option>
+                        <option value="one-way">One Way</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <label>Total Miles:</label>
+                    <input type="number" id="totalMiles" readonly style="background: #374151;">
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="testCalculateDistance()">
+                        🗺️ Test Distance Calculation
+                    </button>
+                    <button class="btn btn-secondary" onclick="testCalculateBilling()">
+                        💰 Test Billing Calculation
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearResults()">
+                        🗑️ Clear Results
+                    </button>
+                </div>
+                
+                <div id="result-container"></div>
+            </div>
+        </div>
+        
+        <!-- Map Preview -->
+        <div class="diagnostic-section">
+            <h2>🗺️ Map Preview</h2>
+            <div id="map">Map will appear here when Google Maps loads</div>
+        </div>
+        
+        <!-- Console Log -->
+        <div class="diagnostic-section">
+            <h2>📋 Console Log</h2>
+            <div class="console-log" id="console-log">
+                <div class="log-entry log-info">[INFO] Diagnostic page loaded</div>
+            </div>
+            <button class="btn btn-secondary" onclick="clearLog()" style="margin-top: 12px;">Clear Log</button>
+        </div>
+    </div>
+
+    <script>
+        // Constants
+        const ORIGIN = "715 SANDHILL DR, DUDLEY, NC 28333";
+        const API_KEY = "AIzaSyDR51CGOXEyVz8Dy-6hU7kdaqbq8-CTkBs";
+        
+        // Global variables
+        let map, directionsService, directionsRenderer;
+        let isGoogleMapsLoaded = false;
+        
+        // Logging function
+        function addLog(message, type = 'info') {
+            const logContainer = document.getElementById('console-log');
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            logEntry.textContent = `[${type.toUpperCase()}] ${new Date().toLocaleTimeString()} - ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+        
+        function clearLog() {
+            document.getElementById('console-log').innerHTML = '<div class="log-entry log-info">[INFO] Console cleared</div>';
+        }
+        
+        // Update status indicators
+        function updateStatus(elementId, status, message) {
+            const element = document.getElementById(elementId);
+            element.className = `status-${status}`;
+            element.textContent = message;
+        }
+        
+        // Initialize diagnostics
+        function initializeDiagnostics() {
+            addLog("Starting diagnostic tests...");
+            
+            // Show current URL
+            document.getElementById('current-url').textContent = window.location.href;
+            
+            // Test API key format
+            if (API_KEY.startsWith('AIza') && API_KEY.length === 39) {
+                updateStatus('api-key-status', 'good', 'Valid format');
+                addLog("API key format appears valid", 'success');
+            } else {
+                updateStatus('api-key-status', 'error', 'Invalid format');
+                addLog("API key format is invalid", 'error');
+            }
+        }
+        
+        // Google Maps initialization callback
+        function initGoogleMaps() {
+            addLog("Google Maps callback triggered");
+            
+            try {
+                if (typeof google === 'undefined') {
+                    throw new Error("Google object not found");
+                }
+                
+                if (!google.maps) {
+                    throw new Error("Google Maps not available");
+                }
+                
+                updateStatus('maps-api-status', 'good', 'Loaded');
+                addLog("Google Maps API loaded successfully", 'success');
+                
+                // Initialize services
+                directionsService = new google.maps.DirectionsService();
+                directionsRenderer = new google.maps.DirectionsRenderer({
+                    polylineOptions: {
+                        strokeColor: "#3b82f6",
+                        strokeWeight: 3
+                    }
+                });
+                
+                updateStatus('distance-service-status', 'good', 'Ready');
+                addLog("Distance Matrix service initialized", 'success');
+                
+                // Initialize map
+                map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 8,
+                    center: { lat: 35.7796, lng: -78.6382 }, // Raleigh, NC
+                    styles: [
+                        {
+                            "featureType": "all",
+                            "elementType": "geometry",
+                            "stylers": [{"color": "#242f3e"}]
+                        },
+                        {
+                            "featureType": "all",
+                            "elementType": "labels.text.stroke",
+                            "stylers": [{"color": "#242f3e"}]
+                        },
+                        {
+                            "featureType": "all",
+                            "elementType": "labels.text.fill",
+                            "stylers": [{"color": "#746855"}]
+                        }
+                    ]
+                });
+                
+                directionsRenderer.setMap(map);
+                addLog("Map initialized with dark theme", 'success');
+                
+                // Test Places API
+                try {
+                    const autocomplete = new google.maps.places.Autocomplete(
+                        document.getElementById("destination"),
+                        { types: ["address"] }
+                    );
+                    updateStatus('places-status', 'good', 'Working');
+                    addLog("Places autocomplete initialized", 'success');
+                } catch (placesError) {
+                    updateStatus('places-status', 'error', 'Failed');
+                    addLog("Places autocomplete failed: " + placesError.message, 'error');
+                }
+                
+                isGoogleMapsLoaded = true;
+                addLog("All Google Maps services ready", 'success');
+                
+            } catch (error) {
+                updateStatus('maps-api-status', 'error', 'Failed');
+                addLog("Google Maps initialization failed: " + error.message, 'error');
+            }
+        }
+        
+        // Test distance calculation
+        function testCalculateDistance() {
+            addLog("Starting distance calculation test...");
+            
+            if (!isGoogleMapsLoaded) {
+                showResult("Google Maps not loaded yet. Please wait and try again.", 'error');
+                return;
+            }
+            
+            const origin = document.getElementById("origin").value.trim();
+            const destination = document.getElementById("destination").value.trim();
+            
+            if (!destination) {
+                showResult("Please enter a destination address", 'error');
+                addLog("No destination provided", 'warning');
+                return;
+            }
+            
+            addLog(`Testing route: ${origin} → ${destination}`);
+            showResult("🔄 Calculating distance...", 'info');
+            
+            const service = new google.maps.DistanceMatrixService();
+            service.getDistanceMatrix({
+                origins: [origin],
+                destinations: [destination],
+                travelMode: google.maps.TravelMode.DRIVING,
+                unitSystem: google.maps.UnitSystem.IMPERIAL,
+            }, (response, status) => {
+                addLog(`Distance Matrix response status: ${status}`);
+                
+                if (status === "OK") {
+                    const element = response.rows[0].elements[0];
+                    addLog(`Route status: ${element.status}`);
+                    
+                    if (element.status === "OK") {
+                        const distance = element.distance.text;
+                        const duration = element.duration.text;
+                        const distanceValue = parseFloat(distance.replace(/[^0-9.]/g, ""));
+                        
+                        const tripType = document.getElementById("trip-type").value;
+                        const totalMiles = tripType === "round-trip" ? distanceValue * 2 : distanceValue;
+                        
+                        document.getElementById("totalMiles").value = totalMiles.toFixed(2);
+                        
+                        showResult(`✅ Success! Distance: ${totalMiles.toFixed(1)} miles (${duration} each way)`, 'success');
+                        addLog(`Distance calculated: ${totalMiles.toFixed(1)} miles`, 'success');
+                        
+                        // Show route on map
+                        showRouteOnMap(origin, destination);
+                        
+                    } else {
+                        showResult(`❌ Route not found: ${element.status}`, 'error');
+                        addLog(`Route calculation failed: ${element.status}`, 'error');
+                    }
+                } else {
+                    showResult(`❌ Distance API error: ${status}`, 'error');
+                    addLog(`Distance Matrix API error: ${status}`, 'error');
+                }
+            });
+        }
+        
+        // Show route on map
+        function showRouteOnMap(origin, destination) {
+            if (!directionsService || !directionsRenderer) return;
+            
+            directionsService.route({
+                origin: origin,
+                destination: destination,
+                travelMode: google.maps.TravelMode.DRIVING,
+            }, (result, status) => {
+                if (status === "OK") {
+                    directionsRenderer.setDirections(result);
+                    addLog("Route displayed on map", 'success');
+                } else {
+                    addLog(`Route display failed: ${status}`, 'error');
+                }
+            });
+        }
+        
+        // Test billing calculation
+        function testCalculateBilling() {
+            addLog("Testing billing calculation...");
+            
+            const firm = document.getElementById("firm").value;
+            const miles = parseFloat(document.getElementById("totalMiles").value);
+            
+            if (!firm) {
+                showResult("Please select a firm first", 'error');
+                addLog("No firm selected", 'warning');
+                return;
+            }
+            
+            if (isNaN(miles) || miles <= 0) {
+                showResult("Please calculate distance first", 'error');
+                addLog("No valid mileage found", 'warning');
+                return;
+            }
+            
+            // Firm rates
+            const firmRates = {
+                "FirmA": { freeMiles: 50, rate: 0.67, name: "AMA" },
+                "FirmB": { freeMiles: 60, rate: 0.55, name: "A-TEAM" },
+                "FirmC": { freeMiles: 50, rate: 0.63, name: "Claim Solution" },
+                "FirmD": { freeMiles: 50, rate: 0.65, name: "CCS" },
+                "FirmE": { freeMiles: 50, rate: 0.60, name: "HEA" },
+                "FirmF": { freeMiles: 50, rate: 0.65, name: "IAS" },
+                "FirmG": { freeMiles: 60, rate: 0.67, name: "Sedgwick" }
+            };
+            
+            const firmData = firmRates[firm] || { freeMiles: 50, rate: 0.60, name: "Unknown" };
+            const billable = Math.max(0, miles - firmData.freeMiles);
+            const cost = billable * firmData.rate;
+            
+            const result = `💰 ${firmData.name}: (${miles.toFixed(1)} mi - ${firmData.freeMiles} free) = ${billable.toFixed(1)} mi × $${firmData.rate.toFixed(2)} = $${cost.toFixed(2)}`;
+            
+            showResult(result, 'success');
+            addLog(`Billing calculated: $${cost.toFixed(2)} for ${miles.toFixed(1)} miles`, 'success');
+        }
+        
+        // Show result
+        function showResult(message, type) {
+            const container = document.getElementById('result-container');
+            const resultClass = type === 'error' ? 'error-box' : 'result-box';
+            container.innerHTML = `<div class="${resultClass}">${message}</div>`;
+        }
+        
+        // Clear results
+        function clearResults() {
+            document.getElementById('result-container').innerHTML = '';
+            document.getElementById('totalMiles').value = '';
+            if (directionsRenderer) {
+                directionsRenderer.setDirections({routes: []});
+            }
+            addLog("Results cleared");
+        }
+        
+        // Error handling
+        window.addEventListener('error', (event) => {
+            addLog(`JavaScript Error: ${event.message}`, 'error');
+            updateStatus('console-errors', 'error', 'Errors detected');
+        });
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeDiagnostics);
+        
+        // Make functions global for onclick handlers
+        window.testCalculateDistance = testCalculateDistance;
+        window.testCalculateBilling = testCalculateBilling;
+        window.clearResults = clearResults;
+        window.clearLog = clearLog;
+        window.initGoogleMaps = initGoogleMaps;
+    </script>
+    
+    <!-- Google Maps API -->
+    <script async defer 
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR51CGOXEyVz8Dy-6hU7kdaqbq8-CTkBs&libraries=places&callback=initGoogleMaps">
+    </script>
+</body>
+</html>

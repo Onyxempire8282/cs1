@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚗 Mileage Calculator - Simple Test</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: #e5e7eb;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #60a5fa;
+            font-size: 28px;
+        }
+        
+        .section {
+            background: rgba(55, 65, 81, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(75, 85, 99, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section h2 {
+            color: #34d399;
+            margin-bottom: 16px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-grid {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(17, 24, 39, 0.5);
+            border-radius: 8px;
+            border: 1px solid rgba(75, 85, 99, 0.3);
+        }
+        
+        .status-label {
+            font-weight: 500;
+        }
+        
+        .status-value {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .status-good { color: #10b981; }
+        .status-error { color: #ef4444; }
+        .status-warning { color: #f59e0b; }
+        .status-info { color: #3b82f6; }
+        
+        .form-grid {
+            display: grid;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .form-row label {
+            font-weight: 500;
+            color: #d1d5db;
+        }
+        
+        .form-row input,
+        .form-row select {
+            padding: 12px 16px;
+            border: 1px solid #4b5563;
+            border-radius: 8px;
+            background: rgba(31, 41, 55, 0.8);
+            color: #e5e7eb;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .form-row input:focus,
+        .form-row select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(75, 85, 99, 0.8);
+            color: #e5e7eb;
+            border: 1px solid rgba(156, 163, 175, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(107, 114, 128, 0.8);
+            transform: translateY(-1px);
+        }
+        
+        .result-box {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            border: 1px solid;
+        }
+        
+        .result-success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+            color: #6ee7b7;
+        }
+        
+        .result-error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+            color: #fca5a5;
+        }
+        
+        .result-info {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+            color: #93c5fd;
+        }
+        
+        #map {
+            width: 100%;
+            height: 400px;
+            background: rgba(17, 24, 39, 0.8);
+            border-radius: 12px;
+            border: 1px solid rgba(75, 85, 99, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            font-size: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .loading {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .highlight {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid #3b82f6;
+            border-radius: 6px;
+            padding: 2px 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
+        .instructions {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10b981;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .instructions h3 {
+            color: #10b981;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚗 Mileage Calculator Test (No Server Required)</h1>
+        
+        <div class="instructions">
+            <h3>🎯 Quick Test Instructions:</h3>
+            <p>1. Check all status indicators below are green<br>
+               2. Enter a destination like "Raleigh, NC"<br>
+               3. Click "Calculate Distance" and wait for results<br>
+               4. Expected result: ~85-90 miles from Dudley to Raleigh</p>
+        </div>
+        
+        <!-- Status Check -->
+        <div class="section">
+            <h2>🔍 System Status</h2>
+            <div class="status-grid">
+                <div class="status-item">
+                    <span class="status-label">Your API Key:</span>
+                    <span class="status-value highlight">AIzaSyDR51CGOXEyVz8Dy-6hU7kdaqbq8-CTkBs</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Google Maps API:</span>
+                    <span id="maps-status" class="status-value status-warning loading">Loading...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Distance Service:</span>
+                    <span id="distance-status" class="status-value status-warning">Waiting...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Places API:</span>
+                    <span id="places-status" class="status-value status-warning">Waiting...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Browser:</span>
+                    <span id="browser-status" class="status-value status-info">Chrome/Edge Recommended</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Calculator -->
+        <div class="section">
+            <h2>💰 Mileage Calculator</h2>
+            <div class="form-grid">
+                <div class="form-row">
+                    <label>Firm:</label>
+                    <select id="firm">
+                        <option value="">Choose your firm...</option>
+                        <option value="FirmG">Sedgwick - $0.67/mile (60 free miles)</option>
+                        <option value="FirmA">AMA - $0.67/mile (50 free miles)</option>
+                        <option value="FirmB">A-TEAM - $0.55/mile (60 free miles)</option>
+                        <option value="FirmC">Claim Solution - $0.63/mile (50 free miles)</option>
+                        <option value="FirmD">CCS - $0.65/mile (50 free miles)</option>
+                        <option value="FirmE">HEA - $0.60/mile (50 free miles)</option>
+                        <option value="FirmF">IAS - $0.65/mile (50 free miles)</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <label>From:</label>
+                    <input type="text" id="origin" value="715 SANDHILL DR, DUDLEY, NC 28333" readonly 
+                           style="background: rgba(17, 24, 39, 0.5); font-size: 12px;">
+                </div>
+                
+                <div class="form-row">
+                    <label>To:</label>
+                    <input type="text" id="destination" placeholder="Try: Raleigh, NC or 123 Main St, Cary, NC">
+                </div>
+                
+                <div class="form-row">
+                    <label>Trip Type:</label>
+                    <select id="trip-type">
+                        <option value="round-trip">Round Trip (Default)</option>
+                        <option value="one-way">One Way Only</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <label>Total Miles:</label>
+                    <input type="text" id="totalMiles" readonly style="background: rgba(17, 24, 39, 0.5); color: #60a5fa; font-weight: bold;">
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="calculateDistance()">
+                    🗺️ Calculate Distance
+                </button>
+                <button class="btn btn-secondary" onclick="calculateBilling()">
+                    💰 Calculate Billing
+                </button>
+                <button class="btn btn-secondary" onclick="copyToClipboard()">
+                    📋 Copy Result
+                </button>
+                <button class="btn btn-secondary" onclick="clearAll()">
+                    🗑️ Clear All
+                </button>
+            </div>
+            
+            <div id="result-container"></div>
+        </div>
+        
+        <!-- Map -->
+        <div class="section">
+            <h2>🗺️ Route Map</h2>
+            <div id="map">
+                <div class="loading">🗺️ Loading interactive map...</div>
+            </div>
+        </div>
+        
+        <!-- Test Log -->
+        <div class="section">
+            <h2>📋 Test Log</h2>
+            <div id="log-container" style="background: rgba(17, 24, 39, 0.8); border-radius: 8px; padding: 16px; font-family: 'Courier New', monospace; font-size: 12px; max-height: 200px; overflow-y: auto;">
+                <div style="color: #3b82f6;">[INFO] Test page loaded successfully</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const ORIGIN = "715 SANDHILL DR, DUDLEY, NC 28333";
+        const API_KEY = "AIzaSyDR51CGOXEyVz8Dy-6hU7kdaqbq8-CTkBs";
+        
+        // Global variables
+        let map, directionsService, directionsRenderer;
+        let isReady = false;
+        
+        // Logging function
+        function addLog(message, type = 'info') {
+            const colors = {
+                info: '#3b82f6',
+                success: '#10b981', 
+                error: '#ef4444',
+                warning: '#f59e0b'
+            };
+            
+            const logContainer = document.getElementById('log-container');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.style.color = colors[type];
+            logEntry.innerHTML = `[${type.toUpperCase()}] ${timestamp} - ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+            
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+        
+        // Update status
+        function updateStatus(elementId, status, message) {
+            const element = document.getElementById(elementId);
+            element.className = `status-value status-${status}`;
+            element.textContent = message;
+            
+            if (status === 'good') {
+                element.innerHTML = `✅ ${message}`;
+            } else if (status === 'error') {
+                element.innerHTML = `❌ ${message}`;
+            } else if (status === 'warning') {
+                element.innerHTML = `⚠️ ${message}`;
+            }
+        }
+        
+        // Google Maps callback
+        function initGoogleMaps() {
+            addLog("Google Maps API callback triggered");
+            
+            try {
+                // Check if Google Maps loaded
+                if (typeof google === 'undefined' || !google.maps) {
+                    throw new Error("Google Maps API not available");
+                }
+                
+                updateStatus('maps-status', 'good', 'Loaded');
+                addLog("Google Maps API loaded successfully", 'success');
+                
+                // Initialize services
+                directionsService = new google.maps.DirectionsService();
+                directionsRenderer = new google.maps.DirectionsRenderer({
+                    polylineOptions: {
+                        strokeColor: "#3b82f6",
+                        strokeWeight: 4,
+                        strokeOpacity: 0.8
+                    }
+                });
+                
+                updateStatus('distance-status', 'good', 'Ready');
+                addLog("Distance Matrix service ready", 'success');
+                
+                // Initialize map
+                map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 9,
+                    center: { lat: 35.7796, lng: -78.6382 }, // Raleigh area
+                    styles: [
+                        { featureType: "all", elementType: "geometry", stylers: [{ color: "#242f3e" }] },
+                        { featureType: "all", elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
+                        { featureType: "all", elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+                        { featureType: "road", elementType: "geometry", stylers: [{ color: "#38414e" }] },
+                        { featureType: "water", elementType: "geometry", stylers: [{ color: "#17263c" }] }
+                    ]
+                });
+                
+                directionsRenderer.setMap(map);
+                addLog("Interactive map initialized", 'success');
+                
+                // Test Places API
+                try {
+                    const autocomplete = new google.maps.places.Autocomplete(
+                        document.getElementById("destination"),
+                        { types: ["address"] }
+                    );
+                    updateStatus('places-status', 'good', 'Working');
+                    addLog("Address autocomplete enabled", 'success');
+                } catch (placesError) {
+                    updateStatus('places-status', 'warning', 'Limited');
+                    addLog("Places API limited: " + placesError.message, 'warning');
+                }
+                
+                isReady = true;
+                addLog("All systems ready - you can now test calculations!", 'success');
+                showResult("✅ System ready! Select a firm and enter a destination to test.", 'success');
+                
+            } catch (error) {
+                updateStatus('maps-status', 'error', 'Failed');
+                addLog("Google Maps initialization failed: " + error.message, 'error');
+                showResult("❌ Google Maps failed to load. Check your API key restrictions.", 'error');
+            }
+        }
+        
+        // Calculate distance
+        function calculateDistance() {
+            addLog("Starting distance calculation...");
+            
+            if (!isReady) {
+                showResult("⏳ Please wait for Google Maps to finish loading...", 'info');
+                return;
+            }
+            
+            const destination = document.getElementById('destination').value.trim();
+            if (!destination) {
+                showResult("❌ Please enter a destination address", 'error');
+                return;
+            }
+            
+            showResult("🔄 Calculating distance to: " + destination, 'info');
+            addLog(`Calculating route: ${ORIGIN} → ${destination}`);
+            
+            const service = new google.maps.DistanceMatrixService();
+            service.getDistanceMatrix({
+                origins: [ORIGIN],
+                destinations: [destination],
+                travelMode: google.maps.TravelMode.DRIVING,
+                unitSystem: google.maps.UnitSystem.IMPERIAL,
+            }, handleDistanceResult);
+        }
+        
+        // Handle distance result
+        function handleDistanceResult(response, status) {
+            addLog(`Distance API response: ${status}`);
+            
+            if (status === "OK") {
+                const element = response.rows[0].elements[0];
+                
+                if (element.status === "OK") {
+                    const distance = element.distance.text;
+                    const duration = element.duration.text;
+                    const distanceValue = parseFloat(distance.replace(/[^0-9.]/g, ""));
+                    
+                    const tripType = document.getElementById("trip-type").value;
+                    const totalMiles = tripType === "round-trip" ? distanceValue * 2 : distanceValue;
+                    
+                    document.getElementById("totalMiles").value = totalMiles.toFixed(1) + " miles";
+                    
+                    showResult(`✅ Success! Distance: ${totalMiles.toFixed(1)} miles (${duration} each way)`, 'success');
+                    addLog(`Distance calculated: ${totalMiles.toFixed(1)} miles`, 'success');
+                    
+                    // Show route on map
+                    showRoute(ORIGIN, document.getElementById('destination').value);
+                    
+                    // Auto-calculate billing if firm selected
+                    const firm = document.getElementById('firm').value;
+                    if (firm) {
+                        setTimeout(calculateBilling, 1000);
+                    }
+                    
+                } else {
+                    showResult(`❌ Could not find route: ${element.status}`, 'error');
+                    addLog(`Route not found: ${element.status}`, 'error');
+                }
+            } else {
+                showResult(`❌ Distance API error: ${status}`, 'error');
+                addLog(`Distance Matrix API error: ${status}`, 'error');
+            }
+        }
+        
+        // Show route on map
+        function showRoute(origin, destination) {
+            if (!directionsService || !directionsRenderer) return;
+            
+            directionsService.route({
+                origin: origin,
+                destination: destination,
+                travelMode: google.maps.TravelMode.DRIVING,
+            }, (result, status) => {
+                if (status === "OK") {
+                    directionsRenderer.setDirections(result);
+                    addLog("Route displayed on map", 'success');
+                } else {
+                    addLog(`Route display failed: ${status}`, 'warning');
+                }
+            });
+        }
+        
+        // Calculate billing
+        function calculateBilling() {
+            const firm = document.getElementById('firm').value;
+            const milesText = document.getElementById('totalMiles').value;
+            const miles = parseFloat(milesText.replace(/[^0-9.]/g, ""));
+            
+            if (!firm) {
+                showResult("❌ Please select a firm first", 'error');
+                return;
+            }
+            
+            if (isNaN(miles) || miles <= 0) {
+                showResult("❌ Please calculate distance first", 'error');
+                return;
+            }
+            
+            const firms = {
+                "FirmA": { name: "AMA", freeMiles: 50, rate: 0.67 },
+                "FirmB": { name: "A-TEAM", freeMiles: 60, rate: 0.55 },
+                "FirmC": { name: "Claim Solution", freeMiles: 50, rate: 0.63 },
+                "FirmD": { name: "CCS", freeMiles: 50, rate: 0.65 },
+                "FirmE": { name: "HEA", freeMiles: 50, rate: 0.60 },
+                "FirmF": { name: "IAS", freeMiles: 50, rate: 0.65 },
+                "FirmG": { name: "Sedgwick", freeMiles: 60, rate: 0.67 }
+            };
+            
+            const firmData = firms[firm];
+            const billable = Math.max(0, miles - firmData.freeMiles);
+            const cost = billable * firmData.rate;
+            
+            const calculation = `${firmData.name}: (${miles.toFixed(1)} mi - ${firmData.freeMiles} free) = ${billable.toFixed(1)} mi × $${firmData.rate.toFixed(2)} = $${cost.toFixed(2)}`;
+            
+            showResult(`💰 ${calculation}`, 'success');
+            addLog(`Billing calculated: $${cost.toFixed(2)}`, 'success');
+            
+            // Store for copy function
+            window.lastResult = calculation;
+        }
+        
+        // Copy to clipboard
+        function copyToClipboard() {
+            if (window.lastResult) {
+                navigator.clipboard.writeText(window.lastResult).then(() => {
+                    showResult("📋 Result copied to clipboard!", 'success');
+                }).catch(() => {
+                    showResult("❌ Copy failed - please copy manually", 'error');
+                });
+            } else {
+                showResult("❌ No result to copy", 'error');
+            }
+        }
+        
+        // Clear all
+        function clearAll() {
+            document.getElementById('destination').value = '';
+            document.getElementById('totalMiles').value = '';
+            document.getElementById('result-container').innerHTML = '';
+            if (directionsRenderer) {
+                directionsRenderer.setDirections({routes: []});
+            }
+            window.lastResult = null;
+            addLog("Form cleared");
+        }
+        
+        // Show result
+        function showResult(message, type) {
+            const container = document.getElementById('result-container');
+            container.innerHTML = `<div class="result-box result-${type}">${message}</div>`;
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            addLog("Initializing mileage calculator test...");
+            addLog("Waiting for Google Maps to load...", 'info');
+            
+            // Set browser status
+            const browser = navigator.userAgent.includes('Chrome') ? 'Chrome' : 
+                           navigator.userAgent.includes('Edge') ? 'Edge' :
+                           navigator.userAgent.includes('Firefox') ? 'Firefox' : 'Other';
+            document.getElementById('browser-status').textContent = browser;
+        });
+        
+        // Error handling
+        window.addEventListener('error', (event) => {
+            addLog(`JavaScript Error: ${event.message}`, 'error');
+        });
+        
+        // Make functions global
+        window.calculateDistance = calculateDistance;
+        window.calculateBilling = calculateBilling;
+        window.copyToClipboard = copyToClipboard;
+        window.clearAll = clearAll;
+        window.initGoogleMaps = initGoogleMaps;
+    </script>
+    
+    <!-- Google Maps API -->
+    <script async defer 
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR51CGOXEyVz8Dy-6hU7kdaqbq8-CTkBs&libraries=places&callback=initGoogleMaps">
+    </script>
+</body>
+</html>

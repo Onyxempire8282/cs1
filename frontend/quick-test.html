@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Test</title>
+    <style>
+        body { background: #222; color: white; padding: 20px; font-family: Arial; }
+        button { padding: 10px; margin: 5px; background: #007bff; color: white; border: none; cursor: pointer; }
+        input { padding: 10px; margin: 5px; background: #444; color: white; border: 1px solid #666; }
+        .log { background: #111; padding: 10px; margin: 10px 0; height: 150px; overflow-y: auto; border: 1px solid #444; }
+    </style>
+</head>
+<body>
+    <h1>Quick Test</h1>
+    
+    <h3>Test 1: Simple Button (No Form)</h3>
+    <input type="text" id="dest1" value="Raleigh, NC">
+    <button onclick="test1()">Test 1</button>
+    
+    <h3>Test 2: Button in Form</h3>
+    <form onsubmit="return false;">
+        <input type="text" id="dest2" value="Raleigh, NC">
+        <button type="button" onclick="test2()">Test 2</button>
+    </form>
+    
+    <h3>Console Log</h3>
+    <div id="log" class="log"></div>
+    
+    <script>
+        function log(msg) {
+            document.getElementById('log').innerHTML += msg + '<br>';
+            console.log(msg);
+        }
+        
+        function test1() {
+            log('TEST 1 CALLED - Simple button worked!');
+        }
+        
+        function test2() {
+            log('TEST 2 CALLED - Form button worked!');
+        }
+        
+        log('Page loaded successfully');
+    </script>
+</body>
+</html>

@@ -104,11 +104,11 @@
                 <h3 class="card__title">Calculate Trip Distance</h3>
             </div>
             <div class="card__content">
-                <form class="mileage-form" id="mileage-form">
+                <form class="mileage-form" id="mileage-form" onsubmit="return false;">
                     <div class="grid grid--2 mb-4">
                         <div class="input-group">
                             <label class="input-label" for="firm-select">Firm</label>
-                            <select class="input" id="firm" required>
+                            <select class="input" id="firm">
                                 <option value="">Select a firm...</option>
                                 <option value="FirmA">AMA - $0.67/mile (50 free)</option>
                                 <option value="FirmB">A-TEAM - $0.55/mile (60 free)</option>
@@ -155,15 +155,18 @@
                         </div>
                     </div>
 
-                    <div class="flex gap-2 mb-4">
-                        <button type="button" class="btn btn--primary" onclick="calculateDistance()">
-                            🗺️ Calculate Distance
-                        </button>
-                        <button type="button" class="btn btn--outline" onclick="calculateBilling()">
-                            💰 Calculate Billing
-                        </button>
-                        <button type="reset" class="btn btn--outline">Clear Form</button>
-                    </div>
+                </form>
+                
+                <!-- Move buttons OUTSIDE the form to prevent submission -->
+                <div class="flex gap-2 mb-4">
+                    <button type="button" class="btn btn--primary" onclick="calculateDistanceFixed()">
+                        🗺️ Calculate Distance
+                    </button>
+                    <button type="button" class="btn btn--outline" onclick="calculateBillingFixed()">
+                        💰 Calculate Billing
+                    </button>
+                    <button type="button" class="btn btn--outline" onclick="clearFormFixed()">Clear Form</button>
+                </div>
 
                     <!-- Results Display -->
                     <div class="mileage-result" id="mileage-result">
@@ -289,6 +292,18 @@
         document.addEventListener('DOMContentLoaded', function() {
             initializeUserContext();
             setupLogoutHandler();
+            
+            // Prevent form submission
+            const form = document.getElementById('mileage-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('Form submission prevented');
+                    return false;
+                });
+            }
+            
+            console.log('Mileage calculator page loaded');
         });
 
         function initializeUserContext() {
@@ -320,6 +335,48 @@
                     window.location.href = '../login.html';
                 });
             }
+        }
+        
+        // Fixed calculate functions that work like the test
+        function calculateDistanceFixed() {
+            console.log('🔍 Fixed Calculate Distance called!');
+            
+            const destination = document.getElementById('destination').value.trim();
+            const firm = document.getElementById('firm').value;
+            
+            if (!destination) {
+                document.getElementById('billingResult').innerHTML = '❌ Please enter a destination address';
+                return;
+            }
+            
+            document.getElementById('billingResult').innerHTML = '🔄 Calculating distance...';
+            
+            // Use the working calculation from mileage.js
+            if (typeof calculateDistance === 'function') {
+                calculateDistance();
+            } else {
+                console.error('calculateDistance function not found');
+                document.getElementById('billingResult').innerHTML = '❌ Error: Calculator not loaded';
+            }
+        }
+        
+        function calculateBillingFixed() {
+            console.log('💰 Fixed Calculate Billing called!');
+            
+            // Use the working calculation from mileage.js
+            if (typeof calculateBilling === 'function') {
+                calculateBilling();
+            } else {
+                console.error('calculateBilling function not found');
+                document.getElementById('billingResult').innerHTML = '❌ Error: Billing calculator not loaded';
+            }
+        }
+        
+        function clearFormFixed() {
+            document.getElementById('destination').value = '';
+            document.getElementById('totalMiles').value = '';
+            document.getElementById('firm').value = '';
+            document.getElementById('billingResult').innerHTML = 'Enter destination and calculate distance first';
         }
     </script>
 </body>

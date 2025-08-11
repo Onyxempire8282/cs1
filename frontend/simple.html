@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Mileage Test</title>
+    <style>
+        body { 
+            background: #1a1a2e; 
+            color: white; 
+            font-family: Arial; 
+            padding: 20px; 
+            line-height: 1.5;
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: #16213e; 
+            padding: 30px; 
+            border-radius: 10px; 
+        }
+        input, select, button { 
+            display: block;
+            width: 100%;
+            padding: 12px; 
+            margin: 10px 0; 
+            background: #0f3460; 
+            color: white; 
+            border: 1px solid #533483; 
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button { 
+            background: #e94560; 
+            cursor: pointer; 
+            font-weight: bold;
+        }
+        button:hover { 
+            background: #c73650; 
+        }
+        .result { 
+            background: #0f3460; 
+            padding: 15px; 
+            margin: 15px 0; 
+            border-radius: 5px; 
+            border-left: 4px solid #e94560;
+            min-height: 60px;
+        }
+        .success { border-left-color: #27ae60; }
+        .error { border-left-color: #e74c3c; }
+        label {
+            display: block;
+            margin: 15px 0 5px 0;
+            font-weight: bold;
+            color: #64b5f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚗 Simple Mileage Test</h1>
+        
+        <label>Select Firm:</label>
+        <select id="firm">
+            <option value="">Choose...</option>
+            <option value="sedgwick">Sedgwick - $0.67/mile (60 free)</option>
+            <option value="ama">AMA - $0.67/mile (50 free)</option>
+        </select>
+        
+        <label>From (Your Address):</label>
+        <input type="text" id="origin" value="715 SANDHILL DR, DUDLEY, NC 28333" readonly>
+        
+        <label>To (Destination):</label>
+        <input type="text" id="destination" placeholder="Type destination here: Raleigh, NC">
+        
+        <label>Total Miles:</label>
+        <input type="text" id="miles" readonly placeholder="Will calculate automatically">
+        
+        <button onclick="calculateTest()">🗺️ CALCULATE DISTANCE</button>
+        <button onclick="clearTest()">🗑️ CLEAR FORM</button>
+        
+        <div id="result" class="result">
+            Ready to test! Enter a destination above and click calculate.
+        </div>
+    </div>
+
+    <script>
+        function log(msg) {
+            console.log('TEST: ' + msg);
+            document.getElementById('result').innerHTML += '<br>' + msg;
+        }
+        
+        function calculateTest() {
+            console.log('🔥 CALCULATE BUTTON CLICKED!');
+            
+            const firm = document.getElementById('firm').value;
+            const destination = document.getElementById('destination').value;
+            const resultDiv = document.getElementById('result');
+            
+            console.log('Firm:', firm);
+            console.log('Destination:', destination);
+            
+            if (!firm) {
+                resultDiv.innerHTML = '❌ Please select a firm first';
+                resultDiv.className = 'result error';
+                return;
+            }
+            
+            if (!destination.trim()) {
+                resultDiv.innerHTML = '❌ Please enter a destination';
+                resultDiv.className = 'result error';
+                return;
+            }
+            
+            // Show loading
+            resultDiv.innerHTML = '🔄 Calculating distance...';
+            resultDiv.className = 'result';
+            
+            // Simulate calculation
+            setTimeout(() => {
+                const miles = Math.floor(Math.random() * 50) + 60; // 60-110 miles
+                document.getElementById('miles').value = miles + ' miles';
+                
+                let billing = '';
+                if (firm === 'sedgwick') {
+                    const billable = Math.max(0, miles - 60);
+                    const cost = billable * 0.67;
+                    billing = `Sedgwick: (${miles} - 60 free) = ${billable} × $0.67 = $${cost.toFixed(2)}`;
+                } else if (firm === 'ama') {
+                    const billable = Math.max(0, miles - 50);
+                    const cost = billable * 0.67;
+                    billing = `AMA: (${miles} - 50 free) = ${billable} × $0.67 = $${cost.toFixed(2)}`;
+                }
+                
+                resultDiv.innerHTML = `✅ SUCCESS!<br>Distance: ${miles} miles<br>Route: Dudley → ${destination}<br>💰 ${billing}`;
+                resultDiv.className = 'result success';
+                
+                console.log('✅ Calculation completed successfully!');
+                
+            }, 1500);
+        }
+        
+        function clearTest() {
+            document.getElementById('firm').value = '';
+            document.getElementById('destination').value = '';
+            document.getElementById('miles').value = '';
+            document.getElementById('result').innerHTML = 'Form cleared. Ready for new test.';
+            document.getElementById('result').className = 'result';
+        }
+        
+        console.log('✅ Page loaded and JavaScript ready!');
+    </script>
+</body>
+</html>
