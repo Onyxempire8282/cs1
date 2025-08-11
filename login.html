@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Claim Cipher</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/variables.css">
+    <link rel="stylesheet" href="styles/components/buttons.css">
+    <link rel="stylesheet" href="styles/components/forms.css">
+    <link rel="stylesheet" href="styles/components/cards.css">
+    <link rel="stylesheet" href="styles/index.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-700) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .login-card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+        
+        .login-logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-600);
+            margin-bottom: 8px;
+        }
+        
+        .login-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+        
+        .divider span {
+            padding: 0 16px;
+        }
+        
+        .demo-section {
+            background: var(--surface-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+        
+        .demo-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .demo-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        
+        .error-message {
+            background: #fee;
+            border: 1px solid #fcc;
+            color: #c33;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-logo">Claim Cipher</div>
+            <div class="login-subtitle">Insurance Adjuster Tools</div>
+            
+            <div id="error-message" class="error-message"></div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" class="form-input" id="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" class="form-input" id="password" required>
+                </div>
+                
+                <button type="submit" class="btn btn--primary btn--full">Sign In</button>
+            </form>
+            
+            <div class="divider">
+                <span>or</span>
+            </div>
+            
+            <div class="demo-section">
+                <div class="demo-title">Try Demo Mode</div>
+                <div class="demo-description">
+                    Experience Claim Cipher with sample data and limited functionality
+                </div>
+                <button id="demo-btn" class="btn btn--secondary btn--full">Start Demo (6 days remaining)</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Authentication system
+        const AUTH_CONFIG = {
+            masterUsername: 'admin',
+            masterPassword: 'cipher2025',
+            demoMode: false
+        };
+
+        const loginForm = document.getElementById('login-form');
+        const demoBtn = document.getElementById('demo-btn');
+        const errorMessage = document.getElementById('error-message');
+
+        // Handle login form submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === AUTH_CONFIG.masterUsername && password === AUTH_CONFIG.masterPassword) {
+                // Master login - full access
+                localStorage.setItem('claimcipher_auth', JSON.stringify({
+                    authenticated: true,
+                    username: username,
+                    demoMode: false,
+                    loginTime: Date.now()
+                }));
+                
+                window.location.href = 'index.html';
+            } else {
+                showError('Invalid username or password');
+            }
+        });
+
+        // Handle demo mode
+        demoBtn.addEventListener('click', () => {
+            localStorage.setItem('claimcipher_auth', JSON.stringify({
+                authenticated: true,
+                username: 'demo_user',
+                demoMode: true,
+                loginTime: Date.now(),
+                demoExpiry: Date.now() + (6 * 24 * 60 * 60 * 1000) // 6 days
+            }));
+            
+            window.location.href = 'index.html';
+        });
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        // Check if already authenticated
+        const auth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
+        if (auth.authenticated) {
+            // Check if demo expired
+            if (auth.demoMode && auth.demoExpiry && Date.now() > auth.demoExpiry) {
+                localStorage.removeItem('claimcipher_auth');
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
