@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Claim Cipher</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="theme-dark" data-user-type="demo">
+    <!-- Demo Banner (shown only for demo users) -->
+    <div class="demo-banner" id="demo-banner" style="display: none;">
+        🎯 Pro Demo Active - <span id="demo-countdown">6 days, 14 hours remaining</span>
+        <button class="btn btn--primary btn--sm ml-16">Upgrade Now</button>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar__header">
+            <div class="sidebar__logo">
+                <a href="./dashboard.html">Claim Cipher</a>
+            </div>
+        </div>
+        
+        <ul class="sidebar__nav">
+            <li class="sidebar__nav-item">
+                <a href="./dashboard.html" class="sidebar__nav-link sidebar__nav-link--active">
+                    <span>📊</span> Dashboard
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./mileage.html" class="sidebar__nav-link">
+                    <span>🚗</span> Mileage Calculator
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./routes.html" class="sidebar__nav-link">
+                    <span>🗺️</span> Route Optimizer
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./jobs.html" class="sidebar__nav-link">
+                    <span>📱</span> Mobile Sync
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./autoforms.html" class="sidebar__nav-link">
+                    <span>📄</span> AutoForms
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./comparables.html" class="sidebar__nav-link">
+                    <span>🔍</span> Comparables
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./firms.html" class="sidebar__nav-link">
+                    <span>🏢</span> Firms Directory
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./gear.html" class="sidebar__nav-link">
+                    <span>⚙️</span> Gear
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./help.html" class="sidebar__nav-link">
+                    <span>❓</span> Help
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./settings.html" class="sidebar__nav-link">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+        </ul>
+        
+        <!-- User info and logout -->
+        <div class="sidebar__footer">
+            <div class="sidebar__user" id="sidebar-user">
+                <div class="user-avatar" id="user-avatar">DU</div>
+                <div class="user-info">
+                    <div class="user-name" id="user-name">Demo User</div>
+                    <div class="user-role" id="user-role">Demo Mode</div>
+                </div>
+            </div>
+            <button class="sidebar__logout btn btn--ghost btn--sm" id="logout-btn">
+                <span>🚪</span> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="page-header">
+            <!-- Demo Notice (only for demo users) -->
+            <div class="demo-notice" id="demo-notice" data-demo-only="true" style="display: none;">
+                <div class="demo-notice-content">
+                    <span class="demo-notice-icon">👀</span>
+                    <div class="demo-notice-text">
+                        <strong>Preview Mode:</strong> This is sample data showing what you'll track
+                    </div>
+                </div>
+            </div>
+
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle" id="dashboard-subtitle">Welcome back! Here's your activity overview.</p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="grid grid--4">
+            <div class="kpi">
+                <div class="kpi__value" id="miles-stat">247</div>
+                <div class="kpi__label">Miles This Month</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi__value" id="routes-stat">18</div>
+                <div class="kpi__label">Routes Optimized</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi__value" id="jobs-stat">42</div>
+                <div class="kpi__label">Jobs Completed</div>
+            </div>
+            <div class="kpi">
+                <div class="kpi__value" id="earnings-stat">$1,847</div>
+                <div class="kpi__label">Total Earnings</div>
+            </div>
+        </div>
+
+        <!-- Dashboard Content Grid -->
+        <div class="grid grid--2 mt-32">
+            <!-- Recent Routes Card -->
+            <div class="card">
+                <div class="card__header">
+                    <h3 class="card__title">Recent Routes</h3>
+                    <button class="btn btn--outline btn--sm" onclick="window.location.href='routes.html'">View All</button>
+                </div>
+                <div class="card__content">
+                    <div class="recent-routes" id="recent-routes">
+                        <div class="route-item">
+                            <div class="route-item__info">
+                                <h4>Downtown Route - Aug 9</h4>
+                                <p>8 stops • 47 miles • 3.2 hours</p>
+                            </div>
+                            <span class="badge badge--success">Completed</span>
+                        </div>
+                        <div class="route-item">
+                            <div class="route-item__info">
+                                <h4>Northside Loop - Aug 8</h4>
+                                <p>12 stops • 63 miles • 4.1 hours</p>
+                            </div>
+                            <span class="badge badge--success">Completed</span>
+                        </div>
+                        <div class="route-item">
+                            <div class="route-item__info">
+                                <h4>Weekend Claims - Aug 10</h4>
+                                <p>5 stops • 28 miles • 2.0 hours</p>
+                            </div>
+                            <span class="badge badge--warning">Planned</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Jobs Card -->
+            <div class="card">
+                <div class="card__header">
+                    <h3 class="card__title">Active Jobs</h3>
+                    <button class="btn btn--outline btn--sm" onclick="window.location.href='jobs.html'">Mobile Sync</button>
+                </div>
+                <div class="card__content">
+                    <div class="active-jobs" id="active-jobs">
+                        <div class="job-item">
+                            <div class="job-item__info">
+                                <h4>2021 Honda Accord - #CLM-4891</h4>
+                                <p>Photos: 8/12 uploaded</p>
+                            </div>
+                            <div class="spinner"></div>
+                        </div>
+                        <div class="job-item">
+                            <div class="job-item__info">
+                                <h4>2019 Toyota Camry - #CLM-4902</h4>
+                                <p>Ready for summary</p>
+                            </div>
+                            <button class="btn btn--success btn--sm">Generate</button>
+                        </div>
+                        <div class="job-item">
+                            <div class="job-item__info">
+                                <h4>2020 Ford F-150 - #CLM-4876</h4>
+                                <p>Pending assignment</p>
+                            </div>
+                            <button class="btn btn--primary btn--sm">Assign</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Card -->
+            <div class="card">
+                <div class="card__header">
+                    <h3 class="card__title">Quick Actions</h3>
+                </div>
+                <div class="card__content">
+                    <div class="quick-actions">
+                        <button class="btn btn--primary btn--full mb-8" onclick="window.location.href='mileage.html'">
+                            <span>🚗</span> Calculate Mileage
+                        </button>
+                        <button class="btn btn--primary btn--full mb-8" onclick="window.location.href='routes.html'">
+                            <span>🗺️</span> Optimize Route
+                        </button>
+                        <button class="btn btn--primary btn--full" onclick="window.location.href='autoforms.html'">
+                            <span>📄</span> Auto-Fill Form
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity Card -->
+            <div class="card">
+                <div class="card__header">
+                    <h3 class="card__title">Recent Activity</h3>
+                </div>
+                <div class="card__content">
+                    <div class="activity-feed" id="activity-feed">
+                        <div class="activity-item">
+                            <div class="activity-icon activity-icon--success">✓</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Route optimized</div>
+                                <div class="activity-time">2 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon activity-icon--info">📱</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Photos synced from mobile</div>
+                                <div class="activity-time">4 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon activity-icon--warning">📄</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Form auto-filled</div>
+                                <div class="activity-time">Yesterday</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="../assets/js/helpers.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+    
+    <!-- Authentication and initialization script -->
+    <script>
+        // Authentication check
+        if (localStorage.getItem('isAuthenticated') !== 'true') {
+            window.location.href = '../login.html';
+        }
+
+        // Initialize page with user context
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeUserContext();
+            setupLogoutHandler();
+            
+            // Initialize dashboard data
+            if (typeof initializeDashboard === 'function') {
+                initializeDashboard();
+            }
+        });
+
+        function initializeUserContext() {
+            const userType = localStorage.getItem('userType') || 'demo';
+            const userEmail = localStorage.getItem('userEmail') || 'demo@example.com';
+            const userName = userType === 'demo' ? 'Demo User' : userEmail.split('@')[0];
+            
+            // Set user type attribute
+            document.body.setAttribute('data-user-type', userType);
+            
+            // Update user display
+            const userNameEl = document.getElementById('user-name');
+            const userRoleEl = document.getElementById('user-role');
+            const userAvatarEl = document.getElementById('user-avatar');
+            
+            if (userNameEl) userNameEl.textContent = userName;
+            if (userRoleEl) userRoleEl.textContent = userType === 'demo' ? 'Demo Mode' : 'Pro User';
+            if (userAvatarEl) userAvatarEl.textContent = userName.substring(0, 2).toUpperCase();
+
+            // Show/hide demo elements
+            const demoBanner = document.getElementById('demo-banner');
+            const demoNotice = document.getElementById('demo-notice');
+            
+            if (userType === 'demo') {
+                if (demoBanner) demoBanner.style.display = 'flex';
+                if (demoNotice) demoNotice.style.display = 'block';
+                updateDemoCountdown();
+            } else {
+                if (demoBanner) demoBanner.style.display = 'none';
+                if (demoNotice) demoNotice.style.display = 'none';
+            }
+        }
+
+        function updateDemoCountdown() {
+            const demoStartTime = localStorage.getItem('demoStartTime');
+            if (!demoStartTime) {
+                localStorage.setItem('demoStartTime', Date.now().toString());
+            }
+            
+            const startTime = parseInt(demoStartTime || Date.now());
+            const demoLength = 7 * 24 * 60 * 60 * 1000; // 7 days
+            const timeLeft = (startTime + demoLength) - Date.now();
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            
+            const countdownEl = document.getElementById('demo-countdown');
+            if (countdownEl) {
+                countdownEl.textContent = `${days} days, ${hours} hours remaining`;
+            }
+        }
+
+        function setupLogoutHandler() {
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    localStorage.removeItem('isAuthenticated');
+                    localStorage.removeItem('userType');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('demoStartTime');
+                    window.location.href = '../login.html';
+                });
+            }
+        }
+    </script>
+</body>
+</html>

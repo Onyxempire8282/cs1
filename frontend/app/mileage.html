@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mileage Calculator - Claim Cipher</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- Google Maps API with your restricted key -->
+    <script>
+        // Load API key from environment (will be replaced at build time)
+        window.GOOGLE_MAPS_API_KEY = 'AIzaSyDR51CGOXEyVz8Dy-6hU7kdaqbq8-CTkBs';
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR51CGOXEyVz8Dy-6hU7kdaqbq8-CTkBs&libraries=places&callback=initGoogleMaps"></script>
+</head>
+<body class="theme-dark">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar__header">
+            <div class="sidebar__logo">
+                <a href="./dashboard.html">Claim Cipher</a>
+            </div>
+        </div>
+        
+        <ul class="sidebar__nav">
+            <li class="sidebar__nav-item">
+                <a href="./dashboard.html" class="sidebar__nav-link">
+                    <span>📊</span> Dashboard
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./mileage.html" class="sidebar__nav-link sidebar__nav-link--active">
+                    <span>🚗</span> Mileage Calculator
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./routes.html" class="sidebar__nav-link">
+                    <span>🗺️</span> Route Optimizer
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./jobs.html" class="sidebar__nav-link">
+                    <span>📱</span> Mobile Sync
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./autoforms.html" class="sidebar__nav-link">
+                    <span>📄</span> AutoForms
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./comparables.html" class="sidebar__nav-link">
+                    <span>🔍</span> Comparables
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./firms.html" class="sidebar__nav-link">
+                    <span>🏢</span> Firms Directory
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./gear.html" class="sidebar__nav-link">
+                    <span>⚙️</span> Gear
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./help.html" class="sidebar__nav-link">
+                    <span>❓</span> Help
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./settings.html" class="sidebar__nav-link">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+        </ul>
+        
+        <!-- User info and logout -->
+        <div class="sidebar__footer">
+            <div class="sidebar__user" id="sidebar-user">
+                <div class="user-avatar" id="user-avatar">DU</div>
+                <div class="user-info">
+                    <div class="user-name" id="user-name">Demo User</div>
+                    <div class="user-role" id="user-role">Demo Mode</div>
+                </div>
+            </div>
+            <button class="sidebar__logout btn btn--ghost btn--sm" id="logout-btn">
+                <span>🚪</span> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Mileage Calculator</h1>
+            <p class="page-subtitle">Calculate mileage and add to your tax log</p>
+        </div>
+
+        <!-- Mileage Calculator Form -->
+        <div class="card mb-4">
+            <div class="card__header">
+                <h3 class="card__title">Calculate Trip Distance</h3>
+            </div>
+            <div class="card__content">
+                <form class="mileage-form" id="mileage-form">
+                    <div class="grid grid--2 mb-4">
+                        <div class="input-group">
+                            <label class="input-label" for="firm-select">Firm</label>
+                            <select class="input" id="firm" required>
+                                <option value="">Select a firm...</option>
+                                <option value="FirmA">AMA - $0.67/mile (50 free)</option>
+                                <option value="FirmB">A-TEAM - $0.55/mile (60 free)</option>
+                                <option value="FirmC">Claim Solution - $0.63/mile (50 free)</option>
+                                <option value="FirmD">CCS - $0.65/mile (50 free)</option>
+                                <option value="FirmE">HEA - $0.60/mile (50 free)</option>
+                                <option value="FirmF">IAS - $0.65/mile (50 free)</option>
+                                <option value="FirmG">Sedgwick - $0.67/mile (60 free)</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" for="claim-number">Claim Number (Optional)</label>
+                            <input type="text" class="input" id="claim-number" placeholder="CLM-1234">
+                        </div>
+                    </div>
+
+                    <div class="grid grid--2 mb-4">
+                        <div class="input-group">
+                            <label class="input-label" for="origin">Start Address</label>
+                            <input type="text" class="input" id="origin" value="715 SANDHILL DR, DUDLEY, NC 28333" placeholder="Enter starting address">
+                            <small class="help-text">Your home/office address</small>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" for="destination">Destination</label>
+                            <input type="text" class="input" id="destination" placeholder="Enter destination address" required>
+                            <small class="help-text">Claim inspection location</small>
+                        </div>
+                    </div>
+
+                    <div class="grid grid--2 mb-4">
+                        <div class="input-group">
+                            <label class="input-label" for="totalMiles">Total Miles (Round Trip)</label>
+                            <input type="number" class="input" id="totalMiles" step="0.1" placeholder="Auto-calculated" readonly>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label" for="trip-type">Trip Type</label>
+                            <select class="input" id="trip-type">
+                                <option value="round-trip">Round Trip (Default)</option>
+                                <option value="one-way">One Way</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2 mb-4">
+                        <button type="button" class="btn btn--primary" onclick="calculateDistance()">
+                            🗺️ Calculate Distance
+                        </button>
+                        <button type="button" class="btn btn--outline" onclick="calculateBilling()">
+                            💰 Calculate Billing
+                        </button>
+                        <button type="reset" class="btn btn--outline">Clear Form</button>
+                    </div>
+
+                    <!-- Results Display -->
+                    <div class="mileage-result" id="mileage-result">
+                        <div class="card card--success" style="margin: 0;">
+                            <div class="card__content">
+                                <div class="kpi" style="text-align: center;">
+                                    <div class="kpi__label">Billing Calculation</div>
+                                    <div class="kpi__value" id="billingResult" style="color: var(--color-success-600);">
+                                        Enter destination and calculate distance first
+                                    </div>
+                                </div>
+                                <div class="flex gap-2 justify-center mt-3">
+                                    <button type="button" class="btn btn--outline btn--sm" onclick="copyResult()">
+                                        📋 Copy Result
+                                    </button>
+                                    <button type="button" class="btn btn--success btn--sm" onclick="saveToLog()">
+                                        💾 Save to Log
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Google Maps Display -->
+        <div class="card mb-4">
+            <div class="card__header">
+                <h3 class="card__title">Route Map</h3>
+            </div>
+            <div class="card__content" style="padding: 0;">
+                <div id="map" style="width: 100%; height: 400px; border-radius: var(--radius-lg);"></div>
+            </div>
+        </div>
+
+        <!-- Tax Log -->
+        <div class="card">
+            <div class="card__header">
+                <h3 class="card__title">Recent Tax Log Entries</h3>
+                <div class="flex gap-2">
+                    <button class="btn btn--outline btn--sm" id="import-csv">📤 Import CSV</button>
+                    <button class="btn btn--outline btn--sm" id="export-csv">📥 Export CSV</button>
+                </div>
+            </div>
+            
+            <div class="card__content" style="padding: 0;">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Claim #</th>
+                                <th>Route</th>
+                                <th>Miles</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tax-log-tbody">
+                            <tr>
+                                <td>Aug 9, 2025</td>
+                                <td>CLM-4891</td>
+                                <td>Home → 123 Insurance Way</td>
+                                <td>23.1</td>
+                                <td class="text-success">$15.48</td>
+                                <td>
+                                    <button class="btn btn--ghost btn--sm">Edit</button>
+                                    <button class="btn btn--ghost btn--sm">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Aug 9, 2025</td>
+                                <td>CLM-4902</td>
+                                <td>123 Insurance Way → 456 Claim St</td>
+                                <td>18.7</td>
+                                <td class="text-success">$12.53</td>
+                                <td>
+                                    <button class="btn btn--ghost btn--sm">Edit</button>
+                                    <button class="btn btn--ghost btn--sm">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tax Log Summary -->
+            <div class="card__footer">
+                <div class="grid grid--3">
+                    <div class="kpi kpi--sm">
+                        <div class="kpi__label">Total Miles</div>
+                        <div class="kpi__value" id="total-miles-summary">247.3</div>
+                    </div>
+                    <div class="kpi kpi--sm">
+                        <div class="kpi__label">Total Amount</div>
+                        <div class="kpi__value" id="total-amount-summary">$165.69</div>
+                    </div>
+                    <div class="kpi kpi--sm">
+                        <div class="kpi__label">Avg per Trip</div>
+                        <div class="kpi__value" id="avg-trip-summary">20.6 mi</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden file input for CSV import -->
+        <input type="file" id="csv-file-input" accept=".csv" style="display: none;">
+    </main>
+
+    <!-- Scripts -->
+    <script src="../assets/js/helpers.js"></script>
+    <script src="../assets/js/mileage.js"></script>
+    
+    <!-- Authentication and initialization script -->
+    <script>
+        // Authentication check
+        if (localStorage.getItem('isAuthenticated') !== 'true') {
+            window.location.href = '../login.html';
+        }
+
+        // Initialize page with user context
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeUserContext();
+            setupLogoutHandler();
+        });
+
+        function initializeUserContext() {
+            const userType = localStorage.getItem('userType') || 'demo';
+            const userEmail = localStorage.getItem('userEmail') || 'demo@example.com';
+            const userName = userType === 'demo' ? 'Demo User' : userEmail.split('@')[0];
+            
+            // Set user type attribute
+            document.body.setAttribute('data-user-type', userType);
+            
+            // Update user display
+            const userNameEl = document.getElementById('user-name');
+            const userRoleEl = document.getElementById('user-role');
+            const userAvatarEl = document.getElementById('user-avatar');
+            
+            if (userNameEl) userNameEl.textContent = userName;
+            if (userRoleEl) userRoleEl.textContent = userType === 'demo' ? 'Demo Mode' : 'Pro User';
+            if (userAvatarEl) userAvatarEl.textContent = userName.substring(0, 2).toUpperCase();
+        }
+
+        function setupLogoutHandler() {
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    localStorage.removeItem('isAuthenticated');
+                    localStorage.removeItem('userType');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('demoStartTime');
+                    window.location.href = '../login.html';
+                });
+            }
+        }
+    </script>
+</body>
+</html>

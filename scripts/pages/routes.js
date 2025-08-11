@@ -789,4 +789,17 @@ class RoutesPage {
     // Cleanup method
     destroy() {
         // Remove event listeners and clean up
-        console.log('
+        console.log('🗺️ Routes page destroyed');
+    }
+}
+
+// Initialize routes page when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    const routesPage = new RoutesPage();
+    routesPage.init();
+    
+    // Make it globally accessible for debugging
+    window.routesPage = routesPage;
+});
+
+export default RoutesPage;

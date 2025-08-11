@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim Cipher - Loading...</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="theme-dark">
+    <div class="loading-container">
+        <div class="logo">Claim Cipher</div>
+        <div class="loading-text">Checking authentication...</div>
+        <div class="spinner"></div>
+    </div>
+    
+    <script>
+        // ALWAYS redirect to login page as primary entry point
+        // This ensures users must authenticate every time they access the site
+        (function() {
+            console.log('🔐 Index.html: Redirecting to login page...');
+            window.location.href = './login.html';
+        })();
+    </script>
+</body>
+</html>

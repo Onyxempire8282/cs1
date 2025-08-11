@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route Optimizer - Claim Cipher</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="theme-dark">
+    <!-- Demo Banner will be injected by navigation.js -->
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar__header">
+            <div class="sidebar__logo">
+                <a href="./dashboard.html">Claim Cipher</a>
+            </div>
+        </div>
+        
+        <ul class="sidebar__nav">
+            <li class="sidebar__nav-item">
+                <a href="./dashboard.html" class="sidebar__nav-link">
+                    <span>📊</span> Dashboard
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./mileage.html" class="sidebar__nav-link">
+                    <span>🚗</span> Mileage Calculator
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./routes.html" class="sidebar__nav-link sidebar__nav-link--active">
+                    <span>🗺️</span> Route Optimizer
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./jobs.html" class="sidebar__nav-link">
+                    <span>📱</span> Mobile Sync
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./autoforms.html" class="sidebar__nav-link">
+                    <span>📄</span> AutoForms
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./comparables.html" class="sidebar__nav-link">
+                    <span>🔍</span> Comparables
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./firms.html" class="sidebar__nav-link">
+                    <span>🏢</span> Firms Directory
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./gear.html" class="sidebar__nav-link">
+                    <span>⚙️</span> Gear
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./help.html" class="sidebar__nav-link">
+                    <span>❓</span> Help
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./settings.html" class="sidebar__nav-link">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+        </ul>
+        
+        <!-- User info and logout -->
+        <div class="sidebar__footer">
+            <div class="sidebar__user" id="sidebar-user">
+                <div class="user-avatar" id="user-avatar">DU</div>
+                <div class="user-info">
+                    <div class="user-name" id="user-name">Demo User</div>
+                    <div class="user-role" id="user-role">Demo Mode</div>
+                </div>
+            </div>
+            <button class="sidebar__logout btn btn--ghost btn--sm" id="logout-btn">
+                <span>🚪</span> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Route Optimizer</h1>
+            <p class="page-subtitle">Group stops within 50-mile radius and optimize your daily routes</p>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card__content">
+                <div class="grid grid--2 mb-4">
+                    <div class="input-group">
+                        <label class="input-label">Start Address</label>
+                        <input type="text" class="input" value="Home" placeholder="Enter starting location">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Route Rules</label>
+                        <div class="flex items-center gap-2">
+                            <span class="badge" id="radius-badge">Max 50mi radius</span>
+                            <span class="badge" id="stops-badge">Max 10 stops/day</span>
+                            <span class="badge" id="spillover-badge">Spillover: Tomorrow</span>
+                            <button class="btn btn--outline btn--sm" id="edit-rules-btn">Edit Rules</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group mb-4">
+                    <label class="input-label">Add Stops</label>
+                    <div class="flex gap-2">
+                        <input type="text" class="input" placeholder="Enter address or claim location" id="new-stop-address" style="flex: 1;">
+                        <input type="text" class="input" placeholder="Claim #" id="new-stop-claim" style="width: 120px;">
+                        <button class="btn btn--primary" id="add-stop-btn">Add Stop</button>
+                    </div>
+                </div>
+
+                <div class="flex gap-2 justify-between">
+                    <button class="btn btn--outline" id="import-csv-btn">📤 Import CSV</button>
+                    <button class="btn btn--primary" id="optimize-routes-btn">🎯 Optimize Routes</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card__content" style="padding: var(--space-4); text-align: center; color: var(--color-text-muted);">
+                <div style="font-size: 48px; margin-bottom: var(--space-2);">🗺️</div>
+                <div>Interactive map will display optimized routes with color-coded polylines</div>
+            </div>
+        </div>
+
+        <!-- Route Optimization Results -->
+        <div class="route-results" id="route-results" style="display: none;">
+            <div class="card">
+                <div class="card__header">
+                    <div class="route-tabs" id="route-tabs">
+                        <!-- Dynamic tabs will be inserted here -->
+                    </div>
+                </div>
+                
+                <div class="card__content">
+                    <div class="route-day-header mb-4">
+                        <h3 id="current-day-title">Day 1</h3>
+                        <div class="route-summary" id="route-summary">
+                            <span id="total-miles">0 miles</span> • 
+                            <span id="total-time">0 hours</span> • 
+                            <span id="total-amount">$0.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="route-stops-container" id="route-stops-container">
+                        <!-- Route stops will be dynamically inserted here -->
+                    </div>
+                </div>
+                
+                <div class="card__footer">
+                    <div class="flex gap-2">
+                        <button class="btn btn--outline" id="sync-calendar-btn">📅 Sync to Calendar</button>
+                        <button class="btn btn--outline" id="export-pdf-btn">📄 Export PDF</button>
+                        <button class="btn btn--primary" id="save-route-btn">💾 Save Route</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rules Modal -->
+        <div class="modal" id="rules-modal" style="display: none;">
+            <div class="modal-backdrop" id="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Edit Route Rules</h3>
+                    <button class="btn btn--ghost btn--sm" id="close-modal">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label class="input-label">Maximum Radius (miles)</label>
+                        <input type="number" class="input" id="max-radius" value="50" min="1" max="100">
+                        <small class="help-text">Group stops within this radius</small>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Maximum Stops Per Day</label>
+                        <input type="number" class="input" id="max-stops" value="10" min="1" max="20">
+                        <small class="help-text">Limit daily stops for manageable routes</small>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Spillover Strategy</label>
+                        <select class="input" id="spillover-strategy">
+                            <option value="tomorrow">Tomorrow</option>
+                            <option value="next-available">Next Available Day</option>
+                            <option value="manual">Manual Assignment</option>
+                        </select>
+                        <small class="help-text">How to handle excess stops</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn--outline" id="cancel-rules">Cancel</button>
+                    <button class="btn btn--primary" id="save-rules">Save Rules</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="../assets/js/helpers.js"></script>
+    <script src="../assets/js/routes.js"></script>
+    
+    <!-- Authentication and initialization script -->
+    <script>
+        // Authentication check
+        if (localStorage.getItem('isAuthenticated') !== 'true') {
+            window.location.href = '../login.html';
+        }
+
+        // Initialize page with user context
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeUserContext();
+            setupLogoutHandler();
+            
+            // Initialize routes functionality
+            if (typeof initializeRoutes === 'function') {
+                initializeRoutes();
+            }
+        });
+
+        function initializeUserContext() {
+            const userType = localStorage.getItem('userType') || 'demo';
+            const userEmail = localStorage.getItem('userEmail') || 'demo@example.com';
+            const userName = userType === 'demo' ? 'Demo User' : userEmail.split('@')[0];
+            
+            // Set user type attribute
+            document.body.setAttribute('data-user-type', userType);
+            
+            // Update user display
+            const userNameEl = document.getElementById('user-name');
+            const userRoleEl = document.getElementById('user-role');
+            const userAvatarEl = document.getElementById('user-avatar');
+            
+            if (userNameEl) userNameEl.textContent = userName;
+            if (userRoleEl) userRoleEl.textContent = userType === 'demo' ? 'Demo Mode' : 'Pro User';
+            if (userAvatarEl) userAvatarEl.textContent = userName.substring(0, 2).toUpperCase();
+        }
+
+        function setupLogoutHandler() {
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    localStorage.removeItem('isAuthenticated');
+                    localStorage.removeItem('userType');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('demoStartTime');
+                    window.location.href = '../login.html';
+                });
+            }
+        }
+    </script>
+</body>
+</html>

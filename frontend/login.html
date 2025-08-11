@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim Cipher - Login</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="theme-dark">
+    <div class="login-container">
+        <div class="card card--elevated">
+            <div class="login-header">
+                <h1 class="logo">Claim Cipher</h1>
+                <p class="login-subtitle">Your AI-powered claims management platform</p>
+            </div>
+            
+            <form class="login-form" id="loginForm">
+                <div class="input-group">
+                    <label for="email" class="input-label">Email</label>
+                    <input type="email" id="email" name="email" class="input" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="password" class="input-label">Password</label>
+                    <input type="password" id="password" name="password" class="input" placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit" class="btn btn--primary btn--full-width">
+                    Sign In
+                </button>
+                
+                <div class="login-divider">
+                    <span>or</span>
+                </div>
+                
+                <button type="button" class="btn btn--outline btn--full-width" id="demoButton">
+                    Try Demo Mode
+                </button>
+                
+                <div class="login-footer">
+                    <small>Demo credentials: admin / password</small>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const demoButton = document.getElementById('demoButton');
+
+            // Handle form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                // Check for admin credentials
+                if (email === 'admin' || email === 'admin@example.com') {
+                    if (password === 'password') {
+                        // Set master login
+                        localStorage.setItem('isAuthenticated', 'true');
+                        localStorage.setItem('userType', 'master');
+                        localStorage.setItem('userEmail', email);
+                        
+                        console.log('✅ Admin login successful');
+                        window.location.href = './app/dashboard.html';
+                        return;
+                    }
+                }
+                
+                // Invalid credentials
+                alert('Invalid credentials. Try admin / password or use Demo Mode.');
+            });
+
+            // Handle demo mode
+            demoButton.addEventListener('click', function() {
+                localStorage.setItem('isAuthenticated', 'true');
+                localStorage.setItem('userType', 'demo');
+                localStorage.setItem('userEmail', 'demo@example.com');
+                
+                console.log('✅ Demo mode activated');
+                window.location.href = './app/dashboard.html';
+            });
+            
+            // Check if already logged in
+            if (localStorage.getItem('isAuthenticated') === 'true') {
+                console.log('🔄 Already authenticated, redirecting...');
+                window.location.href = './app/dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>

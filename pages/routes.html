@@ -18,11 +18,7 @@
     <link rel="stylesheet" href="../styles/index.css">
 </head>
 <body>
-    <!-- Demo Banner -->
-    <div class="demo-banner">
-         Pro Demo Active - <span id="demo-countdown">6 days, 14 hours remaining</span>
-        <button class="btn btn--primary btn--small" style="margin-left: 16px;">Upgrade Now</button>
-    </div>
+    <!-- Demo Banner will be injected by navigation.js -->
 
     <!-- Sidebar Navigation -->
     <!-- Navigation will be injected by navigation.js -->
@@ -46,10 +42,10 @@
                         <div class="form-group">
                             <label class="form-label">Route Rules</label>
                             <div class="rule-badges">
-                                <span class="badge">Max 50mi radius</span>
-                                <span class="badge">Max 10 stops/day</span>
-                                <span class="badge">Spillover: Tomorrow</span>
-                                <button class="btn btn--secondary btn--small">Edit Rules</button>
+                                <span class="badge" id="radius-badge">Max 50mi radius</span>
+                                <span class="badge" id="stops-badge">Max 10 stops/day</span>
+                                <span class="badge" id="spillover-badge">Spillover: Tomorrow</span>
+                                <button class="btn btn--secondary btn--small" id="edit-rules-btn">Edit Rules</button>
                             </div>
                         </div>
                     </div>
@@ -66,8 +62,8 @@
                     </div>
 
                     <div class="route-actions">
-                        <button class="btn btn--secondary">Import from CSV</button>
-                        <button class="btn btn--primary" id="optimize-routes-btn">Optimize Routes</button>
+                        <button class="btn btn--secondary" id="import-csv-btn">📤 Import CSV</button>
+                        <button class="btn btn--primary" id="optimize-routes-btn">🎯 Optimize Routes</button>
                     </div>
                 </div>
             </div>
@@ -78,6 +74,109 @@
                     <div>Interactive map will display optimized routes with color-coded polylines</div>
                 </div>
             </div>
+
+            <!-- Route Optimization Results -->
+            <div class="route-results" id="route-results" style="display: none;">
+                <div class="route-tabs" id="route-tabs">
+                    <!-- Dynamic tabs will be inserted here -->
+                </div>
+                
+                <div class="route-day-content">
+                    <div class="route-day-header">
+                        <h3 id="current-day-title">Day 1</h3>
+                        <div class="route-summary" id="route-summary">
+                            <span id="total-miles">0 miles</span> • 
+                            <span id="total-time">0 hours</span> • 
+                            <span id="total-amount">$0.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="route-stops-container" id="route-stops-container">
+                        <!-- Route stops will be dynamically inserted here -->
+                    </div>
+                </div>
+                
+                <div class="route-actions-secondary">
+                    <button class="btn btn--secondary" id="sync-calendar-btn">📅 Sync to Calendar</button>
+                    <button class="btn btn--secondary" id="export-pdf-btn">📄 Export PDF</button>
+                    <button class="btn btn--secondary" id="clear-stops-btn">🗑️ Clear All</button>
+                </div>
+            </div>
+
+            <!-- Route Overview Card -->
+            <div class="card">
+                <div class="card__header">
+                    <h3>Route Overview</h3>
+                </div>
+                <div class="route-overview">
+                    <div class="overview-stats">
+                        <div class="overview-stat">
+                            <span class="stat-number" id="total-days">0</span>
+                            <span class="stat-label">Days</span>
+                        </div>
+                        <div class="overview-stat">
+                            <span class="stat-number" id="total-stops-count">0</span>
+                            <span class="stat-label">Total Stops</span>
+                        </div>
+                        <div class="overview-stat">
+                            <span class="stat-number" id="overview-total-miles">0</span>
+                            <span class="stat-label">Miles</span>
+                        </div>
+                    </div>
+                    <div class="overview-rules">
+                        <div class="rule-item">
+                            <span class="rule-label">Max Radius:</span>
+                            <span id="current-radius">50 miles</span>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-label">Max Stops/Day:</span>
+                            <span id="current-max-stops">10 stops</span>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-label">Spillover:</span>
+                            <span id="current-spillover">tomorrow</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rules Modal -->
+            <div class="modal" id="rules-modal" style="display: none;">
+                <div class="modal__content">
+                    <div class="modal__header">
+                        <h3>Route Rules</h3>
+                        <button class="modal__close" id="close-rules-modal">&times;</button>
+                    </div>
+                    <form id="rules-form" class="modal__body">
+                        <div class="form-group">
+                            <label class="form-label" for="max-radius">Maximum Radius (miles)</label>
+                            <input type="number" id="max-radius" name="max-radius" class="form-input" min="10" max="200" value="50">
+                            <div class="form-help">Group stops within this radius (10-200 miles)</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="max-stops">Maximum Stops per Day</label>
+                            <input type="number" id="max-stops" name="max-stops" class="form-input" min="1" max="30" value="10">
+                            <div class="form-help">Limit daily stops for optimal efficiency (1-30 stops)</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="spillover-rule">Spillover Rule</label>
+                            <select id="spillover-rule" name="spillover-rule" class="form-select">
+                                <option value="tomorrow">Tomorrow</option>
+                                <option value="next-week">Next Week</option>
+                                <option value="skip">Skip</option>
+                            </select>
+                            <div class="form-help">How to handle extra stops beyond daily limit</div>
+                        </div>
+                    </form>
+                    <div class="modal__footer">
+                        <button class="btn btn--secondary" id="cancel-rules-btn">Cancel</button>
+                        <button class="btn btn--primary" id="save-rules-btn">Save Rules</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CSV Import (hidden) -->
+            <input type="file" id="route-csv-input" accept=".csv" style="display: none;">
         </div>
     </main>
 
