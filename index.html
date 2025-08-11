@@ -51,21 +51,11 @@
         }
     </style>
     <script>
-        // Immediate authentication check and redirect
+        // ALWAYS redirect to login page as primary entry point
+        // This ensures users must authenticate every time they access the site
         (function() {
-            const auth = JSON.parse(localStorage.getItem('claimcipher_auth') || '{}');
-            
-            if (auth.authenticated) {
-                // Check if demo expired
-                if (auth.demoMode && auth.demoExpiry && Date.now() > auth.demoExpiry) {
-                    localStorage.removeItem('claimcipher_auth');
-                    window.location.href = './login.html';
-                } else {
-                    window.location.href = './pages/dashboard.html';
-                }
-            } else {
-                window.location.href = './login.html';
-            }
+            console.log('🔐 Index.html: Redirecting to login page...');
+            window.location.href = './login.html';
         })();
     </script>
 </head>

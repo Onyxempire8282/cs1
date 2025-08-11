@@ -529,7 +529,7 @@
                         showSuccess(successMessage);
                         
                         setTimeout(() => {
-                            window.location.href = 'index.html';
+                            window.location.href = 'pages/dashboard.html';
                         }, 1500);
                     } else {
                         showError('Invalid email or password. Try the demo mode or create an account.');
@@ -604,7 +604,7 @@
                     showSuccess('🎉 Account created successfully! Welcome to Claim Cipher!');
                     
                     setTimeout(() => {
-                        window.location.href = 'index.html';
+                        window.location.href = 'pages/dashboard.html';
                     }, 2000);
                     
                 } catch (error) {
@@ -631,7 +631,7 @@
                     if (result.success) {
                         showSuccess('🚀 Demo mode activated! Exploring Claim Cipher...');
                         setTimeout(() => {
-                            window.location.href = 'index.html';
+                            window.location.href = 'pages/dashboard.html';
                         }, 1500);
                     }
                     
@@ -722,7 +722,8 @@
             if (auth.demoMode && auth.demoExpiry && Date.now() > auth.demoExpiry) {
                 localStorage.removeItem('claimcipher_auth');
             } else {
-                window.location.href = 'index.html';
+                // Redirect to dashboard, not index.html
+                window.location.href = 'pages/dashboard.html';
             }
         }
 
