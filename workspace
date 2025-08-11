@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim Cipher - Insurance Adjuster Tools</title>
+    <style>
+        /* Design System - 8pt grid, dark theme */
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --border: #475569;
+            --border-light: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --grid: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Layout Components */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 calc(var(--grid) * 3);
+        }
+
+        .grid {
+            display: grid;
+            gap: calc(var(--grid) * 3);
+        }
+
+        .grid-2 { grid-template-columns: 1fr 1fr; }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: calc(var(--grid) * 2) 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: calc(var(--grid) * 4);
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: calc(var(--grid) * 1);
+            padding: calc(var(--grid) * 3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .card__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: calc(var(--grid) * 2);
+        }
+
+        .card__title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: calc(var(--grid) * 1);
+            padding: calc(var(--grid) * 1.5) calc(var(--grid) * 3);
+            border: none;
+            border-radius: calc(var(--grid) * 0.5);
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .btn--primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn--primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn--secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn--success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn--small {
+            padding: calc(var(--grid) * 1) calc(var(--grid) * 2);
+            font-size: 12px;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: calc(var(--grid) * 3);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: calc(var(--grid) * 1);
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: calc(var(--grid) * 1.5);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: calc(var(--grid) * 0.5);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: calc(var(--grid) * 0.5) calc(var(--grid) * 1.5);
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border-radius: calc(var(--grid) * 2);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge--success { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .badge--warning { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+        .badge--error { background: rgba(239, 68, 68, 0.2); color: var(--error); }
+        .badge--pro { background: rgba(59, 130, 246, 0.2); color: var(--primary); }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            border-right: 1px solid var(--border);
+            padding: calc(var(--grid) * 3);
+            overflow-y: auto;
+            z-index: 50;
+        }
+
+        .sidebar__logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: calc(var(--grid) * 4);
+        }
+
+        .sidebar__nav {
+            list-style: none;
+        }
+
+        .sidebar__nav-item {
+            margin-bottom: calc(var(--grid) * 1);
+        }
+
+        .sidebar__nav-link {
+            display: flex;
+            align-items: center;
+            gap: calc(var(--grid) * 2);
+            padding: calc(var(--grid) * 1.5);
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: calc(var(--grid) * 0.5);
+            transition: all 0.2s;
+        }
+
+        .sidebar__nav-link:hover,
+        .sidebar__nav-link.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        /* Main Content */
+        .main {
+            margin-left: 260px;
+            padding: calc(var(--grid) * 3);
+            min-height: 100vh;
+        }
+
+        .main__header {
+            margin-bottom: calc(var(--grid) * 4);
+        }
+
+        .main__title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: calc(var(--grid) * 1);
+        }
+
+        .main__subtitle {
+            color: var(--text-secondary);
+        }
+
+        /* Demo Banner */
+        .demo-banner {
+            background: linear-gradient(90deg, var(--warning), #f97316);
+            color: white;
+            padding: calc(var(--grid) * 2);
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: calc(var(--grid) * 3);
+            border-radius: calc(var(--grid) * 1);
+        }
+
+        /* Stats Grid */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: calc(var(--grid) * 3);
+            margin-bottom: calc(var(--grid) * 4);
+        }
+
+        .stat {
+            background: var(--bg-card);
+            padding: calc(var(--grid) * 3);
+            border-radius: calc(var(--grid) * 1);
+            text-align: center;
+        }
+
+        .stat__value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: calc(var(--grid) * 1);
+        }
+
+        .stat__label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Route Optimizer Specific */
+        .route-tabs {
+            display: flex;
+            gap: calc(var(--grid) * 1);
+            margin-bottom: calc(var(--grid) * 3);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .route-tab {
+            padding: calc(var(--grid) * 2);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .route-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .route-stops {
+            background: var(--bg-card);
+            border-radius: calc(var(--grid) * 1);
+            overflow: hidden;
+        }
+
+        .route-stop {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: calc(var(--grid) * 2);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+
+        .route-stop:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .route-stop:last-child {
+            border-bottom: none;
+        }
+
+        .route-stop__info h4 {
+            color: var(--text-primary);
+            margin-bottom: calc(var(--grid) * 0.5);
+        }
+
+        .route-stop__info p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Map Placeholder */
+        .map-container {
+            height: 400px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: calc(var(--grid) * 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            margin-bottom: calc(var(--grid) * 3);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus states */
+        *:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* Loading states */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-top: 2px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            top: calc(var(--grid) * 3);
+            right: calc(var(--grid) * 3);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: calc(var(--grid) * 1);
+            padding: calc(var(--grid) * 2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transform: translateX(100%);
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        /* Feature-specific styles */
+        .mileage-calc {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: calc(var(--grid) * 3);
+            align-items: end;
+        }
+
+        .pdf-preview {
+            border: 1px solid var(--border);
+            border-radius: calc(var(--grid) * 1);
+            height: 600px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+
+        .job-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: calc(var(--grid) * 2);
+        }
+
+        .job-photo {
+            aspect-ratio: 1;
+            background: var(--bg-secondary);
+            border-radius: calc(var(--grid) * 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        /* Animation utilities */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .slide-up {
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Banner -->
+    <div class="demo-banner">
+        🚀 Pro Demo Active - <span id="demo-countdown">6 days, 14 hours remaining</span>
+        <button class="btn btn--primary btn--small" style="margin-left: 16px;">Upgrade Now</button>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="sidebar__logo">Claim Cipher</div>
+        <ul class="sidebar__nav">
+            <li class="sidebar__nav-item">
+                <a href="#dashboard" class="sidebar__nav-link active">
+                    <span>📊</span> Dashboard
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="#mileage" class="sidebar__nav-link">
+                    <span>🚗</span> Mileage Calculator
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="#routes" class="sidebar__nav-link">
+                    <span>🗺️</span> Route Optimizer
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="#jobs" class="sidebar__nav-link">
+                    <span>📱</span> Mobile Sync
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="#autoforms" class="sidebar__nav-link">
+                    <span>📄</span> AutoForms
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="#comps" class="sidebar__nav-link">
+                    <span>🔍</span> Comparables
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="#firms" class="sidebar__nav-link">
+                    <span>🏢</span> Firms Directory
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="#gear" class="sidebar__nav-link">
+                    <span>🛠️</span> Gear
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="#help" class="sidebar__nav-link">
+                    <span>❓</span> Help
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="#settings" class="sidebar__nav-link">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main">
+        <!-- Dashboard View -->
+        <div id="dashboard-view" class="view active">
+            <header class="main__header">
+                <h1 class="main__title">Dashboard</h1>
+                <p class="main__subtitle">Welcome back! Here's your activity overview.</p>
+            </header>
+
+            <!-- Stats Overview -->
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat__value">247</div>
+                    <div class="stat__label">Miles This Month</div>
+                </div>
+                <div class="stat">
+                    <div class="stat__value">18</div>
+                    <div class="stat__label">Routes Optimized</div>
+                </div>
+                <div class="stat">
+                    <div class="stat__value">42</div>
+                    <div class="stat__label">Jobs Completed</div>
+                </div>
+                <div class="stat">
+                    <div class="stat__value">$1,847</div>
+                    <div class="stat__label">Total Earnings</div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">Recent Routes</h3>
+                        <a href="#routes" class="btn btn--secondary btn--small">View All</a>
+                    </div>
+                    <div class="route-stops">
+                        <div class="route-stop">
+                            <div class="route-stop__info">
+                                <h4>Downtown Route - Aug 9</h4>
+                                <p>8 stops • 47 miles • 3.2 hours</p>
+                            </div>
+                            <span class="badge badge--success">Completed</span>
+                        </div>
+                        <div class="route-stop">
+                            <div class="route-stop__info">
+                                <h4>Northside Loop - Aug 8</h4>
+                                <p>12 stops • 63 miles • 4.1 hours</p>
+                            </div>
+                            <span class="badge badge--success">Completed</span>
+                        </div>
+                        <div class="route-stop">
+                            <div class="route-stop__info">
+                                <h4>Weekend Claims - Aug 10</h4>
+                                <p>5 stops • 28 miles • 2.0 hours</p>
+                            </div>
+                            <span class="badge badge--warning">Planned</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">Active Jobs</h3>
+                        <a href="#jobs" class="btn btn--secondary btn--small">Mobile Sync</a>
+                    </div>
+                    <div class="route-stops">
+                        <div class="route-stop">
+                            <div class="route-stop__info">
+                                <h4>2021 Honda Accord - #CLM-4891</h4>
+                                <p>Photos: 8/12 uploaded</p>
+                            </div>
+                            <div class="spinner"></div>
+                        </div>
+                        <div class="route-stop">
+                            <div class="route-stop__info">
+                                <h4>2019 Toyota Camry - #CLM-4902</h4>
+                                <p>Ready for summary</p>
+                            </div>
+                            <button class="btn btn--success btn--small">Generate</button>
+                        </div>
+                        <div class="route-stop">
+                            <div class="route-stop__info">
+                                <h4>2020 Ford F-150 - #CLM-4876</h4>
+                                <p>Pending assignment</p>
+                            </div>
+                            <button class="btn btn--primary btn--small">Assign</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mileage Calculator View -->
+        <div id="mileage-view" class="view" style="display: none;">
+            <header class="main__header">
+                <h1 class="main__title">Mileage Calculator</h1>
+                <p class="main__subtitle">Calculate mileage and add to your tax log</p>
+            </header>
+
+            <div class="card">
+                <form class="mileage-calc">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Firm</label>
+                            <select class="form-input">
+                                <option>Sedgwick Claims - $0.67/mile</option>
+                                <option>ACD Adjusters - $0.62/mile</option>
+                                <option>Independent - $0.70/mile</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-2">
+                            <div class="form-group">
+                                <label class="form-label">Start Address</label>
+                                <input type="text" class="form-input" placeholder="123 Main St, City, State">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Destination</label>
+                                <input type="text" class="form-input" placeholder="456 Oak Ave, City, State">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-2">
+                            <div class="form-group">
+                                <label class="form-label">Claim Number (Optional)</label>
+                                <input type="text" class="form-input" placeholder="CLM-1234">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Trip Type</label>
+                                <select class="form-input">
+                                    <option>Round Trip</option>
+                                    <option>One Way</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="align-self: start;">
+                        <button type="button" class="btn btn--primary" style="width: 120px; margin-bottom: 16px;">Calculate</button>
+                        
+                        <div class="card" style="background: var(--bg-secondary); padding: 24px; text-align: center;">
+                            <div style="font-size: 24px; font-weight: 700; margin-bottom: 16px;">$50<span style="font-size: 14px; font-weight: 400;">/month</span></div>
+                        <ul style="list-style: none; font-size: 14px; color: var(--text-secondary);">
+                            <li style="margin-bottom: 4px;">✓ Everything in Basic</li>
+                            <li style="margin-bottom: 4px;">✓ Calendar Sync</li>
+                            <li style="margin-bottom: 4px;">✓ Mobile Sync</li>
+                            <li style="margin-bottom: 4px;">✓ Comparables</li>
+                            <li style="margin-bottom: 4px;">✓ CSV Automations</li>
+                        </ul>
+                        <button class="btn btn--success btn--small" style="width: 100%; margin-top: 16px;">Current Plan</button>
+                    </div>
+
+                    <div style="padding: 24px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-secondary);">
+                        <h4 style="margin-bottom: 8px;">Master</h4>
+                        <div style="font-size: 24px; font-weight: 700; margin-bottom: 16px;">Contact<span style="font-size: 14px; font-weight: 400;"> Us</span></div>
+                        <ul style="list-style: none; font-size: 14px; color: var(--text-secondary);">
+                            <li style="margin-bottom: 4px;">✓ Everything in Pro</li>
+                            <li style="margin-bottom: 4px;">✓ Unlimited Access</li>
+                            <li style="margin-bottom: 4px;">✓ Priority Support</li>
+                            <li style="margin-bottom: 4px;">✓ Custom Features</li>
+                        </ul>
+                        <button class="btn btn--secondary btn--small" style="width: 100%; margin-top: 16px;">Contact Sales</button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 24px; padding: 16px; background: var(--warning); background: rgba(245, 158, 11, 0.1); border: 1px solid var(--warning); border-radius: 8px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 24px;">⏰</span>
+                        <div>
+                            <div style="font-weight: 600; color: var(--warning);">Demo Expires in 6 days, 14 hours</div>
+                            <div style="color: var(--text-secondary); font-size: 14px;">Upgrade now to keep your Pro features and data</div>
+                        </div>
+                        <button class="btn btn--warning">Upgrade to Pro</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Views (Comparables, Firms Directory, Help, Gear) can be shown when nav is clicked -->
+        
+    </main>
+
+    <!-- Toast Notification (hidden by default) -->
+    <div class="toast" id="toast">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <span>✓</span>
+            <div>
+                <div style="font-weight: 600;">Success!</div>
+                <div style="font-size: 14px; color: var(--text-secondary);">Route optimized successfully</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        // Demo countdown timer
+        function updateDemoCountdown() {
+            const countdownEl = document.getElementById('demo-countdown');
+            if (countdownEl) {
+                // Simulate countdown
+                const now = new Date();
+                const expiry = new Date(now.getTime() + (6 * 24 + 14) * 60 * 60 * 1000); // 6 days, 14 hours
+                const diff = expiry - now;
+                
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                
+                countdownEl.textContent = `${days} days, ${hours} hours remaining`;
+            }
+        }
+
+        // Navigation handling
+        function showView(viewId) {
+            // Hide all views
+            document.querySelectorAll('.view').forEach(view => {
+                view.style.display = 'none';
+            });
+            
+            // Show selected view
+            const targetView = document.getElementById(viewId + '-view');
+            if (targetView) {
+                targetView.style.display = 'block';
+                targetView.classList.add('fade-in');
+            }
+
+            // Update active nav link
+            document.querySelectorAll('.sidebar__nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            const activeLink = document.querySelector(`[href="#${viewId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+        }
+
+        // Route tab switching
+        function switchRouteTab(tabIndex) {
+            document.querySelectorAll('.route-tab').forEach((tab, index) => {
+                tab.classList.toggle('active', index === tabIndex);
+            });
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update demo countdown every minute
+            updateDemoCountdown();
+            setInterval(updateDemoCountdown, 60000);
+
+            // Navigation click handlers
+            document.querySelectorAll('.sidebar__nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    const viewId = href.substring(1); // Remove #
+                    showView(viewId);
+                });
+            });
+
+            // Route tab click handlers
+            document.querySelectorAll('.route-tab').forEach((tab, index) => {
+                tab.addEventListener('click', () => switchRouteTab(index));
+            });
+
+            // Form interactions
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const btnText = this.textContent.trim();
+                    
+                    // Simulate various actions
+                    if (btnText.includes('Calculate')) {
+                        showToast('Mileage calculated successfully');
+                    } else if (btnText.includes('Optimize')) {
+                        showToast('Route optimized successfully');
+                    } else if (btnText.includes('Save')) {
+                        showToast('Settings saved successfully');
+                    } else if (btnText.includes('Generate')) {
+                        showToast('Summary generated successfully');
+                    } else if (btnText.includes('Extract')) {
+                        showToast('PDF data extracted successfully');
+                    }
+                });
+            });
+
+            // Drag and drop simulation for route stops
+            document.querySelectorAll('.route-stop').forEach(stop => {
+                stop.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text/plain', this.outerHTML);
+                    this.style.opacity = '0.5';
+                });
+
+                stop.addEventListener('dragend', function(e) {
+                    this.style.opacity = '1';
+                });
+            });
+
+            // File upload drag and drop
+            const dropZones = document.querySelectorAll('[style*="dashed"]');
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.style.borderColor = 'var(--primary)';
+                    this.style.backgroundColor = 'rgba(59,130,246,0.05)';
+                });
+
+                zone.addEventListener('dragleave', function(e) {
+                    this.style.borderColor = 'var(--border)';
+                    this.style.backgroundColor = 'transparent';
+                });
+
+                zone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.style.borderColor = 'var(--border)';
+                    this.style.backgroundColor = 'transparent';
+                    showToast('File uploaded successfully');
+                });
+            });
+
+            // Mobile menu toggle (for responsive)
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    sidebar.classList.toggle('open');
+                });
+            }
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                // ESC to close modals/menus
+                if (e.key === 'Escape') {
+                    sidebar?.classList.remove('open');
+                }
+                
+                // Alt + number keys for quick nav
+                if (e.altKey && e.key >= '1' && e.key <= '9') {
+                    const viewIds = ['dashboard', 'mileage', 'routes', 'jobs', 'autoforms', 'comps', 'firms', 'gear', 'help'];
+                    const index = parseInt(e.key) - 1;
+                    if (viewIds[index]) {
+                        showView(viewIds[index]);
+                    }
+                }
+            });
+
+            // Simulate real-time updates for job sync
+            setInterval(() => {
+                const syncElements = document.querySelectorAll('.spinner').forEach(spinner => {
+                    // Randomly complete some syncing jobs
+                    if (Math.random() > 0.95) {
+                        const parent = spinner.closest('.route-stop');
+                        if (parent) {
+                            spinner.remove();
+                            const badge = parent.querySelector('.badge');
+                            if (badge) {
+                                badge.className = 'badge badge--success';
+                                badge.textContent = 'Synced';
+                            }
+                        }
+                    }
+                });
+            }, 2000);
+
+            // Accessibility improvements
+            document.querySelectorAll('.btn, .sidebar__nav-link, .route-tab').forEach(element => {
+                element.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+        });
+
+        // Utility functions for future enhancements
+        const ClaimCipher = {
+            // Mileage calculation
+            calculateMileage: function(start, end, rate, roundTrip = true) {
+                // Would integrate with Google Distance Matrix API
+                const baseMiles = Math.random() * 50 + 10; // Simulated
+                const miles = roundTrip ? baseMiles * 2 : baseMiles;
+                return {
+                    miles: Math.round(miles * 10) / 10,
+                    cost: Math.round(miles * rate * 100) / 100
+                };
+            },
+
+            // Route optimization
+            optimizeRoute: function(stops, maxRadius = 50, maxStopsPerDay = 10) {
+                // Would implement clustering algorithm
+                return {
+                    days: Math.ceil(stops.length / maxStopsPerDay),
+                    totalMiles: stops.length * 15, // Simulated
+                    clusters: []
+                };
+            },
+
+            // PDF processing
+            extractPDFData: function(file) {
+                // Would use PyPDF2/pikepdf on backend
+                return {
+                    vin: '1HGCV1F30JA123456',
+                    year: '2021',
+                    make: 'Honda',
+                    model: 'Accord',
+                    claimNumber: 'CLM-4891'
+                };
+            }
+        };
+    </script>
+</body>
+</html>font-size: 24px; font-weight: 700; color: var(--success); margin-bottom: 8px;">
+                                47.2 miles
+                            </div>
+                            <div style="color: var(--text-secondary); margin-bottom: 16px;">
+                                $31.62 reimbursement
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button type="button" class="btn btn--secondary btn--small">Copy</button>
+                                <button type="button" class="btn btn--success btn--small">Save to Log</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tax Log Preview -->
+            <div class="card">
+                <div class="card__header">
+                    <h3 class="card__title">Recent Tax Log Entries</h3>
+                    <button class="btn btn--secondary btn--small">Export CSV</button>
+                </div>
+                
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <th style="text-align: left; padding: 12px; color: var(--text-secondary);">Date</th>
+                                <th style="text-align: left; padding: 12px; color: var(--text-secondary);">Claim #</th>
+                                <th style="text-align: left; padding: 12px; color: var(--text-secondary);">Route</th>
+                                <th style="text-align: left; padding: 12px; color: var(--text-secondary);">Miles</th>
+                                <th style="text-align: left; padding: 12px; color: var(--text-secondary);">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--border-light);">
+                                <td style="padding: 12px;">Aug 9, 2025</td>
+                                <td style="padding: 12px;">CLM-4891</td>
+                                <td style="padding: 12px;">Home → 123 Insurance Way</td>
+                                <td style="padding: 12px;">23.1</td>
+                                <td style="padding: 12px; color: var(--success);">$15.48</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-light);">
+                                <td style="padding: 12px;">Aug 9, 2025</td>
+                                <td style="padding: 12px;">CLM-4902</td>
+                                <td style="padding: 12px;">123 Insurance Way → 456 Claim St</td>
+                                <td style="padding: 12px;">18.7</td>
+                                <td style="padding: 12px; color: var(--success);">$12.53</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Route Optimizer View -->
+        <div id="routes-view" class="view" style="display: none;">
+            <header class="main__header">
+                <h1 class="main__title">Route Optimizer</h1>
+                <p class="main__subtitle">Group stops within 50-mile radius and optimize your daily routes</p>
+            </header>
+
+            <!-- Route Controls -->
+            <div class="card">
+                <div class="grid grid-2">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Start Address</label>
+                            <input type="text" class="form-input" value="Home" placeholder="Enter starting location">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Route Rules</label>
+                            <div style="display: flex; gap: 16px; align-items: center;">
+                                <span class="badge">Max 50mi radius</span>
+                                <span class="badge">Max 10 stops/day</span>
+                                <span class="badge">Spillover: Tomorrow</span>
+                                <button class="btn btn--secondary btn--small">Edit Rules</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Add Stops</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" class="form-input" placeholder="Enter address or claim location" style="flex: 1;">
+                        <input type="text" class="form-input" placeholder="Claim #" style="width: 120px;">
+                        <button class="btn btn--primary">Add Stop</button>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 16px; justify-content: flex-end;">
+                    <button class="btn btn--secondary">Import from CSV</button>
+                    <button class="btn btn--primary">Optimize Routes</button>
+                </div>
+            </div>
+
+            <!-- Map -->
+            <div class="map-container">
+                <div>
+                    <div style="font-size: 48px; margin-bottom: 16px;">🗺️</div>
+                    <div>Interactive map will display optimized routes with color-coded polylines</div>
+                </div>
+            </div>
+
+            <!-- Route Days -->
+            <div class="route-tabs">
+                <button class="route-tab active">Day 1 - Aug 10 (8 stops, 47 mi)</button>
+                <button class="route-tab">Day 2 - Aug 11 (5 stops, 32 mi)</button>
+                <button class="route-tab">Day 3 - Aug 12 (2 stops, 18 mi)</button>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">Route Stops - Day 1</h3>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn--secondary btn--small">📅 Sync Calendar</button>
+                            <button class="btn btn--success btn--small">📄 Export PDF</button>
+                        </div>
+                    </div>
+                    
+                    <div class="route-stops">
+                        <div class="route-stop">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">1</span>
+                                <div class="route-stop__info">
+                                    <h4>Home Base</h4>
+                                    <p>123 Main Street, Raleigh, NC</p>
+                                </div>
+                            </div>
+                            <span class="badge">Start</span>
+                        </div>
+                        
+                        <div class="route-stop">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">2</span>
+                                <div class="route-stop__info">
+                                    <h4>CLM-4891 - Honda Accident</h4>
+                                    <p>456 Oak Avenue, Cary, NC • 8.2 mi</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 4px;">
+                                <button class="btn btn--secondary btn--small">📱 Assign</button>
+                                <span style="cursor: grab;">⋮⋮</span>
+                            </div>
+                        </div>
+
+                        <div class="route-stop">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">3</span>
+                                <div class="route-stop__info">
+                                    <h4>CLM-4902 - Fender Bender</h4>
+                                    <p>789 Pine Street, Durham, NC • 12.1 mi</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 4px;">
+                                <button class="btn btn--primary btn--small">📱 Assigned</button>
+                                <span style="cursor: grab;">⋮⋮</span>
+                            </div>
+                        </div>
+
+                        <div class="route-stop">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="background: var(--warning); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">!</span>
+                                <div class="route-stop__info">
+                                    <h4>CLM-4915 - Hail Damage</h4>
+                                    <p style="color: var(--warning);">67 miles from route center - exceeds 50mi radius</p>
+                                </div>
+                            </div>
+                            <button class="btn btn--warning btn--small">Move to Day 2</button>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 16px; padding: 16px; background: var(--bg-secondary); border-radius: 8px; display: flex; justify-content: between; align-items: center;">
+                        <div>
+                            <strong>Day 1 Totals:</strong> 47.2 miles • 3.2 hours • $31.62 reimbursement
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">Route Summary</h3>
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <h4 style="margin-bottom: 12px; color: var(--text-secondary);">Multi-Day Overview</h4>
+                        <div class="stats" style="margin-bottom: 0;">
+                            <div class="stat" style="padding: 16px;">
+                                <div class="stat__value" style="font-size: 24px;">3</div>
+                                <div class="stat__label">Days Required</div>
+                            </div>
+                            <div class="stat" style="padding: 16px;">
+                                <div class="stat__value" style="font-size: 24px;">15</div>
+                                <div class="stat__label">Total Stops</div>
+                            </div>
+                            <div class="stat" style="padding: 16px;">
+                                <div class="stat__value" style="font-size: 24px;">97</div>
+                                <div class="stat__label">Total Miles</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 style="margin-bottom: 12px; color: var(--text-secondary);">Optimization Rules</h4>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                                <span>Max Radius:</span>
+                                <span style="font-weight: 600;">50 miles</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                                <span>Max Stops per Day:</span>
+                                <span style="font-weight: 600;">10 stops</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                                <span>Spillover Rule:</span>
+                                <span style="font-weight: 600;">Tomorrow</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                                <span>Calendar Sync:</span>
+                                <span style="color: var(--success); font-weight: 600;">✓ Enabled (Pro)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Sync / Jobs View -->
+        <div id="jobs-view" class="view" style="display: none;">
+            <header class="main__header">
+                <h1 class="main__title">Mobile Sync</h1>
+                <p class="main__subtitle">Manage field inspections and sync photos from mobile devices</p>
+                <span class="badge badge--pro" style="margin-left: 12px;">PRO FEATURE</span>
+            </header>
+
+            <!-- Job Status Overview -->
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat__value">3</div>
+                    <div class="stat__label">Active Jobs</div>
+                </div>
+                <div class="stat">
+                    <div class="stat__value">12</div>
+                    <div class="stat__label">Completed This Week</div>
+                </div>
+                <div class="stat">
+                    <div class="stat__value">247</div>
+                    <div class="stat__label">Photos Synced</div>
+                </div>
+                <div class="stat">
+                    <div class="stat__value">2</div>
+                    <div class="stat__label">Pending Summaries</div>
+                </div>
+            </div>
+
+            <div class="grid grid-2">
+                <!-- Active Jobs -->
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">Active Jobs</h3>
+                        <button class="btn btn--primary btn--small">+ Create Job</button>
+                    </div>
+
+                    <div class="route-stops">
+                        <div class="route-stop">
+                            <div class="route-stop__info">
+                                <h4>2021 Honda Accord - CLM-4891</h4>
+                                <p>📱 Assigned to Device: iPhone 14 Pro</p>
+                                <p style="color: var(--warning);">Photos: 8/12 uploaded • Missing: VIN, Odometer</p>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <span class="badge badge--warning">In Progress</span>
+                                <button class="btn btn--secondary btn--small">📷 View Gallery</button>
+                            </div>
+                        </div>
+
+                        <div class="route-stop">
+                            <div class="route-stop__info">
+                                <h4>2019 Toyota Camry - CLM-4902</h4>
+                                <p>📱 Assigned to Device: Samsung Galaxy S24</p>
+                                <p style="color: var(--success);">All photos captured • Ready for summary</p>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <span class="badge badge--success">Complete</span>
+                                <button class="btn btn--success btn--small">📄 Generate Summary</button>
+                            </div>
+                        </div>
+
+                        <div class="route-stop">
+                            <div class="route-stop__info">
+                                <h4>2020 Ford F-150 - CLM-4876</h4>
+                                <p>📍 456 Oak Avenue, Cary, NC</p>
+                                <p>Scheduled for today, 2:00 PM</p>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <span class="badge">Pending</span>
+                                <button class="btn btn--primary btn--small">📱 Assign Device</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Photo Gallery & Job Details -->
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">CLM-4891 - Photo Gallery</h3>
+                        <button class="btn btn--secondary btn--small">📤 Request Missing</button>
+                    </div>
+
+                    <div class="job-gallery">
+                        <div class="job-photo" style="background: var(--success); color: white;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 24px;">📷</div>
+                                <div style="font-size: 12px;">VIN</div>
+                            </div>
+                        </div>
+                        <div class="job-photo" style="background: var(--success); color: white;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 24px;">📷</div>
+                                <div style="font-size: 12px;">Front</div>
+                            </div>
+                        </div>
+                        <div class="job-photo" style="background: var(--success); color: white;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 24px;">📷</div>
+                                <div style="font-size: 12px;">Rear</div>
+                            </div>
+                        </div>
+                        <div class="job-photo" style="background: var(--success); color: white;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 24px;">📷</div>
+                                <div style="font-size: 12px;">Driver Side</div>
+                            </div>
+                        </div>
+                        <div class="job-photo" style="background: var(--success); color: white;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 24px;">📷</div>
+                                <div style="font-size: 12px;">Pass. Side</div>
+                            </div>
+                        </div>
+                        <div class="job-photo" style="background: var(--success); color: white;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 24px;">📷</div>
+                                <div style="font-size: 12px;">Damage 1</div>
+                            </div>
+                        </div>
+                        <div class="job-photo" style="background: var(--warning); color: white;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 24px;">⏳</div>
+                                <div style="font-size: 12px;">Odometer</div>
+                            </div>
+                        </div>
+                        <div class="job-photo" style="background: var(--warning); color: white;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 24px;">⏳</div>
+                                <div style="font-size: 12px;">Interior</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 16px; padding: 16px; background: var(--bg-secondary); border-radius: 8px;">
+                        <h4 style="margin-bottom: 8px;">Sync Status</h4>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Photos Uploaded:</span>
+                            <span style="color: var(--warning); font-weight: 600;">8 of 12</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Last Sync:</span>
+                            <span>2 minutes ago</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Device Status:</span>
+                            <span style="color: var(--success);">🟢 Online</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AutoForms View -->
+        <div id="autoforms-view" class="view" style="display: none;">
+            <header class="main__header">
+                <h1 class="main__title">AutoForms</h1>
+                <p class="main__subtitle">Auto-fill PDF forms from CCC estimates</p>
+            </header>
+
+            <div class="grid grid-2">
+                <!-- Upload & Extract -->
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">Upload CCC Estimate</h3>
+                    </div>
+
+                    <div style="border: 2px dashed var(--border); border-radius: 8px; padding: 32px; text-align: center; margin-bottom: 24px; transition: all 0.2s;" 
+                         onmouseover="this.style.borderColor='var(--primary)'; this.style.backgroundColor='rgba(59,130,246,0.05)'"
+                         onmouseout="this.style.borderColor='var(--border)'; this.style.backgroundColor='transparent'">
+                        <div style="font-size: 48px; margin-bottom: 16px;">📄</div>
+                        <div style="margin-bottom: 16px;">
+                            <strong>Drop your CCC estimate here</strong><br>
+                            <span style="color: var(--text-secondary);">or click to browse files</span>
+                        </div>
+                        <button class="btn btn--primary">Choose File</button>
+                        <div style="margin-top: 16px; font-size: 12px; color: var(--text-muted);">
+                            Privacy: Files are not saved unless you choose to save them
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Target Form Template</label>
+                        <select class="form-input">
+                            <option>BCIF - Basic Claim Information Form</option>
+                            <option>ACV - Actual Cash Value Worksheet</option>
+                            <option>Custom Template 1</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn--success" style="width: 100%;">Extract & Auto-Fill</button>
+                </div>
+
+                <!-- Preview & Edit -->
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">Form Preview</h3>
+                        <div>
+                            <button class="btn btn--secondary btn--small">Edit Fields</button>
+                            <button class="btn btn--primary btn--small" style="margin-left: 8px;">Download PDF</button>
+                        </div>
+                    </div>
+
+                    <div class="pdf-preview">
+                        <div style="text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
+                            <div style="color: var(--text-secondary);">
+                                Upload a CCC estimate to see the auto-filled form preview here
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extracted Data Preview -->
+            <div class="card">
+                <div class="card__header">
+                    <h3 class="card__title">Extracted Data</h3>
+                    <span class="badge badge--success">95% auto-mapped</span>
+                </div>
+
+                <div class="grid grid-3" style="gap: 16px;">
+                    <div>
+                        <h4 style="margin-bottom: 12px; color: var(--text-secondary);">Vehicle Information</h4>
+                        <div style="background: var(--bg-secondary); padding: 16px; border-radius: 8px;">
+                            <div style="margin-bottom: 8px;"><strong>VIN:</strong> 1HGCV1F30JA123456</div>
+                            <div style="margin-bottom: 8px;"><strong>Year:</strong> 2021</div>
+                            <div style="margin-bottom: 8px;"><strong>Make:</strong> Honda</div>
+                            <div style="margin-bottom: 8px;"><strong>Model:</strong> Accord</div>
+                            <div style="margin-bottom: 8px;"><strong>Trim:</strong> Sport</div>
+                            <div><strong>Mileage:</strong> 45,231</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 style="margin-bottom: 12px; color: var(--text-secondary);">Claim Information</h4>
+                        <div style="background: var(--bg-secondary); padding: 16px; border-radius: 8px;">
+                            <div style="margin-bottom: 8px;"><strong>Claim #:</strong> CLM-4891</div>
+                            <div style="margin-bottom: 8px;"><strong>Date of Loss:</strong> 08/05/2025</div>
+                            <div style="margin-bottom: 8px;"><strong>Policy #:</strong> POL-789123</div>
+                            <div><strong>Deductible:</strong> $500</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 style="margin-bottom: 12px; color: var(--text-secondary);">Owner Information</h4>
+                        <div style="background: var(--bg-secondary); padding: 16px; border-radius: 8px;">
+                            <div style="margin-bottom: 8px;"><strong>Owner:</strong> John Smith</div>
+                            <div style="margin-bottom: 8px;"><strong>Address:</strong> 123 Main St</div>
+                            <div style="margin-bottom: 8px;"><strong>City:</strong> Raleigh, NC 27601</div>
+                            <div><strong>Phone:</strong> (919) 555-0123</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings View -->
+        <div id="settings-view" class="view" style="display: none;">
+            <header class="main__header">
+                <h1 class="main__title">Settings</h1>
+                <p class="main__subtitle">Manage your profile, security, and business settings</p>
+            </header>
+
+            <div class="grid grid-2">
+                <!-- Profile Settings -->
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">Profile</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" value="John Smith">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" value="john.smith@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Timezone</label>
+                        <select class="form-input">
+                            <option selected>Eastern Time (UTC-5)</option>
+                            <option>Central Time (UTC-6)</option>
+                            <option>Mountain Time (UTC-7)</option>
+                            <option>Pacific Time (UTC-8)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Profile Avatar</label>
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                JS
+                            </div>
+                            <button class="btn btn--secondary btn--small">Change Avatar</button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn--success">Save Changes</button>
+                </div>
+
+                <!-- Security Settings -->
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">Security</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Change Password</label>
+                        <button class="btn btn--secondary">Update Password</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Two-Factor Authentication</label>
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <span class="badge badge--success">✓ Enabled</span>
+                            <button class="btn btn--secondary btn--small">View Recovery Codes</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Active Sessions</label>
+                        <div style="background: var(--bg-secondary); padding: 16px; border-radius: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div>
+                                    <div><strong>Chrome on Windows</strong></div>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">Current session • Raleigh, NC</div>
+                                </div>
+                                <span style="color: var(--success);">🟢 Active</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div><strong>Mobile App - iPhone</strong></div>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">Last seen 2 hours ago</div>
+                                </div>
+                                <button class="btn btn--error btn--small">Revoke</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Settings -->
+            <div class="card">
+                <div class="card__header">
+                    <h3 class="card__title">Business Settings</h3>
+                </div>
+
+                <div class="grid grid-2">
+                    <!-- Firms & Rates -->
+                    <div>
+                        <h4 style="margin-bottom: 16px; color: var(--text-secondary);">Firms & Mileage Rates</h4>
+                        <div style="background: var(--bg-secondary); border-radius: 8px; overflow: hidden; margin-bottom: 16px;">
+                            <div style="padding: 16px; border-bottom: 1px solid var(--border);">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div><strong>Sedgwick Claims</strong></div>
+                                        <div style="color: var(--text-secondary); font-size: 14px;">$0.67 per mile</div>
+                                    </div>
+                                    <button class="btn btn--secondary btn--small">Edit</button>
+                                </div>
+                            </div>
+                            <div style="padding: 16px; border-bottom: 1px solid var(--border);">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div><strong>ACD Adjusters</strong></div>
+                                        <div style="color: var(--text-secondary); font-size: 14px;">$0.62 per mile</div>
+                                    </div>
+                                    <button class="btn btn--secondary btn--small">Edit</button>
+                                </div>
+                            </div>
+                            <div style="padding: 16px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div><strong>Independent Rate</strong></div>
+                                        <div style="color: var(--text-secondary); font-size: 14px;">$0.70 per mile</div>
+                                    </div>
+                                    <button class="btn btn--secondary btn--small">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn--primary btn--small">+ Add Firm</button>
+                    </div>
+
+                    <!-- Route Rules -->
+                    <div>
+                        <h4 style="margin-bottom: 16px; color: var(--text-secondary);">Route Optimization Rules</h4>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Max Radius (miles)</label>
+                            <input type="number" class="form-input" value="50" min="1" max="100">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Max Stops per Day</label>
+                            <input type="number" class="form-input" value="10" min="1" max="20">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Spillover Rule</label>
+                            <select class="form-input">
+                                <option selected>Tomorrow</option>
+                                <option>Next Business Day</option>
+                                <option>Monday</option>
+                                <option>Tuesday</option>
+                                <option>Wednesday</option>
+                                <option>Thursday</option>
+                                <option>Friday</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn--success">Save Rules</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plan & Billing -->
+            <div class="card">
+                <div class="card__header">
+                    <h3 class="card__title">Plan & Billing</h3>
+                    <span class="badge badge--pro">PRO DEMO</span>
+                </div>
+
+                <div class="grid grid-3">
+                    <div style="padding: 24px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-secondary);">
+                        <h4 style="margin-bottom: 8px;">Basic</h4>
+                        <div style="font-size: 24px; font-weight: 700; margin-bottom: 16px;">$30<span style="font-size: 14px; font-weight: 400;">/month</span></div>
+                        <ul style="list-style: none; font-size: 14px; color: var(--text-secondary);">
+                            <li style="margin-bottom: 4px;">✓ Mileage Calculator</li>
+                            <li style="margin-bottom: 4px;">✓ Route Optimizer</li>
+                            <li style="margin-bottom: 4px;">✓ AutoForms</li>
+                            <li style="margin-bottom: 4px;">✓ Help & Gear</li>
+                        </ul>
+                    </div>
+
+                    <div style="padding: 24px; border: 2px solid var(--primary); border-radius: 8px; background: var(--bg-secondary); position: relative;">
+                        <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                            CURRENT
+                        </div>
+                        <h4 style="margin-bottom: 8px;">Pro</h4>
+                        <div style="

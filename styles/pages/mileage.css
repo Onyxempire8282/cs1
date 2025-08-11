@@ -1,0 +1,580 @@
+﻿/* Mileage Calculator Page Styles */
+
+.page-mileage {
+    animation: fadeIn 0.3s ease-in;
+}
+
+/* Mileage Form Layout */
+.mileage-form {
+    position: relative;
+}
+
+.mileage-form .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-4);
+}
+
+.mileage-form .form-actions {
+    grid-column: span 2;
+    display: flex;
+    gap: var(--spacing-2);
+    justify-content: flex-end;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+/* Mileage Result Display */
+.mileage-result {
+    margin-top: var(--spacing-4);
+    padding-top: var(--spacing-4);
+    border-top: 1px solid var(--border);
+}
+
+.result-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-4);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.result-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--success), var(--primary));
+}
+
+.result-summary {
+    margin-bottom: var(--spacing-3);
+}
+
+.result-value {
+    font-size: var(--font-4xl);
+    font-weight: var(--font-bold);
+    color: var(--primary);
+    margin-bottom: var(--spacing-2);
+    line-height: var(--line-tight);
+}
+
+.result-amount {
+    font-size: var(--font-2xl);
+    font-weight: var(--font-semibold);
+    color: var(--success);
+    margin-bottom: var(--spacing-3);
+}
+
+.result-details {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-4);
+    margin-bottom: var(--spacing-3);
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+.result-rate,
+.result-time {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+}
+
+.result-rate::before {
+    content: '💰';
+}
+
+.result-time::before {
+    content: '⏱️';
+}
+
+.result-actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-2);
+}
+
+/* Tax Log Table Enhancements */
+.tax-log-table {
+    margin-top: var(--spacing-3);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.data-table th {
+    background: var(--bg-secondary);
+    font-weight: var(--font-semibold);
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
+    padding: var(--spacing-2);
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.data-table td {
+    padding: var(--spacing-2);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+    font-size: var(--font-sm);
+}
+
+.data-table tr:last-child td {
+    border-bottom: none;
+}
+
+.data-table tr:hover {
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.amount-positive {
+    color: var(--success);
+    font-weight: var(--font-semibold);
+}
+
+.amount-negative {
+    color: var(--error);
+    font-weight: var(--font-semibold);
+}
+
+/* Tax Log Summary */
+.tax-log-summary {
+    margin-top: var(--spacing-3);
+    padding: var(--spacing-3);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+}
+
+.summary-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacing-3);
+}
+
+.summary-stat {
+    text-align: center;
+}
+
+.summary-stat__label {
+    font-size: var(--font-xs);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-half);
+    font-weight: var(--font-medium);
+}
+
+.summary-stat__value {
+    font-size: var(--font-lg);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+}
+
+/* Form State Indicators */
+.mileage-form--calculating {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.mileage-form--calculating .form-input {
+    background: var(--bg-secondary);
+}
+
+.form-input--valid {
+    border-color: var(--success);
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.form-input--invalid {
+    border-color: var(--error);
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.form-input--calculating {
+    background: var(--bg-secondary);
+    background-image: linear-gradient(
+        90deg,
+        transparent,
+        rgba(59, 130, 246, 0.1),
+        transparent
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Address Autocomplete */
+.address-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 var(--radius-base) var(--radius-base);
+    box-shadow: var(--shadow-lg);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.address-suggestion {
+    padding: var(--spacing-2);
+    cursor: pointer;
+    transition: background var(--transition-fast);
+    font-size: var(--font-sm);
+}
+
+.address-suggestion:hover,
+.address-suggestion--highlighted {
+    background: var(--bg-secondary);
+}
+
+.address-suggestion:last-child {
+    border-radius: 0 0 var(--radius-base) var(--radius-base);
+}
+
+/* Recent Calculations */
+.recent-calculations {
+    margin-top: var(--spacing-4);
+}
+
+.calculation-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-2);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-base);
+    margin-bottom: var(--spacing-2);
+    transition: all var(--transition-fast);
+}
+
+.calculation-item:hover {
+    background: var(--bg-hover);
+    transform: translateX(4px);
+}
+
+.calculation-info {
+    flex: 1;
+}
+
+.calculation-route {
+    font-weight: var(--font-medium);
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-half);
+    font-size: var(--font-sm);
+}
+
+.calculation-details {
+    font-size: var(--font-xs);
+    color: var(--text-secondary);
+}
+
+.calculation-amount {
+    font-weight: var(--font-bold);
+    color: var(--success);
+    font-size: var(--font-base);
+}
+
+.calculation-actions {
+    display: flex;
+    gap: var(--spacing-1);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.calculation-item:hover .calculation-actions {
+    opacity: 1;
+}
+
+/* Progress Indicators */
+.calculation-progress {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    margin: var(--spacing-3) 0;
+    padding: var(--spacing-2);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-base);
+}
+
+.progress-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.progress-text {
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
+}
+
+/* CSV Import/Export */
+.csv-actions {
+    display: flex;
+    gap: var(--spacing-2);
+    margin-bottom: var(--spacing-3);
+}
+
+.import-status {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-2);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-base);
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+.import-status--success {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+.import-status--error {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--error);
+}
+
+/* Firm Rate Display */
+.firm-rate-display {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    font-size: var(--font-xs);
+    color: var(--text-muted);
+    margin-top: var(--spacing-half);
+}
+
+.firm-rate-display::before {
+    content: '💰';
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .mileage-form .form-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-2);
+    }
+    
+    .mileage-form .form-actions {
+        grid-column: span 1;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .result-value {
+        font-size: var(--font-3xl);
+    }
+    
+    .result-amount {
+        font-size: var(--font-xl);
+    }
+    
+    .result-details {
+        flex-direction: column;
+        gap: var(--spacing-2);
+    }
+    
+    .result-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .summary-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-2);
+    }
+    
+    .data-table {
+        font-size: var(--font-xs);
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: var(--spacing-1);
+    }
+    
+    .calculation-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-2);
+        text-align: center;
+    }
+    
+    .calculation-actions {
+        opacity: 1;
+        justify-content: center;
+    }
+    
+    .csv-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .result-card {
+        padding: var(--spacing-3);
+    }
+    
+    .result-value {
+        font-size: var(--font-2xl);
+    }
+    
+    .result-amount {
+        font-size: var(--font-lg);
+    }
+    
+    .summary-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .table-responsive {
+        font-size: var(--font-xs);
+    }
+}
+
+/* Animation States */
+.result-card--entering {
+    animation: resultSlideUp 0.5s ease-out;
+}
+
+@keyframes resultSlideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.calculation-item--new {
+    animation: newCalculationSlide 0.3s ease-out;
+}
+
+@keyframes newCalculationSlide {
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Error States */
+.mileage-error {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-3);
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--error);
+    border-radius: var(--radius-base);
+    color: var(--error);
+    margin-top: var(--spacing-3);
+}
+
+.mileage-error__icon {
+    font-size: var(--font-lg);
+}
+
+.mileage-error__message {
+    flex: 1;
+    font-size: var(--font-sm);
+}
+
+.mileage-error__retry {
+    background: transparent;
+    border: 1px solid var(--error);
+    color: var(--error);
+    padding: var(--spacing-1) var(--spacing-2);
+    border-radius: var(--radius-base);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.mileage-error__retry:hover {
+    background: var(--error);
+    color: white;
+}
+
+/* Loading states */
+.tax-log-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    color: var(--text-muted);
+}
+
+.tax-log-loading .spinner {
+    margin-right: var(--spacing-2);
+}
+
+/* Empty states */
+.tax-log-empty {
+    text-align: center;
+    padding: var(--spacing-5);
+    color: var(--text-muted);
+}
+
+.tax-log-empty__icon {
+    font-size: 48px;
+    margin-bottom: var(--spacing-3);
+    opacity: 0.5;
+}
+
+.tax-log-empty__title {
+    font-size: var(--font-lg);
+    font-weight: var(--font-semibold);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-2);
+}
+
+.tax-log-empty__description {
+    margin-bottom: var(--spacing-3);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .form-input--calculating,
+    .progress-spinner,
+    .result-card--entering,
+    .calculation-item--new {
+        animation: none;
+    }
+    
+    .calculation-item:hover {
+        transform: none;
+    }
+}

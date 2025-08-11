@@ -1,0 +1,68 @@
+﻿/* Route Optimizer Specific */
+.route-tabs {
+    display: flex;
+    gap: calc(var(--grid) * 1);
+    margin-bottom: calc(var(--grid) * 3);
+    border-bottom: 1px solid var(--border);
+}
+
+.route-tab {
+    padding: calc(var(--grid) * 2);
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.route-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+.route-stops {
+    background: var(--bg-card);
+    border-radius: calc(var(--grid) * 1);
+    overflow: hidden;
+}
+
+.route-stop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: calc(var(--grid) * 2);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+}
+
+.route-stop:hover {
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.route-stop:last-child {
+    border-bottom: none;
+}
+
+.route-stop__info h4 {
+    color: var(--text-primary);
+    margin-bottom: calc(var(--grid) * 0.5);
+}
+
+.route-stop__info p {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* Map Placeholder */
+.map-container {
+    height: 400px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: calc(var(--grid) * 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    margin-bottom: calc(var(--grid) * 3);
+}
