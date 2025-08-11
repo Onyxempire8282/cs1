@@ -92,6 +92,73 @@
             color: var(--text-secondary);
             margin-bottom: 16px;
         }
+
+        /* Auth Toggle Styles */
+        .auth-toggle {
+            display: flex;
+            background: var(--surface-secondary);
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 24px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .toggle-btn.active {
+            background: white;
+            color: var(--text-primary);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .toggle-btn:hover:not(.active) {
+            color: var(--text-primary);
+        }
+
+        /* Form Row for Side-by-Side Fields */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* Text Link Styles */
+        .text-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        .text-link:hover {
+            color: var(--primary-darker);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .auth-toggle {
+                margin-bottom: 20px;
+            }
+            
+            .toggle-btn {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+        }
         
         .error-message {
             background: #fee;
@@ -182,16 +249,23 @@
             
             <div id="error-message" class="error-message"></div>
             
+            <!-- Login/Signup Toggle -->
+            <div class="auth-toggle">
+                <button class="toggle-btn active" id="login-toggle">Sign In</button>
+                <button class="toggle-btn" id="signup-toggle">Sign Up</button>
+            </div>
+            
+            <!-- Login Form -->
             <form id="login-form">
                 <div class="form-group">
-                    <label class="form-label" for="username">Username</label>
-                    <input type="text" class="form-input" id="username" required autocomplete="username">
+                    <label class="form-label" for="login-email">Email</label>
+                    <input type="email" class="form-input" id="login-email" required autocomplete="username">
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label" for="password">Password</label>
+                    <label class="form-label" for="login-password">Password</label>
                     <div class="password-group">
-                        <input type="password" class="form-input" id="password" required autocomplete="current-password">
+                        <input type="password" class="form-input" id="login-password" required autocomplete="current-password">
                         <button type="button" class="password-toggle" id="password-toggle" aria-label="Toggle password visibility">
                             👁️
                         </button>
@@ -211,6 +285,62 @@
                     <div class="loading-state" id="loading-state">
                         <div class="spinner"></div>
                         <span>Signing in...</span>
+                    </div>
+                </button>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signup-form" style="display: none;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="signup-name">Full Name</label>
+                        <input type="text" class="form-input" id="signup-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="signup-email">Email</label>
+                        <input type="email" class="form-input" id="signup-email" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="signup-company">Company</label>
+                        <input type="text" class="form-input" id="signup-company">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="signup-phone">Phone</label>
+                        <input type="tel" class="form-input" id="signup-phone">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="signup-password">Password</label>
+                    <div class="password-group">
+                        <input type="password" class="form-input" id="signup-password" required>
+                        <button type="button" class="password-toggle" id="signup-password-toggle" aria-label="Toggle password visibility">
+                            👁️
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="confirm-password">Confirm Password</label>
+                    <input type="password" class="form-input" id="confirm-password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-checkbox">
+                        <input type="checkbox" id="agree-terms" required>
+                        <span class="checkmark"></span>
+                        I agree to the <a href="#" class="text-link">Terms of Service</a> and <a href="#" class="text-link">Privacy Policy</a>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn--primary btn--full" id="signup-btn">
+                    <span class="btn-text">Create Account</span>
+                    <div class="loading-state" id="signup-loading-state">
+                        <div class="spinner"></div>
+                        <span>Creating account...</span>
                     </div>
                 </button>
             </form>

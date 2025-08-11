@@ -27,10 +27,10 @@ class AuthManager {
             return;
         }
 
-        // Show/hide demo banner based on mode
+        // Show/hide demo banner based on demo mode only
         const demoBanner = document.querySelector('.demo-banner');
         if (demoBanner) {
-            if (this.auth.demoMode) {
+            if (this.auth.demoMode && !this.auth.masterLogin) {
                 demoBanner.style.display = 'flex';
                 this.updateDemoCountdown();
             } else {
@@ -133,8 +133,76 @@ class AuthManager {
         window.location.href = this.getLoginPath();
     }
 
+    // Master login functionality
+    attemptMasterLogin(email, password) {
+        // Master credentials - in production, this should be more secure
+        const masterCredentials = {
+            email: 'inspects@flav8r.net',
+            password: 'ClaimCipher2025!Master'
+        };
+
+        if (email === masterCredentials.email && password === masterCredentials.password) {
+            const authData = {
+                authenticated: true,
+                masterLogin: true,
+                demoMode: false,
+                username: 'Master Admin',
+                email: email,
+                loginTime: Date.now(),
+                permissions: 'full'
+            };
+            
+            localStorage.setItem('claimcipher_auth', JSON.stringify(authData));
+            return { success: true, type: 'master' };
+        }
+        
+        return { success: false, message: 'Invalid master credentials' };
+    }
+
+    // Demo login functionality
+    attemptDemoLogin() {
+        const demoExpiry = Date.now() + (7 * 24 * 60 * 60 * 1000); // 7 days
+        const authData = {
+            authenticated: true,
+            masterLogin: false,
+            demoMode: true,
+            demoExpiry: demoExpiry,
+            username: 'Demo User',
+            email: 'demo@claimcipher.com',
+            loginTime: Date.now(),
+            permissions: 'demo'
+        };
+        
+        localStorage.setItem('claimcipher_auth', JSON.stringify(authData));
+        return { success: true, type: 'demo' };
+    }
+
+    // Regular user login functionality
+    attemptUserLogin(email, password, userData = {}) {
+        // In production, this would validate against a backend
+        // For now, accept any email/password combination
+        const authData = {
+            authenticated: true,
+            masterLogin: false,
+            demoMode: false,
+            username: userData.name || email.split('@')[0],
+            email: email,
+            company: userData.company || '',
+            phone: userData.phone || '',
+            loginTime: Date.now(),
+            permissions: 'user'
+        };
+        
+        localStorage.setItem('claimcipher_auth', JSON.stringify(authData));
+        return { success: true, type: 'user' };
+    }
+
     isDemoMode() {
         return this.auth.demoMode || false;
+    }
+
+    isMasterLogin() {
+        return this.auth.masterLogin || false;
     }
 
     isAuthenticated() {

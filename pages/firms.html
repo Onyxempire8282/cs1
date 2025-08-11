@@ -4,71 +4,337 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Firms Directory - Claim Cipher</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../styles/normalize.css">
+    <link rel="stylesheet" href="../styles/variables.css">
+    <link rel="stylesheet" href="../styles/components/header.css">
+    <link rel="stylesheet" href="../styles/components/sidebar.css">
+    <link rel="stylesheet" href="../styles/components/cards.css">
+    <link rel="stylesheet" href="../styles/components/buttons.css">
+    <link rel="stylesheet" href="../styles/components/forms.css">
+    <link rel="stylesheet" href="../styles/components/navigation.css">
+    <link rel="stylesheet" href="../styles/pages/firms.css">
     <link rel="stylesheet" href="../styles/index.css">
 </head>
 <body>
-    <div class="page-firms">
-        <header class="main__header">
-            <h1 class="main__title">Firms Directory</h1>
-            <p class="main__subtitle">Browse insurance firms and contact information</p>
-        </header>
+    <!-- Demo Banner -->
+    <div class="demo-banner">
+         Pro Demo Active - <span id="demo-countdown">6 days, 14 hours remaining</span>
+        <button class="btn btn--primary btn--small" style="margin-left: 16px;">Upgrade Now</button>
+    </div>
 
-        <div class="card">
-            <div class="card__header">
-                <h3 class="card__title">Search Firms</h3>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" style="display: flex; flex-direction: column;">
+        <div>
+            <div class="sidebar__logo">Claim Cipher</div>
+            <ul class="sidebar__nav">
+                <li class="sidebar__nav-item">
+                    <a href="../index.html" class="sidebar__nav-link">
+                        <span>📊</span> Dashboard
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="mileage.html" class="sidebar__nav-link">
+                        <span>🚗</span> Mileage Calculator
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="routes.html" class="sidebar__nav-link">
+                        <span>🗺️</span> Route Optimizer
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="jobs.html" class="sidebar__nav-link">
+                        <span>📱</span> Mobile Sync
+                        <span class="badge badge--pro">PRO</span>
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="autoforms.html" class="sidebar__nav-link">
+                        <span>📋</span> AutoForms
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="comparables.html" class="sidebar__nav-link">
+                        <span>🔍</span> Comparables
+                        <span class="badge badge--pro">PRO</span>
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="firms.html" class="sidebar__nav-link active">
+                        <span>🏢</span> Firms Directory
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="gear.html" class="sidebar__nav-link">
+                        <span>⚙️</span> Gear
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="help.html" class="sidebar__nav-link">
+                        <span>❓</span> Help
+                    </a>
+                </li>
+                <li class="sidebar__nav-item">
+                    <a href="settings.html" class="sidebar__nav-link">
+                        <span>⚙️</span> Settings
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main">
+        <div class="page-firms">
+            <header class="main__header">
+                <h1 class="main__title">Firms Directory</h1>
+                <p class="main__subtitle">Browse insurance firms and contact information</p>
+            </header>
+
+            <!-- Directory Management -->
+            <div class="card">
+                <div class="card__header">
+                    <h3 class="card__title">Directory Management</h3>
+                    <div class="directory-actions">
+                        <button class="btn btn--secondary btn--small" id="import-firms-btn">
+                            📄 Import Firms
+                        </button>
+                        <button class="btn btn--secondary btn--small" id="export-firms-btn">
+                            📤 Export CSV
+                        </button>
+                        <button class="btn btn--primary btn--small" id="add-firm-btn">
+                            ➕ Add Firm
+                        </button>
+                    </div>
+                </div>
             </div>
-            
-            <div class="search-filters">
-                <div class="search-input">
-                    <input type="text" class="form-input" placeholder="Search firms by name, location, or type..." id="firms-search">
-                </div>
-                
-                <div class="filter-grid">
-                    <select class="form-input" id="state-filter">
-                        <option value="">All States</option>
-                        <option value="NC">North Carolina</option>
-                        <option value="SC">South Carolina</option>
-                        <option value="VA">Virginia</option>
-                    </select>
+
+            <!-- Search and Filters -->
+            <div class="card">
+                <div class="search-controls">
+                    <div class="search-input-container">
+                        <input type="text" class="form-input search-input" placeholder="Search firms by name, location, or type..." id="firms-search">
+                        <button class="search-button" id="search-btn">🔍</button>
+                    </div>
                     
-                    <select class="form-input" id="type-filter">
-                        <option value="">All Types</option>
-                        <option value="carrier">Insurance Carrier</option>
-                        <option value="independent">Independent Adjuster</option>
-                        <option value="tpa">Third Party Administrator</option>
-                    </select>
+                    <div class="filter-grid">
+                        <select class="form-input" id="state-filter">
+                            <option value="">All States</option>
+                            <option value="AL">Alabama</option>
+                            <option value="FL">Florida</option>
+                            <option value="GA">Georgia</option>
+                            <option value="NC">North Carolina</option>
+                            <option value="SC">South Carolina</option>
+                            <option value="TN">Tennessee</option>
+                            <option value="TX">Texas</option>
+                            <option value="VA">Virginia</option>
+                        </select>
+                        
+                        <select class="form-input" id="type-filter">
+                            <option value="">All Types</option>
+                            <option value="carrier">Insurance Carrier</option>
+                            <option value="independent">Independent Adjuster</option>
+                            <option value="tpa">Third Party Administrator</option>
+                            <option value="law-firm">Law Firm</option>
+                            <option value="vendor">Vendor</option>
+                            <option value="restoration">Restoration</option>
+                        </select>
+
+                        <select class="form-input" id="specialty-filter">
+                            <option value="">All Specialties</option>
+                            <option value="auto">Auto Claims</option>
+                            <option value="property">Property Claims</option>
+                            <option value="liability">Liability</option>
+                            <option value="workers-comp">Workers Comp</option>
+                            <option value="marine">Marine</option>
+                            <option value="commercial">Commercial</option>
+                        </select>
+
+                        <button class="btn btn--ghost btn--small" id="clear-filters-btn">Clear Filters</button>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Results Summary -->
+            <div class="results-summary">
+                <span class="firms-count" id="firms-count">Loading firms...</span>
+                <div class="view-toggles">
+                    <button class="view-toggle view-toggle--active" data-view="cards" id="cards-view-btn">📊 Cards</button>
+                    <button class="view-toggle" data-view="table" id="table-view-btn">📋 Table</button>
+                </div>
+            </div>
+
+            <!-- Firms Display -->
+            <div class="firms-container">
+                <!-- Cards View -->
+                <div class="firms-cards" id="firms-cards">
+                    <!-- Firm cards will be populated here -->
+                </div>
+
+                <!-- Table View -->
+                <div class="firms-table-container" id="firms-table-container" style="display: none;">
+                    <div class="table-responsive">
+                        <table class="data-table" id="firms-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Location</th>
+                                    <th>Phone</th>
+                                    <th>Contact</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="firms-table-body">
+                                <!-- Firm rows will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading-container" id="loading-container">
+                <div class="spinner-large"></div>
+                <p>Loading firms directory...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="empty-state" style="display: none;">
+                <div class="empty-state-icon">🏢</div>
+                <h3>No Firms Found</h3>
+                <p>Try adjusting your search criteria or import a firm directory.</p>
+                <button class="btn btn--primary" id="import-empty-btn">Import Firms</button>
             </div>
         </div>
+    </main>
 
-        <div class="card">
-            <div class="card__header">
-                <h3 class="card__title">Directory Listing</h3>
-                <span class="firms-count">247 firms found</span>
+    <!-- Add/Edit Firm Modal -->
+    <div class="modal" id="firm-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Add New Firm</h3>
+                <button class="modal-close" id="modal-close-btn">&times;</button>
             </div>
-            
-            <div class="firms-list" id="firms-list">
-                <!-- Firms will be populated here -->
-                <div class="firm-card">
-                    <div class="firm-header">
-                        <h4 class="firm-name">Sedgwick Claims Management</h4>
-                        <span class="badge badge--success">Active</span>
+            <form id="firm-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Firm Name *</label>
+                        <input type="text" class="form-input" id="firm-name" required>
                     </div>
-                    <div class="firm-details">
-                        <div class="firm-type">Insurance Carrier</div>
-                        <div class="firm-location">Raleigh, NC</div>
-                        <div class="firm-contact">
-                            <span>📞 (919) 555-0100</span>
-                            <span>📧 claims@sedgwick.com</span>
+                    <div class="form-group">
+                        <label class="form-label">Type *</label>
+                        <select class="form-input" id="firm-type" required>
+                            <option value="">Select Type</option>
+                            <option value="carrier">Insurance Carrier</option>
+                            <option value="independent">Independent Adjuster</option>
+                            <option value="tpa">Third Party Administrator</option>
+                            <option value="law-firm">Law Firm</option>
+                            <option value="vendor">Vendor</option>
+                            <option value="restoration">Restoration</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contact Name</label>
+                        <input type="text" class="form-input" id="contact-name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" class="form-input" id="firm-phone">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="firm-email">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Website</label>
+                        <input type="url" class="form-input" id="firm-website">
+                    </div>
+                    <div class="form-group form-group--full">
+                        <label class="form-label">Address</label>
+                        <textarea class="form-input" id="firm-address" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">City *</label>
+                        <input type="text" class="form-input" id="firm-city" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">State *</label>
+                        <select class="form-input" id="firm-state" required>
+                            <option value="">Select State</option>
+                            <option value="AL">Alabama</option>
+                            <option value="FL">Florida</option>
+                            <option value="GA">Georgia</option>
+                            <option value="NC">North Carolina</option>
+                            <option value="SC">South Carolina</option>
+                            <option value="TN">Tennessee</option>
+                            <option value="TX">Texas</option>
+                            <option value="VA">Virginia</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">ZIP Code</label>
+                        <input type="text" class="form-input" id="firm-zip">
+                    </div>
+                    <div class="form-group form-group--full">
+                        <label class="form-label">Specialties</label>
+                        <div class="checkbox-group" id="specialties-group">
+                            <label class="form-checkbox">
+                                <input type="checkbox" value="auto"> Auto Claims
+                            </label>
+                            <label class="form-checkbox">
+                                <input type="checkbox" value="property"> Property Claims
+                            </label>
+                            <label class="form-checkbox">
+                                <input type="checkbox" value="liability"> Liability
+                            </label>
+                            <label class="form-checkbox">
+                                <input type="checkbox" value="workers-comp"> Workers Comp
+                            </label>
+                            <label class="form-checkbox">
+                                <input type="checkbox" value="marine"> Marine
+                            </label>
+                            <label class="form-checkbox">
+                                <input type="checkbox" value="commercial"> Commercial
+                            </label>
                         </div>
                     </div>
+                    <div class="form-group form-group--full">
+                        <label class="form-label">Notes</label>
+                        <textarea class="form-input" id="firm-notes" rows="3"></textarea>
+                    </div>
                 </div>
-                
-                <!-- More firms... -->
+                <div class="modal-actions">
+                    <button type="button" class="btn btn--secondary" id="cancel-btn">Cancel</button>
+                    <button type="submit" class="btn btn--primary" id="save-firm-btn">Save Firm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hidden file input for CSV import -->
+    <input type="file" id="csv-file-input" accept=".csv,.xlsx,.xls" style="display: none;">
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <span>✅</span>
+            <div>
+                <div style="font-weight: 600;">Success!</div>
+                <div style="font-size: 14px; color: var(--text-secondary);">Firm directory updated successfully</div>
             </div>
         </div>
     </div>
 
-    <script type="module" src="../scripts/pages/firms.js"></script>
+    <!-- Scripts -->
+    <script src="../scripts/utils/constants.js"></script>
+    <script src="../scripts/utils/helpers.js"></script>
+    <script src="../scripts/utils/auth.js"></script>
+    <script src="../scripts/utils/transitions.js"></script>
+    <script src="../scripts/components/demo-banner.js"></script>
+    <script src="../scripts/components/toast.js"></script>
+    <script src="../scripts/pages/firms.js"></script>
 </body>
 </html>
