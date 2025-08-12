@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Route Optimizer - Claim Cipher</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- Google Maps API for route visualization -->
+    <script>
+        window.GOOGLE_MAPS_API_KEY = 'AIzaSyDR51CGOXEyVz8Dy-6hU7kdaqbq8-CTkBs';
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR51CGOXEyVz8Dy-6hU7kdaqbq8-CTkBs&libraries=places&callback=initRouteMap"></script>
 </head>
 <body class="theme-dark">
     <!-- Demo Banner will be injected by navigation.js -->
@@ -91,15 +96,48 @@
     <main class="main-content">
         <div class="page-header">
             <h1 class="page-title">Route Optimizer</h1>
-            <p class="page-subtitle">Group stops within 50-mile radius and optimize your daily routes</p>
+            <p class="page-subtitle">Group stops within radius and optimize your daily routes</p>
+        </div>
+
+        <!-- Calculation Info Panel -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>📊 How Route Optimization Works</h3>
+            </div>
+            <div class="card-content">
+                <div class="calculation-info">
+                    <div class="info-section">
+                        <h4>🏠 Distance Calculations</h4>
+                        <p><strong>Primary Method:</strong> Distance from your Home address to each stop location</p>
+                        <p><strong>Secondary:</strong> Stop-to-stop distances within the same day route</p>
+                        <p><strong>Optimization Goal:</strong> Minimize total travel distance and time per day</p>
+                    </div>
+                    <div class="info-section">
+                        <h4>🎯 Grouping Logic</h4>
+                        <ul>
+                            <li>Stops within <span id="info-radius">50 miles</span> of home are grouped</li>
+                            <li>Maximum <span id="info-max-stops">10 stops</span> per day to keep routes manageable</li>
+                            <li>Geographic clustering to minimize backtracking</li>
+                            <li>Excess stops assigned to <span id="info-spillover">next available day</span></li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h4>💰 Mileage Calculations</h4>
+                        <p><strong>Rate:</strong> $0.67 per mile (configurable in Settings)</p>
+                        <p><strong>Calculation:</strong> (Total route miles) × (Mileage rate)</p>
+                        <p><strong>Includes:</strong> Home → Stops → Return to Home</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="card mb-4">
-            <div class="card__content">
+            <div class="card-content">
                 <div class="grid grid--2 mb-4">
                     <div class="input-group">
-                        <label class="input-label">Start Address</label>
-                        <input type="text" class="input" value="Home" placeholder="Enter starting location">
+                        <label class="input-label">Start Address (Home Base)</label>
+                        <input type="text" class="input" value="Home" placeholder="Enter your home/office address" id="home-address-input">
+                        <small class="help-text">All distances calculated from this location</small>
                     </div>
                     <div class="input-group">
                         <label class="input-label">Route Rules</label>
@@ -122,16 +160,25 @@
                 </div>
 
                 <div class="flex gap-2 justify-between">
-                    <button class="btn btn--outline" id="import-csv-btn">📤 Import CSV</button>
+                    <div class="flex gap-2">
+                        <button class="btn btn--outline" id="import-csv-btn">📤 Import CSV</button>
+                        <button class="btn btn--outline" id="clear-all-btn">🗑️ Clear All</button>
+                    </div>
                     <button class="btn btn--primary" id="optimize-routes-btn">🎯 Optimize Routes</button>
                 </div>
             </div>
         </div>
 
         <div class="card mb-4">
-            <div class="card__content" style="padding: var(--space-4); text-align: center; color: var(--color-text-muted);">
-                <div style="font-size: 48px; margin-bottom: var(--space-2);">🗺️</div>
-                <div>Interactive map will display optimized routes with color-coded polylines</div>
+            <div class="card-header">
+                <h3>🗺️ Interactive Route Map</h3>
+            </div>
+            <div class="card-content" style="padding: 0;">
+                <div id="map" style="width: 100%; height: 500px; border-radius: var(--radius-lg);"></div>
+                <div class="map-controls" style="position: absolute; top: 10px; right: 10px; z-index: 1000;">
+                    <button class="btn btn--ghost btn--sm" id="reset-map-btn">� Reset View</button>
+                    <button class="btn btn--ghost btn--sm" id="fullscreen-map-btn">⛶ Fullscreen</button>
+                </div>
             </div>
         </div>
 
@@ -259,5 +306,8 @@
             }
         }
     </script>
+    
+    <!-- Route Map Integration -->
+    <script src="../../scripts/utils/route-map.js"></script>
 </body>
 </html>

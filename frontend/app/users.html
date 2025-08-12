@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Claim Cipher</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../scripts/components/navigation.js"></script>
+</head>
+<body class="theme-dark">
+    <main class="main-content">
+        <header class="page-header">
+            <h1>User Management</h1>
+            <p class="page-description">Manage users, view statistics, and handle complaints</p>
+        </header>
+
+        <div class="dashboard-grid">
+            <!-- User Statistics -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>User Statistics</h3>
+                </div>
+                <div class="card-content">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalUsers">0</div>
+                            <div class="stat-label">Total Users</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="activeTrials">0</div>
+                            <div class="stat-label">Active Trials</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="proUsers">0</div>
+                            <div class="stat-label">Pro Users</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="basicUsers">0</div>
+                            <div class="stat-label">Basic Users</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Users -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Recent Users</h3>
+                </div>
+                <div class="card-content">
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Joined</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentUsersTable">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complaints & Support -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Complaints & Support Requests</h3>
+                    <div class="badge badge--warning">3 Pending</div>
+                </div>
+                <div class="card-content">
+                    <div class="complaints-list" id="complaintsList">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                    <button class="btn btn--outline btn--full-width" onclick="loadMoreComplaints()">
+                        Load More Complaints
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check admin access
+            if (localStorage.getItem('userType') !== 'admin') {
+                alert('Access denied. Admin privileges required.');
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            initializeUserManagement();
+        });
+
+        function initializeUserManagement() {
+            loadUserStatistics();
+            loadRecentUsers();
+            loadComplaints();
+        }
+
+        function loadUserStatistics() {
+            // Simulate loading user statistics
+            // In production, this would fetch from your backend API
+            const stats = calculateUserStats();
+            
+            document.getElementById('totalUsers').textContent = stats.total;
+            document.getElementById('activeTrials').textContent = stats.activeTrials;
+            document.getElementById('proUsers').textContent = stats.proUsers;
+            document.getElementById('basicUsers').textContent = stats.basicUsers;
+        }
+
+        function calculateUserStats() {
+            // Get all demo users from localStorage
+            let totalUsers = 0;
+            let activeTrials = 0;
+            let proUsers = 0;
+            let basicUsers = 2; // You and your wife as admins
+
+            // Count demo users
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('demoUser_')) {
+                    totalUsers++;
+                    const userData = JSON.parse(localStorage.getItem(key));
+                    const now = Date.now();
+                    if (now < userData.demoExpiry) {
+                        activeTrials++;
+                    }
+                }
+            }
+
+            return {
+                total: totalUsers + 2, // Include admin users
+                activeTrials,
+                proUsers,
+                basicUsers
+            };
+        }
+
+        function loadRecentUsers() {
+            const tableBody = document.getElementById('recentUsersTable');
+            const users = getRecentUsers();
+            
+            tableBody.innerHTML = users.map(user => `
+                <tr>
+                    <td>
+                        <div class="user-info">
+                            <strong>${user.name}</strong>
+                            <div class="text-muted">${user.email}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge badge--${user.badgeType}">${user.type}</span>
+                    </td>
+                    <td>
+                        <span class="status-indicator status--${user.status.toLowerCase()}">${user.status}</span>
+                    </td>
+                    <td>${user.joinDate}</td>
+                    <td>
+                        <button class="btn btn--ghost btn--small" onclick="viewUserDetails('${user.id}')">
+                            View
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function getRecentUsers() {
+            const users = [
+                {
+                    id: 'admin1',
+                    name: 'Nneka (Admin)',
+                    email: 'inspects@flav8r.net',
+                    type: 'Admin',
+                    badgeType: 'error',
+                    status: 'Active',
+                    joinDate: 'System User'
+                },
+                {
+                    id: 'admin2', 
+                    name: 'Jay (Admin)',
+                    email: 'inspects@flav8r.net',
+                    type: 'Admin',
+                    badgeType: 'error',
+                    status: 'Active',
+                    joinDate: 'System User'
+                }
+            ];
+
+            // Add demo users from localStorage
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('demoUser_')) {
+                    const userData = JSON.parse(localStorage.getItem(key));
+                    const now = Date.now();
+                    const isExpired = now >= userData.demoExpiry;
+                    
+                    users.push({
+                        id: key,
+                        name: `${userData.firstName} ${userData.lastName}`,
+                        email: userData.email,
+                        type: 'Demo',
+                        badgeType: 'info',
+                        status: isExpired ? 'Expired' : 'Active',
+                        joinDate: new Date(userData.createdAt || userData.demoStartTime).toLocaleDateString()
+                    });
+                }
+            }
+
+            return users.slice(0, 10); // Show last 10 users
+        }
+
+        function loadComplaints() {
+            const complaintsContainer = document.getElementById('complaintsList');
+            const complaints = getSampleComplaints();
+            
+            complaintsContainer.innerHTML = complaints.map(complaint => `
+                <div class="complaint-item">
+                    <div class="complaint-header">
+                        <div class="complaint-user">
+                            <strong>${complaint.userName}</strong>
+                            <span class="text-muted">${complaint.userEmail}</span>
+                        </div>
+                        <div class="complaint-meta">
+                            <span class="badge badge--${complaint.priorityType}">${complaint.priority}</span>
+                            <span class="text-muted">${complaint.date}</span>
+                        </div>
+                    </div>
+                    <div class="complaint-subject">${complaint.subject}</div>
+                    <div class="complaint-preview">${complaint.preview}</div>
+                    <div class="complaint-actions">
+                        <button class="btn btn--primary btn--small" onclick="respondToComplaint('${complaint.id}')">
+                            Respond
+                        </button>
+                        <button class="btn btn--ghost btn--small" onclick="viewComplaint('${complaint.id}')">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getSampleComplaints() {
+            return [
+                {
+                    id: 'comp1',
+                    userName: 'Sarah Johnson',
+                    userEmail: 'sarah.j@example.com',
+                    subject: 'Mileage calculation incorrect',
+                    preview: 'The mileage calculator is showing wrong distances between locations...',
+                    priority: 'High',
+                    priorityType: 'error',
+                    date: '2 hours ago'
+                },
+                {
+                    id: 'comp2',
+                    userName: 'Mike Rodriguez',
+                    userEmail: 'mike.r@example.com', 
+                    subject: 'Cannot access Pro features',
+                    preview: 'I upgraded to Pro but still cannot access the Equipment section...',
+                    priority: 'Medium',
+                    priorityType: 'warning',
+                    date: '5 hours ago'
+                },
+                {
+                    id: 'comp3',
+                    userName: 'Emma Wilson',
+                    userEmail: 'emma.w@example.com',
+                    subject: 'Demo trial extension request',
+                    preview: 'Could I get a few more days on my trial? I need more time to evaluate...',
+                    priority: 'Low',
+                    priorityType: 'info',
+                    date: '1 day ago'
+                }
+            ];
+        }
+
+        function viewUserDetails(userId) {
+            alert(`View details for user: ${userId}`);
+            // In production, this would open a user details modal or page
+        }
+
+        function respondToComplaint(complaintId) {
+            const response = prompt('Enter your response to this complaint:');
+            if (response) {
+                alert('Response sent successfully!');
+                // In production, this would send the response via API
+            }
+        }
+
+        function viewComplaint(complaintId) {
+            alert(`View full complaint details: ${complaintId}`);
+            // In production, this would open complaint details
+        }
+
+        function loadMoreComplaints() {
+            alert('Loading more complaints...');
+            // In production, this would load additional complaints
+        }
+    </script>
+</body>
+</html>

@@ -3,6 +3,56 @@
     padding: var(--spacing-3);
 }
 
+/* Calculation Info Panel */
+.calculation-info {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: var(--radius);
+    padding: var(--spacing-3);
+    margin-bottom: var(--spacing-3);
+}
+
+.info-section {
+    margin-bottom: var(--spacing-3);
+}
+
+.info-section:last-child {
+    margin-bottom: 0;
+}
+
+.info-section h4 {
+    color: var(--text-primary);
+    font-size: var(--font-md);
+    font-weight: var(--font-semibold);
+    margin-bottom: var(--spacing-2);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+}
+
+.info-section p, .info-section ul {
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
+    line-height: 1.5;
+    margin-bottom: var(--spacing-1);
+}
+
+.info-section ul {
+    padding-left: var(--spacing-3);
+}
+
+.info-section li {
+    margin-bottom: var(--spacing-half);
+}
+
+.info-section span {
+    background: var(--accent-primary);
+    color: white;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-weight: var(--font-medium);
+    font-size: var(--font-xs);
+}
+
 .route-controls {
     margin-bottom: var(--spacing-4);
 }
@@ -222,9 +272,91 @@
     border-radius: var(--radius-sm);
 }
 
+.stop-distance {
+    background: var(--info-color);
+    color: white;
+}
+
+.stop-status {
+    font-size: var(--font-xs);
+    font-weight: var(--font-medium);
+    padding: 2px var(--spacing-1);
+    border-radius: var(--radius-sm);
+}
+
 .stop-actions {
     display: flex;
     gap: var(--spacing-1);
+}
+
+.stop-actions .btn {
+    min-width: auto;
+    padding: var(--spacing-1) var(--spacing-2);
+    font-size: var(--font-xs);
+}
+
+.remove-stop-btn {
+    color: var(--danger-color) !important;
+}
+
+.remove-stop-btn:hover {
+    background: var(--danger-color) !important;
+    color: white !important;
+}
+
+/* Map Styling */
+.map-controls {
+    display: flex;
+    gap: var(--spacing-1);
+}
+
+.fullscreen-map {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 9999 !important;
+    background: white;
+}
+
+.fullscreen-map #map {
+    height: 100vh !important;
+    border-radius: 0 !important;
+}
+
+/* Enhanced Tax Log Styling */
+.table-responsive {
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+}
+
+.table th {
+    background: var(--bg-secondary);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.edit-log-btn {
+    color: var(--info-color) !important;
+}
+
+.edit-log-btn:hover {
+    background: var(--info-color) !important;
+    color: white !important;
+}
+
+.delete-log-btn {
+    color: var(--danger-color) !important;
+}
+
+.delete-log-btn:hover {
+    background: var(--danger-color) !important;
+    color: white !important;
+}
+    background: var(--danger-color) !important;
+    color: white !important;
 }
 
 .route-actions-secondary {

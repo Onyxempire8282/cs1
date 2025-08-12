@@ -5,12 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mileage Calculator - Claim Cipher</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <!-- Google Maps API with your restricted key -->
-    <script>
-        // Load API key from environment (will be replaced at build time)
-        window.GOOGLE_MAPS_API_KEY = 'AIzaSyDR51CGOXEyVz8Dy-6hU7kdaqbq8-CTkBs';
-    </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR51CGOXEyVz8Dy-6hU7kdaqbq8-CTkBs&libraries=places&callback=initGoogleMaps"></script>
 </head>
 <body class="theme-dark">
     <!-- Sidebar Navigation -->
@@ -130,7 +124,7 @@
                         <div class="input-group">
                             <label class="input-label" for="origin">Start Address</label>
                             <input type="text" class="input" id="origin" value="715 SANDHILL DR, DUDLEY, NC 28333" placeholder="Enter starting address">
-                            <small class="help-text">Your home/office address</small>
+                            <small class="help-text">Your home/office address - editable and saved</small>
                         </div>
 
                         <div class="input-group">
@@ -193,35 +187,28 @@
             </div>
         </div>
 
-        <!-- Google Maps Display -->
-        <div class="card mb-4">
-            <div class="card__header">
-                <h3 class="card__title">Route Map</h3>
-            </div>
-            <div class="card__content" style="padding: 0;">
-                <div id="map" style="width: 100%; height: 400px; border-radius: var(--radius-lg);"></div>
-            </div>
-        </div>
-
-        <!-- Tax Log -->
+        <!-- Enhanced Tax Log -->
         <div class="card">
             <div class="card__header">
-                <h3 class="card__title">Recent Tax Log Entries</h3>
+                <h3 class="card__title">Mileage Tax Log</h3>
                 <div class="flex gap-2">
                     <button class="btn btn--outline btn--sm" id="import-csv">📤 Import CSV</button>
                     <button class="btn btn--outline btn--sm" id="export-csv">📥 Export CSV</button>
+                    <button class="btn btn--outline btn--sm" id="print-log">🖨️ Print Log</button>
                 </div>
             </div>
             
             <div class="card__content" style="padding: 0;">
-                <div class="table-responsive">
+                <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
                     <table class="table">
-                        <thead>
+                        <thead style="position: sticky; top: 0; background: var(--bg-primary); z-index: 10;">
                             <tr>
                                 <th>Date</th>
+                                <th>Firm</th>
                                 <th>Claim #</th>
                                 <th>Route</th>
                                 <th>Miles</th>
+                                <th>Rate</th>
                                 <th>Amount</th>
                                 <th>Actions</th>
                             </tr>
@@ -229,24 +216,93 @@
                         <tbody id="tax-log-tbody">
                             <tr>
                                 <td>Aug 9, 2025</td>
+                                <td>AMA</td>
                                 <td>CLM-4891</td>
                                 <td>Home → 123 Insurance Way</td>
                                 <td>23.1</td>
+                                <td>$0.67</td>
                                 <td class="text-success">$15.48</td>
                                 <td>
-                                    <button class="btn btn--ghost btn--sm">Edit</button>
-                                    <button class="btn btn--ghost btn--sm">Delete</button>
+                                    <button class="btn btn--ghost btn--sm edit-log-btn">✏️ Edit</button>
+                                    <button class="btn btn--ghost btn--sm delete-log-btn">🗑️ Delete</button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Aug 9, 2025</td>
+                                <td>Sedgwick</td>
                                 <td>CLM-4902</td>
                                 <td>123 Insurance Way → 456 Claim St</td>
                                 <td>18.7</td>
+                                <td>$0.67</td>
                                 <td class="text-success">$12.53</td>
                                 <td>
-                                    <button class="btn btn--ghost btn--sm">Edit</button>
-                                    <button class="btn btn--ghost btn--sm">Delete</button>
+                                    <button class="btn btn--ghost btn--sm edit-log-btn">✏️ Edit</button>
+                                    <button class="btn btn--ghost btn--sm delete-log-btn">�️ Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Aug 8, 2025</td>
+                                <td>CCS</td>
+                                <td>CLM-4875</td>
+                                <td>Home → 789 Damage Ave</td>
+                                <td>31.5</td>
+                                <td>$0.65</td>
+                                <td class="text-success">$20.48</td>
+                                <td>
+                                    <button class="btn btn--ghost btn--sm edit-log-btn">✏️ Edit</button>
+                                    <button class="btn btn--ghost btn--sm delete-log-btn">🗑️ Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Aug 8, 2025</td>
+                                <td>HEA</td>
+                                <td>CLM-4860</td>
+                                <td>789 Damage Ave → Home</td>
+                                <td>31.5</td>
+                                <td>$0.60</td>
+                                <td class="text-success">$18.90</td>
+                                <td>
+                                    <button class="btn btn--ghost btn--sm edit-log-btn">✏️ Edit</button>
+                                    <button class="btn btn--ghost btn--sm delete-log-btn">🗑️ Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Aug 7, 2025</td>
+                                <td>A-TEAM</td>
+                                <td>CLM-4821</td>
+                                <td>Home → 321 Property Rd</td>
+                                <td>45.2</td>
+                                <td>$0.55</td>
+                                <td class="text-success">$24.86</td>
+                                <td>
+                                    <button class="btn btn--ghost btn--sm edit-log-btn">✏️ Edit</button>
+                                    <button class="btn btn--ghost btn--sm delete-log-btn">🗑️ Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Aug 7, 2025</td>
+                                <td>IAS</td>
+                                <td>CLM-4835</td>
+                                <td>321 Property Rd → 654 Loss Ln</td>
+                                <td>12.8</td>
+                                <td>$0.65</td>
+                                <td class="text-success">$8.32</td>
+                                <td>
+                                    <button class="btn btn--ghost btn--sm edit-log-btn">✏️ Edit</button>
+                                    <button class="btn btn--ghost btn--sm delete-log-btn">🗑️ Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Aug 6, 2025</td>
+                                <td>Claim Solution</td>
+                                <td>CLM-4798</td>
+                                <td>Home → 987 Incident St</td>
+                                <td>28.9</td>
+                                <td>$0.63</td>
+                                <td class="text-success">$18.21</td>
+                                <td>
+                                    <button class="btn btn--ghost btn--sm edit-log-btn">✏️ Edit</button>
+                                    <button class="btn btn--ghost btn--sm delete-log-btn">🗑️ Delete</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -256,18 +312,22 @@
 
             <!-- Tax Log Summary -->
             <div class="card__footer">
-                <div class="grid grid--3">
+                <div class="grid grid--4">
                     <div class="kpi kpi--sm">
                         <div class="kpi__label">Total Miles</div>
-                        <div class="kpi__value" id="total-miles-summary">247.3</div>
+                        <div class="kpi__value" id="total-miles-summary">392.7</div>
                     </div>
                     <div class="kpi kpi--sm">
                         <div class="kpi__label">Total Amount</div>
-                        <div class="kpi__value" id="total-amount-summary">$165.69</div>
+                        <div class="kpi__value" id="total-amount-summary">$246.78</div>
                     </div>
                     <div class="kpi kpi--sm">
                         <div class="kpi__label">Avg per Trip</div>
-                        <div class="kpi__value" id="avg-trip-summary">20.6 mi</div>
+                        <div class="kpi__value" id="avg-trip-summary">28.1 mi</div>
+                    </div>
+                    <div class="kpi kpi--sm">
+                        <div class="kpi__label">This Month</div>
+                        <div class="kpi__value" id="month-summary">$246.78</div>
                     </div>
                 </div>
             </div>
@@ -279,7 +339,7 @@
 
     <!-- Scripts -->
     <script src="../assets/js/helpers.js"></script>
-    <script src="../assets/js/mileage.js"></script>
+    <script src="../../scripts/utils/enhanced-mileage.js"></script>
     
     <!-- Authentication and initialization script -->
     <script>

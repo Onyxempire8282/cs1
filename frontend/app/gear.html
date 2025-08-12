@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gear - Claim Cipher</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="theme-dark">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar__header">
+            <div class="sidebar__logo">
+                <a href="./dashboard.html">Claim Cipher</a>
+            </div>
+        </div>
+        
+        <ul class="sidebar__nav">
+            <li class="sidebar__nav-item">
+                <a href="./dashboard.html" class="sidebar__nav-link">
+                    <span>📊</span> Dashboard
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./mileage.html" class="sidebar__nav-link">
+                    <span>🚗</span> Mileage Calculator
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./routes.html" class="sidebar__nav-link">
+                    <span>🗺️</span> Route Optimizer
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./jobs.html" class="sidebar__nav-link">
+                    <span>📱</span> Mobile Sync
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./autoforms.html" class="sidebar__nav-link">
+                    <span>📄</span> AutoForms
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./comparables.html" class="sidebar__nav-link">
+                    <span>🔍</span> Comparables
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./firms.html" class="sidebar__nav-link">
+                    <span>🏢</span> Firms Directory
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./gear.html" class="sidebar__nav-link sidebar__nav-link--active">
+                    <span>⚙️</span> Gear
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./help.html" class="sidebar__nav-link">
+                    <span>❓</span> Help
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./settings.html" class="sidebar__nav-link">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+        </ul>
+        
+        <!-- User info and logout -->
+        <div class="sidebar__footer">
+            <div class="sidebar__user" id="sidebar-user">
+                <div class="user-avatar" id="user-avatar">DU</div>
+                <div class="user-info">
+                    <div class="user-name" id="user-name">Demo User</div>
+                    <div class="user-role" id="user-role">Demo Mode</div>
+                </div>
+            </div>
+            <button class="sidebar__logout btn btn--ghost btn--sm" id="logout-btn">
+                <span>🚪</span> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Recommended Gear</h1>
+            <p class="page-subtitle">Essential tools and equipment for insurance adjusters</p>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="gear-categories mb-4">
+            <div class="category-tabs">
+                <button class="btn btn--outline category-tab category-tab--active" data-category="cameras">
+                    📷 Cameras
+                </button>
+                <button class="btn btn--outline category-tab" data-category="tools">
+                    🔧 Tools
+                </button>
+                <button class="btn btn--outline category-tab" data-category="safety">
+                    🦺 Safety
+                </button>
+                <button class="btn btn--outline category-tab" data-category="tech">
+                    💻 Technology
+                </button>
+                <button class="btn btn--outline category-tab" data-category="supplies">
+                    📦 Supplies
+                </button>
+            </div>
+        </div>
+
+        <!-- Gear Grid -->
+        <div class="gear-grid" id="gear-grid">
+            <!-- Cameras Category -->
+            <div class="category-section" data-category="cameras">
+                <div class="grid grid--2">
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">📷</div>
+                            <div class="gear-price">$899 - $1,299</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">Professional DSLR Camera</h4>
+                            <p class="gear-description">High-quality images for damage documentation with weather resistance and excellent low-light performance.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--success">High Resolution</span>
+                                <span class="badge badge--primary">Weather Resistant</span>
+                                <span class="badge badge--secondary">Fast Autofocus</span>
+                            </div>
+                            <div class="gear-specs">
+                                <div class="spec-row">
+                                    <span class="spec-label">Resolution:</span>
+                                    <span class="spec-value">24.2 MP</span>
+                                </div>
+                                <div class="spec-row">
+                                    <span class="spec-label">Battery Life:</span>
+                                    <span class="spec-value">950+ shots</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">📱</div>
+                            <div class="gear-price">$399 - $799</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">Rugged Smartphone</h4>
+                            <p class="gear-description">Durable smartphone designed for field work with excellent camera and GPS capabilities.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--warning">Drop-Proof</span>
+                                <span class="badge badge--primary">Waterproof</span>
+                                <span class="badge badge--success">Long Battery</span>
+                            </div>
+                            <div class="gear-specs">
+                                <div class="spec-row">
+                                    <span class="spec-label">Camera:</span>
+                                    <span class="spec-value">48 MP</span>
+                                </div>
+                                <div class="spec-row">
+                                    <span class="spec-label">Battery:</span>
+                                    <span class="spec-value">5000 mAh</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">🎥</div>
+                            <div class="gear-price">$199 - $399</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">Action Camera</h4>
+                            <p class="gear-description">Compact action camera perfect for documenting hard-to-reach areas and creating video reports.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--primary">4K Video</span>
+                                <span class="badge badge--success">Stabilization</span>
+                                <span class="badge badge--warning">Compact</span>
+                            </div>
+                            <div class="gear-specs">
+                                <div class="spec-row">
+                                    <span class="spec-label">Video:</span>
+                                    <span class="spec-value">4K @ 60fps</span>
+                                </div>
+                                <div class="spec-row">
+                                    <span class="spec-label">Size:</span>
+                                    <span class="spec-value">2.3" x 1.7"</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">📸</div>
+                            <div class="gear-price">$299 - $549</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">Instant Camera</h4>
+                            <p class="gear-description">For situations requiring immediate physical photos, with modern digital features.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--success">Instant Print</span>
+                                <span class="badge badge--primary">Digital Storage</span>
+                                <span class="badge badge--secondary">Easy Use</span>
+                            </div>
+                            <div class="gear-specs">
+                                <div class="spec-row">
+                                    <span class="spec-label">Print Size:</span>
+                                    <span class="spec-value">3.4" x 2.1"</span>
+                                </div>
+                                <div class="spec-row">
+                                    <span class="spec-label">Storage:</span>
+                                    <span class="spec-value">MicroSD</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tools Category -->
+            <div class="category-section" data-category="tools" style="display: none;">
+                <div class="grid grid--2">
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">📏</div>
+                            <div class="gear-price">$79 - $149</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">Laser Distance Meter</h4>
+                            <p class="gear-description">Accurate measurements up to 165 feet with memory storage and area calculations.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--primary">±1/16" Accuracy</span>
+                                <span class="badge badge--success">Memory Storage</span>
+                                <span class="badge badge--secondary">Compact</span>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">🔧</div>
+                            <div class="gear-price">$45 - $89</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">Multi-Tool Kit</h4>
+                            <p class="gear-description">Comprehensive tool set including screwdrivers, pliers, knife, and measuring tools.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--warning">15+ Tools</span>
+                                <span class="badge badge--primary">Stainless Steel</span>
+                                <span class="badge badge--success">Compact</span>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">🔦</div>
+                            <div class="gear-price">$29 - $79</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">LED Flashlight Set</h4>
+                            <p class="gear-description">High-powered LED flashlights with adjustable focus and multiple brightness settings.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--primary">2000+ Lumens</span>
+                                <span class="badge badge--success">Rechargeable</span>
+                                <span class="badge badge--warning">Waterproof</span>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">🪜</div>
+                            <div class="gear-price">$159 - $299</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">Telescoping Ladder</h4>
+                            <p class="gear-description">Lightweight aluminum ladder that extends up to 12.5 feet and collapses for easy transport.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--primary">12.5' Height</span>
+                                <span class="badge badge--success">Lightweight</span>
+                                <span class="badge badge--warning">Portable</span>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Safety Category -->
+            <div class="category-section" data-category="safety" style="display: none;">
+                <div class="grid grid--2">
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">🦺</div>
+                            <div class="gear-price">$19 - $39</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">High-Visibility Safety Vest</h4>
+                            <p class="gear-description">ANSI-compliant safety vest with reflective strips and multiple pockets.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--warning">ANSI Class 2</span>
+                                <span class="badge badge--primary">Reflective</span>
+                                <span class="badge badge--success">Breathable</span>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">👷</div>
+                            <div class="gear-price">$29 - $59</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">Hard Hat</h4>
+                            <p class="gear-description">OSHA-approved hard hat with adjustable suspension and ventilation slots.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--warning">OSHA Approved</span>
+                                <span class="badge badge--primary">Adjustable</span>
+                                <span class="badge badge--success">Ventilated</span>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">👟</div>
+                            <div class="gear-price">$89 - $179</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">Safety Work Boots</h4>
+                            <p class="gear-description">Steel toe work boots with slip-resistant soles and electrical hazard protection.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--warning">Steel Toe</span>
+                                <span class="badge badge--primary">Slip Resistant</span>
+                                <span class="badge badge--success">EH Rated</span>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">🥽</div>
+                            <div class="gear-price">$15 - $35</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">Safety Glasses</h4>
+                            <p class="gear-description">Impact-resistant safety glasses with UV protection and anti-fog coating.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--primary">ANSI Z87.1</span>
+                                <span class="badge badge--success">UV Protection</span>
+                                <span class="badge badge--warning">Anti-Fog</span>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technology Category -->
+            <div class="category-section" data-category="tech" style="display: none;">
+                <div class="grid grid--2">
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">💻</div>
+                            <div class="gear-price">$699 - $1,299</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">Rugged Laptop</h4>
+                            <p class="gear-description">Military-grade laptop built for field conditions with extended battery life.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--warning">MIL-STD-810G</span>
+                                <span class="badge badge--primary">12+ Hour Battery</span>
+                                <span class="badge badge--success">SSD Storage</span>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">📶</div>
+                            <div class="gear-price">$199 - $349</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">Mobile Hotspot</h4>
+                            <p class="gear-description">4G/5G mobile hotspot device for reliable internet connectivity in the field.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--primary">5G Ready</span>
+                                <span class="badge badge--success">15+ Hours</span>
+                                <span class="badge badge--warning">Up to 15 Devices</span>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">🔋</div>
+                            <div class="gear-price">$79 - $159</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">Portable Power Bank</h4>
+                            <p class="gear-description">High-capacity power bank with multiple USB ports and wireless charging capability.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--primary">20,000 mAh</span>
+                                <span class="badge badge--success">Wireless Charging</span>
+                                <span class="badge badge--warning">Fast Charge</span>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">📡</div>
+                            <div class="gear-price">$149 - $299</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">GPS Navigation Device</h4>
+                            <p class="gear-description">Rugged GPS device with preloaded maps and traffic updates for efficient routing.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--primary">Lifetime Maps</span>
+                                <span class="badge badge--success">Traffic Updates</span>
+                                <span class="badge badge--warning">Rugged Design</span>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Supplies Category -->
+            <div class="category-section" data-category="supplies" style="display: none;">
+                <div class="grid grid--2">
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">🎒</div>
+                            <div class="gear-price">$89 - $159</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">Professional Field Bag</h4>
+                            <p class="gear-description">Weatherproof bag with multiple compartments for organizing tools and equipment.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--primary">Weatherproof</span>
+                                <span class="badge badge--success">Multiple Pockets</span>
+                                <span class="badge badge--warning">Padded Laptop</span>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">📋</div>
+                            <div class="gear-price">$25 - $49</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">Weatherproof Clipboard</h4>
+                            <p class="gear-description">Aluminum clipboard with storage compartment and weather-resistant design.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--primary">Weather Resistant</span>
+                                <span class="badge badge--success">Storage Box</span>
+                                <span class="badge badge--warning">Aluminum</span>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">🖊️</div>
+                            <div class="gear-price">$15 - $29</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">All-Weather Pen Set</h4>
+                            <p class="gear-description">Pressurized ink pens that write in any weather condition and temperature.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--primary">All Weather</span>
+                                <span class="badge badge--success">Pressurized Ink</span>
+                                <span class="badge badge--warning">-30°F to 250°F</span>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <div class="gear-image">🧤</div>
+                            <div class="gear-price">$19 - $39</div>
+                        </div>
+                        <div class="card__content">
+                            <h4 class="gear-title">Work Gloves</h4>
+                            <p class="gear-description">Cut-resistant work gloves with grip coating and touchscreen compatibility.</p>
+                            <div class="gear-features">
+                                <span class="badge badge--warning">Cut Resistant</span>
+                                <span class="badge badge--primary">Grip Coating</span>
+                                <span class="badge badge--success">Touchscreen</span>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="flex gap-2">
+                                <button class="btn btn--outline btn--sm">View Details</button>
+                                <button class="btn btn--primary btn--sm">🛒 Shop Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="../assets/js/helpers.js"></script>
+    
+    <!-- Authentication and initialization script -->
+    <script>
+        // Authentication check
+        if (localStorage.getItem('isAuthenticated') !== 'true') {
+            window.location.href = '../login.html';
+        }
+
+        // Initialize page with user context
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeUserContext();
+            setupLogoutHandler();
+            initializeGear();
+        });
+
+        function initializeUserContext() {
+            const userType = localStorage.getItem('userType') || 'demo';
+            const userEmail = localStorage.getItem('userEmail') || 'demo@example.com';
+            const userName = userType === 'demo' ? 'Demo User' : userEmail.split('@')[0];
+            
+            // Set user type attribute
+            document.body.setAttribute('data-user-type', userType);
+            
+            // Update user display
+            const userNameEl = document.getElementById('user-name');
+            const userRoleEl = document.getElementById('user-role');
+            const userAvatarEl = document.getElementById('user-avatar');
+            
+            if (userNameEl) userNameEl.textContent = userName;
+            if (userRoleEl) userRoleEl.textContent = userType === 'demo' ? 'Demo Mode' : 'Pro User';
+            if (userAvatarEl) userAvatarEl.textContent = userName.substring(0, 2).toUpperCase();
+        }
+
+        function setupLogoutHandler() {
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    localStorage.removeItem('isAuthenticated');
+                    localStorage.removeItem('userType');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('demoStartTime');
+                    window.location.href = '../login.html';
+                });
+            }
+        }
+
+        function initializeGear() {
+            const categoryTabs = document.querySelectorAll('.category-tab');
+            const categorySections = document.querySelectorAll('.category-section');
+            
+            // Category tab switching
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    
+                    // Update active tab
+                    categoryTabs.forEach(t => t.classList.remove('category-tab--active'));
+                    this.classList.add('category-tab--active');
+                    
+                    // Show/hide category sections
+                    categorySections.forEach(section => {
+                        if (section.getAttribute('data-category') === category) {
+                            section.style.display = 'block';
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Demo handlers for shop buttons
+            const shopButtons = document.querySelectorAll('.btn:contains("🛒 Shop Now")');
+            document.addEventListener('click', function(e) {
+                if (e.target.textContent.includes('🛒 Shop Now')) {
+                    e.preventDefault();
+                    showToast('Shopping links are demo features', 'info');
+                }
+                
+                if (e.target.textContent === 'View Details') {
+                    e.preventDefault();
+                    showToast('Product details are demo features', 'info');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

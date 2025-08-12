@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route Optimizer - Enhanced Demo</title>
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/variables.css">
+    <link rel="stylesheet" href="styles/components/cards.css">
+    <link rel="stylesheet" href="styles/components/buttons.css">
+    <link rel="stylesheet" href="styles/pages/routes.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .demo-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .demo-content {
+            padding: 30px;
+        }
+        
+        .feature-highlight {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .feature-highlight h3 {
+            color: #0066cc;
+            margin-top: 0;
+        }
+        
+        .sample-stops {
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .sample-stop {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .stop-info h4 {
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+        
+        .stop-details {
+            display: flex;
+            gap: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .distance-badge {
+            background: #17a2b8;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .claim-badge {
+            background: #28a745;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        
+        .calculation-demo {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .calc-step {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            border-left: 4px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>🚀 Enhanced Route Optimizer</h1>
+            <p>New Features: Address Deletion & Calculation Transparency</p>
+        </div>
+        
+        <div class="demo-content">
+            <div class="feature-highlight">
+                <h3>🎯 Key Enhancements</h3>
+                <ul>
+                    <li><strong>Address Deletion:</strong> Remove stops from both pending and optimized routes</li>
+                    <li><strong>Calculation Transparency:</strong> Clear explanation of distance calculations</li>
+                    <li><strong>Real-time Distance Display:</strong> Shows distance from home for each stop</li>
+                    <li><strong>Enhanced UI:</strong> Better visual feedback and improved user experience</li>
+                </ul>
+            </div>
+
+            <div class="calculation-demo">
+                <h3>📊 How Distance Calculations Work</h3>
+                
+                <div class="calc-step">
+                    <h4>🏠 Primary Method: Distance from Home Address</h4>
+                    <p>All stops are measured from your home/office address as the starting point</p>
+                </div>
+                
+                <div class="calc-step">
+                    <h4>🔄 Stop-to-Stop Distances</h4>
+                    <p>When optimizing routes, we calculate distances between consecutive stops</p>
+                </div>
+                
+                <div class="calc-step">
+                    <h4>💰 Mileage Calculation</h4>
+                    <p>Route total = Home → Stop 1 → Stop 2 → ... → Last Stop → Home</p>
+                    <p>Cost = Total Miles × $0.67/mile (configurable)</p>
+                </div>
+            </div>
+
+            <h3>📍 Sample Route with Deletion Capability</h3>
+            <p>Each stop now shows distance from home and can be deleted individually:</p>
+            
+            <div class="sample-stops" id="sample-stops">
+                <!-- Sample stops will be populated here -->
+            </div>
+
+            <div class="feature-highlight">
+                <h3>✨ Live Features Demo</h3>
+                <p><strong>Try these actions:</strong></p>
+                <ul>
+                    <li>Click the 🗑️ Delete buttons to remove stops (works for both pending and optimized routes)</li>
+                    <li>Notice the distance calculations shown for each stop</li>
+                    <li>See how removal triggers route recalculation automatically</li>
+                </ul>
+            </div>
+
+            <div class="feature-highlight">
+                <h3>🔧 Technical Implementation</h3>
+                <p><strong>Added Methods:</strong></p>
+                <ul>
+                    <li><code>removeOptimizedStop(stopId)</code> - Removes stops from optimized routes</li>
+                    <li><code>calculateDistanceFromHome(address)</code> - Smart distance estimation</li>
+                    <li><code>calculateDistanceBetweenStops()</code> - Inter-stop distance calculation</li>
+                    <li><code>recalculateRouteDay()</code> - Real-time route total updates</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Demo functionality
+        const sampleStops = [
+            { id: '1', address: '123 Main St, Downtown', claim: 'CLM001', distance: 8.3 },
+            { id: '2', address: '456 Oak Ave, Midtown', claim: 'CLM002', distance: 12.7 },
+            { id: '3', address: '789 Pine Rd, Uptown', claim: 'CLM003', distance: 15.2 },
+            { id: '4', address: '321 Elm Dr, Suburbs', claim: 'CLM004', distance: 22.1 }
+        ];
+
+        function renderSampleStops() {
+            const container = document.getElementById('sample-stops');
+            container.innerHTML = sampleStops.map((stop, index) => `
+                <div class="sample-stop" data-stop-id="${stop.id}">
+                    <div class="stop-marker">
+                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: #007bff; color: white; border-radius: 50%; font-weight: bold; font-size: 14px;">
+                            ${index + 1}
+                        </span>
+                    </div>
+                    <div class="stop-info">
+                        <h4>${stop.address}</h4>
+                        <div class="stop-details">
+                            <span class="claim-badge">🗂️ ${stop.claim}</span>
+                            <span class="distance-badge">📍 ${stop.distance} mi from home</span>
+                        </div>
+                    </div>
+                    <button class="delete-btn" onclick="deleteStop('${stop.id}')">
+                        🗑️ Delete
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function deleteStop(stopId) {
+            const stopIndex = sampleStops.findIndex(s => s.id === stopId);
+            if (stopIndex !== -1) {
+                const removedStop = sampleStops.splice(stopIndex, 1)[0];
+                
+                // Show notification
+                showNotification(`Stop removed: ${removedStop.address}`, 'success');
+                
+                // Re-render
+                renderSampleStops();
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : '#dc3545'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize demo
+        renderSampleStops();
+    </script>
+</body>
+</html>

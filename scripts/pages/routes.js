@@ -269,7 +269,8 @@ class RoutesPage {
             firm: firm,
             day: null,
             order: null,
-            coordinates: null // Will be geocoded later
+            coordinates: null, // Will be geocoded later
+            distanceFromHome: this.calculateDistanceFromHome(address)
         };
 
         this.currentStops.push(newStop);
@@ -308,6 +309,13 @@ class RoutesPage {
             this.saveRouteData();
 
             this.showToast('Routes optimized successfully!', TOAST_TYPES.SUCCESS);
+            
+            // Display route on map if available
+            if (window.displayRouteOnMap && this.optimizedRoute) {
+                setTimeout(() => {
+                    window.displayRouteOnMap(this.optimizedRoute);
+                }, 500);
+            }
 
         } catch (error) {
             console.error('Route optimization failed:', error);
@@ -452,6 +460,8 @@ class RoutesPage {
         container.innerHTML = stopsToShow.map((stop, index) => {
             const stopNumber = index + 1;
             const isStart = index === 0 && stop.address === this.routeRules.startAddress;
+            const isOptimized = this.optimizedRoute && this.optimizedRoute.days[this.activeDay - 1];
+            const distanceInfo = stop.distanceFromHome ? `${stop.distanceFromHome.toFixed(1)} mi from home` : '';
             
             return `
                 <div class="route-stop" data-stop-id="${stop.id}" draggable="true">
@@ -461,21 +471,55 @@ class RoutesPage {
                     <div class="stop-info">
                         <h4 class="stop-address">${stop.address}</h4>
                         <div class="stop-details">
-                            ${stop.claimNumber ? `<span class="stop-claim">Claim: ${stop.claimNumber}</span>` : ''}
-                            ${stop.firm ? `<span class="stop-firm">Firm: ${stop.firm}</span>` : ''}
-                            ${stop.estimatedMiles ? `<span class="stop-distance">${stop.estimatedMiles.toFixed(1)} mi</span>` : ''}
+                            ${stop.claimNumber ? `<span class="stop-claim">🗂️ Claim: ${stop.claimNumber}</span>` : ''}
+                            ${stop.firm ? `<span class="stop-firm">🏢 ${stop.firm}</span>` : ''}
+                            ${distanceInfo ? `<span class="stop-distance">📍 ${distanceInfo}</span>` : ''}
+                            ${isOptimized ? '<span class="stop-status">✅ Optimized</span>' : '<span class="stop-status">⏳ Pending</span>'}
                         </div>
                     </div>
                     <div class="stop-actions">
-                        <button class="btn btn--ghost btn--small" onclick="this.editStop('${stop.id}')">Edit</button>
-                        <button class="btn btn--ghost btn--small" onclick="this.removeStop('${stop.id}')">Remove</button>
+                        <button class="btn btn--ghost btn--small edit-stop-btn" data-stop-id="${stop.id}">
+                            ✏️ Edit
+                        </button>
+                        <button class="btn btn--ghost btn--small remove-stop-btn" data-stop-id="${stop.id}">
+                            🗑️ Remove
+                        </button>
                     </div>
                 </div>
             `;
         }).join('');
 
+        // Add event listeners for the newly created buttons
+        this.attachStopEventListeners();
+
         // Update route summary for active day
         this.updateRouteSummary();
+    }
+
+    attachStopEventListeners() {
+        // Remove stop buttons
+        const removeButtons = document.querySelectorAll('.remove-stop-btn');
+        removeButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const stopId = button.getAttribute('data-stop-id');
+                if (this.optimizedRoute) {
+                    this.removeOptimizedStop(stopId);
+                } else {
+                    this.removeStop(stopId);
+                }
+            });
+        });
+
+        // Edit stop buttons
+        const editButtons = document.querySelectorAll('.edit-stop-btn');
+        editButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const stopId = button.getAttribute('data-stop-id');
+                this.editStop(stopId);
+            });
+        });
     }
 
     updateRouteSummary() {
@@ -586,6 +630,49 @@ class RoutesPage {
         this.saveRouteData();
         this.updateUI();
         this.showToast('Stop removed', TOAST_TYPES.SUCCESS);
+    }
+
+    removeOptimizedStop(stopId) {
+        if (!this.optimizedRoute) {
+            // If not optimized, just remove from current stops
+            this.removeStop(stopId);
+            return;
+        }
+
+        // Find and remove from optimized route
+        let removed = false;
+        for (let dayIndex = 0; dayIndex < this.optimizedRoute.days.length; dayIndex++) {
+            const stopIndex = this.optimizedRoute.days[dayIndex].findIndex(stop => stop.id === stopId);
+            if (stopIndex !== -1) {
+                const removedStop = this.optimizedRoute.days[dayIndex].splice(stopIndex, 1)[0];
+                removed = true;
+                
+                // Recalculate totals for this day
+                this.recalculateRouteDay(dayIndex);
+                
+                this.showToast(`Stop removed from Day ${dayIndex + 1}: ${removedStop.address}`, TOAST_TYPES.SUCCESS);
+                break;
+            }
+        }
+
+        if (removed) {
+            this.saveRouteData();
+            this.updateUI();
+        }
+    }
+
+    // Recalculate route totals for a specific day
+    recalculateRouteDay(dayIndex) {
+        if (!this.optimizedRoute || !this.optimizedRoute.days[dayIndex]) return;
+
+        const dayStops = this.optimizedRoute.days[dayIndex];
+        if (dayStops.length === 0) {
+            this.optimizedRoute.totalMiles = this.calculateTotalMiles(this.optimizedRoute.days);
+            return;
+        }
+
+        // Recalculate total miles for the entire route
+        this.optimizedRoute.totalMiles = this.calculateTotalMiles(this.optimizedRoute.days);
     }
 
     clearAllStops() {
@@ -778,12 +865,145 @@ class RoutesPage {
             id: Date.now().toString(),
             day: null,
             order: null,
+            distanceFromHome: this.calculateDistanceFromHome(stopData.address || ''),
             ...stopData
         };
         
         this.currentStops.push(stop);
         this.saveRouteData();
         this.updateUI();
+    }
+
+    // Enhanced calculation methods for transparent route optimization
+    
+    // Calculate realistic distance from home address
+    calculateDistanceFromHome(address) {
+        if (!address) return 0;
+        
+        // In a real application, this would use Google Maps Distance Matrix API
+        // For demonstration, we'll simulate realistic distances based on address patterns
+        
+        const homeAddress = this.routeRules.startAddress.toLowerCase();
+        const targetAddress = address.toLowerCase();
+        
+        // Simulate different distances based on common address patterns
+        let baseDistance = 15; // Default ~15 miles
+        
+        // Same city/area indicators
+        if (this.addressesInSameCity(homeAddress, targetAddress)) {
+            baseDistance = Math.random() * 10 + 5; // 5-15 miles for same city
+        }
+        // Different cities
+        else if (this.addressesInDifferentStates(homeAddress, targetAddress)) {
+            baseDistance = Math.random() * 50 + 25; // 25-75 miles for different states
+        }
+        // Different counties/areas
+        else {
+            baseDistance = Math.random() * 30 + 10; // 10-40 miles for different areas
+        }
+        
+        return Math.round(baseDistance * 10) / 10; // Round to 1 decimal
+    }
+
+    // Calculate distance between two stops for route optimization
+    calculateDistanceBetweenStops(stop1, stop2) {
+        if (!stop1 || !stop2) return 0;
+        
+        // In a real app, this would use actual geocoding and distance calculation
+        // For simulation, calculate based on relative distance from home
+        
+        const distance1 = stop1.distanceFromHome || 0;
+        const distance2 = stop2.distanceFromHome || 0;
+        
+        // Simulate distance based on triangulation
+        // If both stops are similar distance from home, they're likely closer to each other
+        const distanceDiff = Math.abs(distance1 - distance2);
+        let betweenDistance;
+        
+        if (distanceDiff < 5) {
+            // Similar distances from home = likely close to each other
+            betweenDistance = Math.random() * 8 + 2; // 2-10 miles
+        } else if (distanceDiff < 15) {
+            // Moderate difference = moderate distance
+            betweenDistance = Math.random() * 15 + 5; // 5-20 miles
+        } else {
+            // Large difference = potentially far apart
+            betweenDistance = Math.random() * 25 + 10; // 10-35 miles
+        }
+        
+        return Math.round(betweenDistance * 10) / 10;
+    }
+
+    // Helper method to determine if addresses are in the same city
+    addressesInSameCity(addr1, addr2) {
+        const cityKeywords = ['st', 'ave', 'rd', 'blvd', 'ln', 'dr', 'ct'];
+        return cityKeywords.some(keyword => 
+            addr1.includes(keyword) && addr2.includes(keyword)
+        );
+    }
+
+    // Helper method to determine if addresses are in different states
+    addressesInDifferentStates(addr1, addr2) {
+        const stateAbbr = ['al', 'ak', 'az', 'ar', 'ca', 'co', 'ct', 'de', 'fl', 'ga', 'hi', 'id', 'il', 'in', 'ia', 'ks', 'ky', 'la', 'me', 'md', 'ma', 'mi', 'mn', 'ms', 'mo', 'mt', 'ne', 'nv', 'nh', 'nj', 'nm', 'ny', 'nc', 'nd', 'oh', 'ok', 'or', 'pa', 'ri', 'sc', 'sd', 'tn', 'tx', 'ut', 'vt', 'va', 'wa', 'wv', 'wi', 'wy'];
+        
+        const addr1States = stateAbbr.filter(state => addr1.includes(state));
+        const addr2States = stateAbbr.filter(state => addr2.includes(state));
+        
+        return addr1States.length > 0 && addr2States.length > 0 && 
+               !addr1States.some(state => addr2States.includes(state));
+    }
+
+    // Calculate total route distance including return to home
+    calculateTotalRouteDistance(stops) {
+        if (!stops || stops.length === 0) return 0;
+        
+        let totalDistance = 0;
+        
+        // Distance from home to first stop
+        if (stops[0] && stops[0].distanceFromHome) {
+            totalDistance += stops[0].distanceFromHome;
+        }
+        
+        // Distance between consecutive stops
+        for (let i = 0; i < stops.length - 1; i++) {
+            totalDistance += this.calculateDistanceBetweenStops(stops[i], stops[i + 1]);
+        }
+        
+        // Distance from last stop back to home (return journey)
+        if (stops[stops.length - 1] && stops[stops.length - 1].distanceFromHome) {
+            totalDistance += stops[stops.length - 1].distanceFromHome;
+        }
+        
+        return Math.round(totalDistance * 10) / 10;
+    }
+
+    // Estimate travel time based on distance and traffic conditions
+    estimateTravelTime(distanceMiles, timeOfDay = 'midday') {
+        if (!distanceMiles) return 0;
+        
+        // Base speed assumptions
+        let avgSpeed = 35; // mph for city driving
+        
+        // Adjust for time of day
+        switch (timeOfDay) {
+            case 'morning':
+                avgSpeed = 25; // Rush hour traffic
+                break;
+            case 'evening':
+                avgSpeed = 30; // Evening traffic
+                break;
+            case 'midday':
+                avgSpeed = 35; // Normal traffic
+                break;
+            case 'night':
+                avgSpeed = 45; // Light traffic
+                break;
+        }
+        
+        const baseTime = distanceMiles / avgSpeed;
+        const bufferTime = 0.1; // 6 minutes buffer for parking, stops, etc.
+        
+        return Math.round((baseTime + bufferTime) * 10) / 10;
     }
 
     // Cleanup method

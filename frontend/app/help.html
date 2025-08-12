@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Support - Claim Cipher</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="theme-dark">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar__header">
+            <div class="sidebar__logo">
+                <a href="./dashboard.html">Claim Cipher</a>
+            </div>
+        </div>
+        
+        <ul class="sidebar__nav">
+            <li class="sidebar__nav-item">
+                <a href="./dashboard.html" class="sidebar__nav-link">
+                    <span>📊</span> Dashboard
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./mileage.html" class="sidebar__nav-link">
+                    <span>🚗</span> Mileage Calculator
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./routes.html" class="sidebar__nav-link">
+                    <span>🗺️</span> Route Optimizer
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./jobs.html" class="sidebar__nav-link">
+                    <span>📱</span> Mobile Sync
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./autoforms.html" class="sidebar__nav-link">
+                    <span>📄</span> AutoForms
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./comparables.html" class="sidebar__nav-link">
+                    <span>🔍</span> Comparables
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./firms.html" class="sidebar__nav-link">
+                    <span>🏢</span> Firms Directory
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./gear.html" class="sidebar__nav-link">
+                    <span>⚙️</span> Gear
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./help.html" class="sidebar__nav-link sidebar__nav-link--active">
+                    <span>❓</span> Help
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./settings.html" class="sidebar__nav-link">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+        </ul>
+        
+        <!-- User info and logout -->
+        <div class="sidebar__footer">
+            <div class="sidebar__user" id="sidebar-user">
+                <div class="user-avatar" id="user-avatar">DU</div>
+                <div class="user-info">
+                    <div class="user-name" id="user-name">Demo User</div>
+                    <div class="user-role" id="user-role">Demo Mode</div>
+                </div>
+            </div>
+            <button class="sidebar__logout btn btn--ghost btn--sm" id="logout-btn">
+                <span>🚪</span> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Help & Support</h1>
+            <p class="page-subtitle">Get help with using Claim Cipher</p>
+        </div>
+
+        <div class="grid grid--sidebar">
+            <!-- Help Sidebar -->
+            <div class="help-sidebar">
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">📚 Quick Help</h3>
+                    </div>
+                    <div class="card__content">
+                        <div class="help-categories">
+                            <button class="help-category help-category--active" data-category="getting-started">
+                                <span class="category-icon">🚀</span>
+                                <span class="category-label">Getting Started</span>
+                            </button>
+                            <button class="help-category" data-category="mileage">
+                                <span class="category-icon">🚗</span>
+                                <span class="category-label">Mileage Calculator</span>
+                            </button>
+                            <button class="help-category" data-category="routes">
+                                <span class="category-icon">🗺️</span>
+                                <span class="category-label">Route Optimizer</span>
+                            </button>
+                            <button class="help-category" data-category="mobile">
+                                <span class="category-icon">📱</span>
+                                <span class="category-label">Mobile Sync</span>
+                            </button>
+                            <button class="help-category" data-category="forms">
+                                <span class="category-icon">📄</span>
+                                <span class="category-label">AutoForms</span>
+                            </button>
+                            <button class="help-category" data-category="comparables">
+                                <span class="category-icon">🔍</span>
+                                <span class="category-label">Comparables</span>
+                            </button>
+                            <button class="help-category" data-category="troubleshooting">
+                                <span class="category-icon">⚠️</span>
+                                <span class="category-label">Troubleshooting</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Help Content -->
+            <div class="help-content">
+                <!-- Getting Started -->
+                <div class="help-section" data-category="getting-started">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">🚀 Getting Started Guide</h3>
+                        </div>
+                        <div class="card__content">
+                            <div class="help-articles">
+                                <article class="help-article">
+                                    <h4>Welcome to Claim Cipher</h4>
+                                    <p>Learn the basics of navigating and using the platform effectively for insurance claim management.</p>
+                                    <div class="article-meta">
+                                        <span class="reading-time">📖 5 min read</span>
+                                        <span class="article-type">🎥 Video available</span>
+                                    </div>
+                                    <div class="article-content">
+                                        <p><strong>Key Features:</strong></p>
+                                        <ul>
+                                            <li>Dashboard for claim overview and statistics</li>
+                                            <li>Mileage calculator with Google Maps integration</li>
+                                            <li>Route optimizer for efficient claim scheduling</li>
+                                            <li>Mobile sync for photo and job management</li>
+                                            <li>AutoForms for PDF form automation</li>
+                                        </ul>
+                                    </div>
+                                </article>
+                                
+                                <article class="help-article">
+                                    <h4>Setting Up Your Profile</h4>
+                                    <p>Configure your account settings, firms, and preferences for optimal workflow.</p>
+                                    <div class="article-meta">
+                                        <span class="reading-time">📖 3 min read</span>
+                                    </div>
+                                    <div class="article-content">
+                                        <p><strong>Setup Steps:</strong></p>
+                                        <ol>
+                                            <li>Navigate to Settings > Profile</li>
+                                            <li>Update your personal information</li>
+                                            <li>Add firm rate information in Firms & Rates</li>
+                                            <li>Configure notification preferences</li>
+                                            <li>Set up your preferred timezone</li>
+                                        </ol>
+                                    </div>
+                                </article>
+                                
+                                <article class="help-article">
+                                    <h4>Keyboard Shortcuts</h4>
+                                    <p>Speed up your workflow with these handy keyboard shortcuts.</p>
+                                    <div class="article-meta">
+                                        <span class="reading-time">📖 2 min read</span>
+                                    </div>
+                                    <div class="article-content">
+                                        <div class="shortcut-grid">
+                                            <div class="shortcut-item">
+                                                <kbd>Ctrl + D</kbd>
+                                                <span>Dashboard</span>
+                                            </div>
+                                            <div class="shortcut-item">
+                                                <kbd>Ctrl + M</kbd>
+                                                <span>Mileage Calculator</span>
+                                            </div>
+                                            <div class="shortcut-item">
+                                                <kbd>Ctrl + R</kbd>
+                                                <span>Route Optimizer</span>
+                                            </div>
+                                            <div class="shortcut-item">
+                                                <kbd>Ctrl + S</kbd>
+                                                <span>Settings</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mileage Calculator -->
+                <div class="help-section" data-category="mileage" style="display: none;">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">🚗 Mileage Calculator Help</h3>
+                        </div>
+                        <div class="card__content">
+                            <div class="help-articles">
+                                <article class="help-article">
+                                    <h4>How to Calculate Mileage</h4>
+                                    <p>Use the Google Maps integration to calculate accurate distances and billing amounts.</p>
+                                    <div class="article-content">
+                                        <ol>
+                                            <li>Enter your starting location (home/office)</li>
+                                            <li>Add destination address or use autocomplete</li>
+                                            <li>Select the appropriate firm for rate calculation</li>
+                                            <li>Click "Calculate Distance" to get results</li>
+                                            <li>Review the total distance and billing amount</li>
+                                        </ol>
+                                    </div>
+                                </article>
+                                
+                                <article class="help-article">
+                                    <h4>Managing Firm Rates</h4>
+                                    <p>Set up and manage different mileage rates for various firms and clients.</p>
+                                    <div class="article-content">
+                                        <p>Default rates are configured in Settings > Firms & Rates. You can add multiple firms with different rates per mile.</p>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Route Optimizer -->
+                <div class="help-section" data-category="routes" style="display: none;">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">🗺️ Route Optimizer Help</h3>
+                        </div>
+                        <div class="card__content">
+                            <div class="help-articles">
+                                <article class="help-article">
+                                    <h4>Optimizing Your Routes</h4>
+                                    <p>Efficiently plan your daily claim visits using the route optimization algorithm.</p>
+                                    <div class="article-content">
+                                        <ol>
+                                            <li>Add multiple claim addresses to your list</li>
+                                            <li>Set your starting location (home/office)</li>
+                                            <li>Click "Optimize Route" to calculate the best path</li>
+                                            <li>Review the optimized sequence and total distance</li>
+                                            <li>Export to your preferred navigation app</li>
+                                        </ol>
+                                        <p><strong>Algorithm Details:</strong> The system groups claims within 50 miles and limits to 10 stops per day. Excess claims are moved to "Tomorrow" for optimal scheduling.</p>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Sync -->
+                <div class="help-section" data-category="mobile" style="display: none;">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">📱 Mobile Sync Help</h3>
+                        </div>
+                        <div class="card__content">
+                            <div class="help-articles">
+                                <article class="help-article">
+                                    <h4>Managing Mobile Devices</h4>
+                                    <p>Track and manage photos and job assignments across your mobile devices.</p>
+                                    <div class="article-content">
+                                        <p><strong>PRO Feature:</strong> Mobile Sync allows you to:</p>
+                                        <ul>
+                                            <li>Monitor device status and connectivity</li>
+                                            <li>Track photo upload progress</li>
+                                            <li>Manage job assignments to specific devices</li>
+                                            <li>View sync statistics and storage usage</li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AutoForms -->
+                <div class="help-section" data-category="forms" style="display: none;">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">📄 AutoForms Help</h3>
+                        </div>
+                        <div class="card__content">
+                            <div class="help-articles">
+                                <article class="help-article">
+                                    <h4>Auto-filling PDF Forms</h4>
+                                    <p>Automatically extract data from CCC estimates and populate insurance forms.</p>
+                                    <div class="article-content">
+                                        <ol>
+                                            <li>Upload your CCC estimate (PDF, Excel, or CSV)</li>
+                                            <li>Wait for data extraction and processing</li>
+                                            <li>Review and edit the extracted vehicle data</li>
+                                            <li>Select which forms to generate</li>
+                                            <li>Download completed PDF forms</li>
+                                        </ol>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comparables -->
+                <div class="help-section" data-category="comparables" style="display: none;">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">🔍 Comparables Help</h3>
+                        </div>
+                        <div class="card__content">
+                            <div class="help-articles">
+                                <article class="help-article">
+                                    <h4>Finding Vehicle Comparables</h4>
+                                    <p><strong>PRO Feature:</strong> Search for similar vehicles across multiple sources for valuation purposes.</p>
+                                    <div class="article-content">
+                                        <ol>
+                                            <li>Enter vehicle details (year, make, model, trim)</li>
+                                            <li>Set your search radius and ZIP code</li>
+                                            <li>Filter by mileage range and condition</li>
+                                            <li>Review comparable vehicles and prices</li>
+                                            <li>Export results to PDF for reports</li>
+                                        </ol>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Troubleshooting -->
+                <div class="help-section" data-category="troubleshooting" style="display: none;">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">⚠️ Troubleshooting</h3>
+                        </div>
+                        <div class="card__content">
+                            <div class="help-articles">
+                                <article class="help-article">
+                                    <h4>Common Issues</h4>
+                                    <div class="article-content">
+                                        <div class="troubleshoot-item">
+                                            <h5>🚗 Mileage Calculator Not Working</h5>
+                                            <p><strong>Solution:</strong> Ensure you have a stable internet connection for Google Maps API. Try refreshing the page if distance calculations fail.</p>
+                                        </div>
+                                        <div class="troubleshoot-item">
+                                            <h5>📄 AutoForms Upload Issues</h5>
+                                            <p><strong>Solution:</strong> Verify your file is in PDF, Excel, or CSV format and under 10MB. Clear your browser cache if uploads consistently fail.</p>
+                                        </div>
+                                        <div class="troubleshoot-item">
+                                            <h5>🗺️ Route Optimizer Errors</h5>
+                                            <p><strong>Solution:</strong> Check that all addresses are complete and valid. The system requires at least 2 valid addresses to optimize.</p>
+                                        </div>
+                                        <div class="troubleshoot-item">
+                                            <h5>📱 Mobile Sync Issues</h5>
+                                            <p><strong>Solution:</strong> Ensure your mobile device has a stable internet connection and the latest app version installed.</p>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Support Section -->
+        <div class="card mt-4">
+            <div class="card__header">
+                <h3 class="card__title">📞 Contact Support</h3>
+            </div>
+            <div class="card__content">
+                <div class="support-options grid grid--2">
+                    <div class="support-option">
+                        <div class="support-icon">💬</div>
+                        <div class="support-info">
+                            <h4>Live Chat</h4>
+                            <p>Get instant help from our support team during business hours</p>
+                            <button class="btn btn--primary btn--sm">Start Chat</button>
+                        </div>
+                    </div>
+                    
+                    <div class="support-option">
+                        <div class="support-icon">📧</div>
+                        <div class="support-info">
+                            <h4>Email Support</h4>
+                            <p>Send us a detailed message and we'll respond within 24 hours</p>
+                            <button class="btn btn--outline btn--sm">Send Email</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="../assets/js/helpers.js"></script>
+    
+    <!-- Authentication and initialization script -->
+    <script>
+        // Authentication check
+        if (localStorage.getItem('isAuthenticated') !== 'true') {
+            window.location.href = '../login.html';
+        }
+
+        // Initialize page with user context
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeUserContext();
+            setupLogoutHandler();
+            initializeHelp();
+        });
+
+        function initializeUserContext() {
+            const userType = localStorage.getItem('userType') || 'demo';
+            const userEmail = localStorage.getItem('userEmail') || 'demo@example.com';
+            const userName = userType === 'demo' ? 'Demo User' : userEmail.split('@')[0];
+            
+            // Set user type attribute
+            document.body.setAttribute('data-user-type', userType);
+            
+            // Update user display
+            const userNameEl = document.getElementById('user-name');
+            const userRoleEl = document.getElementById('user-role');
+            const userAvatarEl = document.getElementById('user-avatar');
+            
+            if (userNameEl) userNameEl.textContent = userName;
+            if (userRoleEl) userRoleEl.textContent = userType === 'demo' ? 'Demo Mode' : 'Pro User';
+            if (userAvatarEl) userAvatarEl.textContent = userName.substring(0, 2).toUpperCase();
+        }
+
+        function setupLogoutHandler() {
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    localStorage.removeItem('isAuthenticated');
+                    localStorage.removeItem('userType');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('demoStartTime');
+                    window.location.href = '../login.html';
+                });
+            }
+        }
+
+        function initializeHelp() {
+            const categoryButtons = document.querySelectorAll('.help-category');
+            const helpSections = document.querySelectorAll('.help-section');
+            
+            // Category switching
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    
+                    // Update active button
+                    categoryButtons.forEach(btn => btn.classList.remove('help-category--active'));
+                    this.classList.add('help-category--active');
+                    
+                    // Show/hide sections
+                    helpSections.forEach(section => {
+                        if (section.getAttribute('data-category') === category) {
+                            section.style.display = 'block';
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Demo handlers for support buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.textContent === 'Start Chat') {
+                    e.preventDefault();
+                    showToast('Live chat is a demo feature', 'info');
+                }
+                
+                if (e.target.textContent === 'Send Email') {
+                    e.preventDefault();
+                    showToast('Email support is a demo feature', 'info');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

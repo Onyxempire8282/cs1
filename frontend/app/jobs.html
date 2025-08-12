@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Sync - Claim Cipher</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="theme-dark">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar__header">
+            <div class="sidebar__logo">
+                <a href="./dashboard.html">Claim Cipher</a>
+            </div>
+        </div>
+        
+        <ul class="sidebar__nav">
+            <li class="sidebar__nav-item">
+                <a href="./dashboard.html" class="sidebar__nav-link">
+                    <span>📊</span> Dashboard
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./mileage.html" class="sidebar__nav-link">
+                    <span>🚗</span> Mileage Calculator
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./routes.html" class="sidebar__nav-link">
+                    <span>🗺️</span> Route Optimizer
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./jobs.html" class="sidebar__nav-link sidebar__nav-link--active">
+                    <span>📱</span> Mobile Sync
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./autoforms.html" class="sidebar__nav-link">
+                    <span>📄</span> AutoForms
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./comparables.html" class="sidebar__nav-link">
+                    <span>🔍</span> Comparables
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./firms.html" class="sidebar__nav-link">
+                    <span>🏢</span> Firms Directory
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./gear.html" class="sidebar__nav-link">
+                    <span>⚙️</span> Gear
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./help.html" class="sidebar__nav-link">
+                    <span>❓</span> Help
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./settings.html" class="sidebar__nav-link">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+        </ul>
+        
+        <!-- User info and logout -->
+        <div class="sidebar__footer">
+            <div class="sidebar__user" id="sidebar-user">
+                <div class="user-avatar" id="user-avatar">DU</div>
+                <div class="user-info">
+                    <div class="user-name" id="user-name">Demo User</div>
+                    <div class="user-role" id="user-role">Demo Mode</div>
+                </div>
+            </div>
+            <button class="sidebar__logout btn btn--ghost btn--sm" id="logout-btn">
+                <span>🚪</span> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Mobile Sync</h1>
+            <p class="page-subtitle">Manage field inspections and sync photos from mobile devices</p>
+            <span class="badge badge--pro">PRO FEATURE</span>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="grid grid--4 mb-4">
+            <div class="card">
+                <div class="card__content">
+                    <div class="kpi">
+                        <div class="kpi__value">3</div>
+                        <div class="kpi__label">Active Jobs</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card__content">
+                    <div class="kpi">
+                        <div class="kpi__value">12</div>
+                        <div class="kpi__label">Completed This Week</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card__content">
+                    <div class="kpi">
+                        <div class="kpi__value">247</div>
+                        <div class="kpi__label">Photos Synced</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card__content">
+                    <div class="kpi">
+                        <div class="kpi__value">2</div>
+                        <div class="kpi__label">Pending Summaries</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Jobs -->
+        <div class="card mb-4">
+            <div class="card__header">
+                <h3 class="card__title">Active Jobs</h3>
+                <button class="btn btn--primary btn--sm">+ Create Job</button>
+            </div>
+            <div class="card__content" style="padding: 0;">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Vehicle</th>
+                                <th>Claim #</th>
+                                <th>Status</th>
+                                <th>Progress</th>
+                                <th>Device</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="vehicle-info">
+                                        <div class="vehicle-title">2021 Honda Accord</div>
+                                        <div class="vehicle-subtitle">Sport Trim</div>
+                                    </div>
+                                </td>
+                                <td><span class="text-primary">CLM-4891</span></td>
+                                <td><span class="badge badge--warning">Uploading</span></td>
+                                <td>
+                                    <div class="progress-container">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 67%;"></div>
+                                        </div>
+                                        <span class="progress-text">8/12 uploaded</span>
+                                    </div>
+                                </td>
+                                <td>📱 iPhone 14 Pro</td>
+                                <td>
+                                    <button class="btn btn--ghost btn--sm">View</button>
+                                    <button class="btn btn--ghost btn--sm">📤 Request</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="vehicle-info">
+                                        <div class="vehicle-title">2019 Toyota Camry</div>
+                                        <div class="vehicle-subtitle">LE Trim</div>
+                                    </div>
+                                </td>
+                                <td><span class="text-primary">CLM-4902</span></td>
+                                <td><span class="badge badge--success">Ready</span></td>
+                                <td>
+                                    <div class="progress-container">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 100%;"></div>
+                                        </div>
+                                        <span class="progress-text">Ready for summary</span>
+                                    </div>
+                                </td>
+                                <td>📱 Samsung Galaxy S24</td>
+                                <td>
+                                    <button class="btn btn--ghost btn--sm">View</button>
+                                    <button class="btn btn--primary btn--sm">Generate</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="vehicle-info">
+                                        <div class="vehicle-title">2020 Ford F-150</div>
+                                        <div class="vehicle-subtitle">XLT Trim</div>
+                                    </div>
+                                </td>
+                                <td><span class="text-primary">CLM-4876</span></td>
+                                <td><span class="badge">Pending</span></td>
+                                <td>
+                                    <div class="progress-container">
+                                        <span class="progress-text">Pending assignment</span>
+                                    </div>
+                                </td>
+                                <td>—</td>
+                                <td>
+                                    <button class="btn btn--ghost btn--sm">View</button>
+                                    <button class="btn btn--outline btn--sm">Assign</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Devices Status -->
+        <div class="card">
+            <div class="card__header">
+                <h3 class="card__title">Connected Devices</h3>
+                <span class="text-sm text-muted">Real-time device status</span>
+            </div>
+            <div class="card__content">
+                <div class="grid grid--2">
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">📱</div>
+                            <div class="device-info">
+                                <div class="device-name">iPhone 14 Pro</div>
+                                <div class="device-subtitle">John's Device</div>
+                            </div>
+                            <div class="device-status">
+                                <span class="status-dot status-dot--online"></span>
+                                <span class="status-text">Online</span>
+                            </div>
+                        </div>
+                        <div class="device-stats">
+                            <div class="stat">
+                                <span class="stat-label">Battery:</span>
+                                <span class="stat-value">73%</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Storage:</span>
+                                <span class="stat-value">45GB free</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Last Sync:</span>
+                                <span class="stat-value">2 min ago</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-icon">📱</div>
+                            <div class="device-info">
+                                <div class="device-name">Samsung Galaxy S24</div>
+                                <div class="device-subtitle">Field Device</div>
+                            </div>
+                            <div class="device-status">
+                                <span class="status-dot status-dot--online"></span>
+                                <span class="status-text">Online</span>
+                            </div>
+                        </div>
+                        <div class="device-stats">
+                            <div class="stat">
+                                <span class="stat-label">Battery:</span>
+                                <span class="stat-value">89%</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Storage:</span>
+                                <span class="stat-value">128GB free</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Last Sync:</span>
+                                <span class="stat-value">5 min ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="../assets/js/helpers.js"></script>
+    
+    <!-- Authentication and initialization script -->
+    <script>
+        // Authentication check
+        if (localStorage.getItem('isAuthenticated') !== 'true') {
+            window.location.href = '../login.html';
+        }
+
+        // Initialize page with user context
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeUserContext();
+            setupLogoutHandler();
+        });
+
+        function initializeUserContext() {
+            const userType = localStorage.getItem('userType') || 'demo';
+            const userEmail = localStorage.getItem('userEmail') || 'demo@example.com';
+            const userName = userType === 'demo' ? 'Demo User' : userEmail.split('@')[0];
+            
+            // Set user type attribute
+            document.body.setAttribute('data-user-type', userType);
+            
+            // Update user display
+            const userNameEl = document.getElementById('user-name');
+            const userRoleEl = document.getElementById('user-role');
+            const userAvatarEl = document.getElementById('user-avatar');
+            
+            if (userNameEl) userNameEl.textContent = userName;
+            if (userRoleEl) userRoleEl.textContent = userType === 'demo' ? 'Demo Mode' : 'Pro User';
+            if (userAvatarEl) userAvatarEl.textContent = userName.substring(0, 2).toUpperCase();
+        }
+
+        function setupLogoutHandler() {
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    localStorage.removeItem('isAuthenticated');
+                    localStorage.removeItem('userType');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('demoStartTime');
+                    window.location.href = '../login.html';
+                });
+            }
+        }
+    </script>
+</body>
+</html>

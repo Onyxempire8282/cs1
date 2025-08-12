@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Claim Cipher</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="theme-dark">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar__header">
+            <div class="sidebar__logo">
+                <a href="./dashboard.html">Claim Cipher</a>
+            </div>
+        </div>
+        
+        <ul class="sidebar__nav">
+            <li class="sidebar__nav-item">
+                <a href="./dashboard.html" class="sidebar__nav-link">
+                    <span>📊</span> Dashboard
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./mileage.html" class="sidebar__nav-link">
+                    <span>🚗</span> Mileage Calculator
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./routes.html" class="sidebar__nav-link">
+                    <span>🗺️</span> Route Optimizer
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./jobs.html" class="sidebar__nav-link">
+                    <span>📱</span> Mobile Sync
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./autoforms.html" class="sidebar__nav-link">
+                    <span>📄</span> AutoForms
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./comparables.html" class="sidebar__nav-link">
+                    <span>🔍</span> Comparables
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./firms.html" class="sidebar__nav-link">
+                    <span>🏢</span> Firms Directory
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./gear.html" class="sidebar__nav-link">
+                    <span>⚙️</span> Gear
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./help.html" class="sidebar__nav-link">
+                    <span>❓</span> Help
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./settings.html" class="sidebar__nav-link sidebar__nav-link--active">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+        </ul>
+        
+        <!-- User info and logout -->
+        <div class="sidebar__footer">
+            <div class="sidebar__user" id="sidebar-user">
+                <div class="user-avatar" id="user-avatar">DU</div>
+                <div class="user-info">
+                    <div class="user-name" id="user-name">Demo User</div>
+                    <div class="user-role" id="user-role">Demo Mode</div>
+                </div>
+            </div>
+            <button class="sidebar__logout btn btn--ghost btn--sm" id="logout-btn">
+                <span>🚪</span> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Settings</h1>
+            <p class="page-subtitle">Manage your profile, security, and business settings</p>
+        </div>
+
+        <!-- Settings Navigation -->
+        <div class="settings-tabs mb-4">
+            <button class="btn btn--outline settings-tab settings-tab--active" data-tab="profile">
+                <span class="tab-icon">👤</span>
+                <span class="tab-label">Profile</span>
+            </button>
+            <button class="btn btn--outline settings-tab" data-tab="security">
+                <span class="tab-icon">🔒</span>
+                <span class="tab-label">Security</span>
+            </button>
+            <button class="btn btn--outline settings-tab" data-tab="business">
+                <span class="tab-icon">🏢</span>
+                <span class="tab-label">Business</span>
+            </button>
+            <button class="btn btn--outline settings-tab" data-tab="firms-rates">
+                <span class="tab-icon">💰</span>
+                <span class="tab-label">Firms & Rates</span>
+            </button>
+            <button class="btn btn--outline settings-tab" data-tab="billing">
+                <span class="tab-icon">💳</span>
+                <span class="tab-label">Billing</span>
+            </button>
+            <button class="btn btn--outline settings-tab" data-tab="notifications">
+                <span class="tab-icon">🔔</span>
+                <span class="tab-label">Notifications</span>
+            </button>
+        </div>
+
+        <div class="settings-content">
+            <!-- Profile Panel -->
+            <div class="settings-panel settings-panel--active" id="profile-panel">
+                <div class="grid grid--2">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">👤 Profile Information</h3>
+                        </div>
+                        <div class="card__content">
+                            <form class="settings-form" id="profile-form">
+                                <div class="profile-avatar-section mb-4">
+                                    <div class="flex items-center gap-4">
+                                        <div class="user-avatar user-avatar--large">DU</div>
+                                        <button type="button" class="btn btn--outline btn--sm">Change Avatar</button>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid--2">
+                                    <div class="input-group">
+                                        <label class="input-label">First Name</label>
+                                        <input type="text" class="input" value="Demo" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label class="input-label">Last Name</label>
+                                        <input type="text" class="input" value="User" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="input-group">
+                                    <label class="input-label">Email Address</label>
+                                    <input type="email" class="input" value="demo@example.com" required>
+                                </div>
+                                
+                                <div class="grid grid--2">
+                                    <div class="input-group">
+                                        <label class="input-label">Phone Number</label>
+                                        <input type="tel" class="input" value="(919) 555-0123">
+                                    </div>
+                                    <div class="input-group">
+                                        <label class="input-label">Timezone</label>
+                                        <select class="input">
+                                            <option value="America/New_York" selected>Eastern Time (UTC-5)</option>
+                                            <option value="America/Chicago">Central Time (UTC-6)</option>
+                                            <option value="America/Denver">Mountain Time (UTC-7)</option>
+                                            <option value="America/Los_Angeles">Pacific Time (UTC-8)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="input-group">
+                                    <label class="input-label">Company/Organization</label>
+                                    <input type="text" class="input" placeholder="Your company name">
+                                </div>
+
+                                <div class="flex gap-2 mt-4">
+                                    <button type="submit" class="btn btn--primary">Save Changes</button>
+                                    <button type="button" class="btn btn--outline">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">⚙️ Preferences</h3>
+                        </div>
+                        <div class="card__content">
+                            <div class="preferences-list">
+                                <div class="preference-item">
+                                    <div class="preference-info">
+                                        <div class="preference-label">Dark Mode</div>
+                                        <div class="preference-description">Use dark theme throughout the application</div>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="dark-mode-toggle" checked>
+                                        <label for="dark-mode-toggle" class="toggle-slider"></label>
+                                    </div>
+                                </div>
+
+                                <div class="preference-item">
+                                    <div class="preference-info">
+                                        <div class="preference-label">Auto-save Forms</div>
+                                        <div class="preference-description">Automatically save form progress every 30 seconds</div>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="auto-save-toggle" checked>
+                                        <label for="auto-save-toggle" class="toggle-slider"></label>
+                                    </div>
+                                </div>
+
+                                <div class="preference-item">
+                                    <div class="preference-info">
+                                        <div class="preference-label">Keyboard Shortcuts</div>
+                                        <div class="preference-description">Enable keyboard shortcuts for quick navigation</div>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="shortcuts-toggle" checked>
+                                        <label for="shortcuts-toggle" class="toggle-slider"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Panel -->
+            <div class="settings-panel" id="security-panel" style="display: none;">
+                <div class="grid grid--2">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">🔒 Password & Authentication</h3>
+                        </div>
+                        <div class="card__content">
+                            <div class="security-section">
+                                <div class="security-item">
+                                    <div class="security-info">
+                                        <div class="security-label">Password</div>
+                                        <div class="security-description">Last changed 30 days ago</div>
+                                    </div>
+                                    <button class="btn btn--outline">Change Password</button>
+                                </div>
+
+                                <div class="security-item">
+                                    <div class="security-info">
+                                        <div class="security-label">Two-Factor Authentication</div>
+                                        <div class="security-description">
+                                            <span class="badge badge--success">✓ Enabled</span>
+                                            TOTP app configured
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button class="btn btn--outline btn--sm">View Recovery Codes</button>
+                                        <button class="btn btn--outline btn--sm">Reconfigure</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">📱 Active Sessions</h3>
+                        </div>
+                        <div class="card__content">
+                            <div class="sessions-list">
+                                <div class="session-item">
+                                    <div class="session-info">
+                                        <div class="session-title">💻 Chrome on Windows</div>
+                                        <div class="session-details">
+                                            <span class="text-sm text-muted">Raleigh, NC • Current session</span>
+                                        </div>
+                                        <div class="session-time text-sm">Active now</div>
+                                    </div>
+                                    <div class="session-status">
+                                        <span class="status-indicator">🟢</span>
+                                    </div>
+                                </div>
+
+                                <div class="session-item">
+                                    <div class="session-info">
+                                        <div class="session-title">📱 Mobile App - iPhone</div>
+                                        <div class="session-details">
+                                            <span class="text-sm text-muted">Raleigh, NC</span>
+                                        </div>
+                                        <div class="session-time text-sm">Last seen 2 hours ago</div>
+                                    </div>
+                                    <div class="session-actions">
+                                        <button class="btn btn--error btn--sm">Revoke</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Firms & Rates Panel -->
+            <div class="settings-panel" id="firms-rates-panel" style="display: none;">
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">💰 Law Firms & Negotiated Rates</h3>
+                        <div class="flex gap-2">
+                            <button class="btn btn--primary btn--sm" id="add-firm-btn">+ Add Firm</button>
+                            <button class="btn btn--outline btn--sm" id="import-firms-btn">Import Rates</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card__content">
+                        <!-- Firms List -->
+                        <div class="firms-list">
+                            <div class="firm-item">
+                                <div class="firm-info">
+                                    <div class="firm-name">Sedgwick Claims</div>
+                                    <div class="firm-details">
+                                        <span class="firm-rate">$0.67 per mile</span>
+                                        <span class="firm-type badge badge--primary">Insurance Carrier</span>
+                                    </div>
+                                </div>
+                                <div class="firm-actions">
+                                    <button class="btn btn--outline btn--sm">Edit</button>
+                                    <button class="btn btn--ghost btn--sm">Delete</button>
+                                </div>
+                            </div>
+
+                            <div class="firm-item">
+                                <div class="firm-info">
+                                    <div class="firm-name">ACD Adjusters</div>
+                                    <div class="firm-details">
+                                        <span class="firm-rate">$0.62 per mile</span>
+                                        <span class="firm-type badge badge--secondary">Independent Adjuster</span>
+                                    </div>
+                                </div>
+                                <div class="firm-actions">
+                                    <button class="btn btn--outline btn--sm">Edit</button>
+                                    <button class="btn btn--ghost btn--sm">Delete</button>
+                                </div>
+                            </div>
+
+                            <div class="firm-item">
+                                <div class="firm-info">
+                                    <div class="firm-name">Independent Rate</div>
+                                    <div class="firm-details">
+                                        <span class="firm-rate">$0.70 per mile</span>
+                                        <span class="firm-type badge badge--success">Self-Employed</span>
+                                    </div>
+                                </div>
+                                <div class="firm-actions">
+                                    <button class="btn btn--outline btn--sm">Edit</button>
+                                    <button class="btn btn--ghost btn--sm">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Panel -->
+            <div class="settings-panel" id="business-panel" style="display: none;">
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">🏢 Route Optimization Rules</h3>
+                    </div>
+                    <div class="card__content">
+                        <form class="settings-form" id="route-rules-form">
+                            <div class="grid grid--2">
+                                <div class="input-group">
+                                    <label class="input-label">Max Radius (miles)</label>
+                                    <input type="number" class="input" value="50" min="1" max="200">
+                                    <div class="form-help">Maximum distance from route center before spillover</div>
+                                </div>
+
+                                <div class="input-group">
+                                    <label class="input-label">Max Stops per Day</label>
+                                    <input type="number" class="input" value="10" min="1" max="30">
+                                    <div class="form-help">Maximum number of stops to schedule in a single day</div>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">Spillover Rule</label>
+                                <select class="input">
+                                    <option value="tomorrow" selected>Tomorrow</option>
+                                    <option value="next-business-day">Next Business Day</option>
+                                    <option value="monday">Monday</option>
+                                    <option value="tuesday">Tuesday</option>
+                                    <option value="wednesday">Wednesday</option>
+                                    <option value="thursday">Thursday</option>
+                                    <option value="friday">Friday</option>
+                                </select>
+                                <div class="form-help">When stops exceed limits, assign to this day</div>
+                            </div>
+
+                            <div class="flex gap-2 mt-4">
+                                <button type="submit" class="btn btn--primary">Save Rules</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Billing Panel -->
+            <div class="settings-panel" id="billing-panel" style="display: none;">
+                <div class="grid grid--2">
+                    <!-- Current Plan -->
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">💳 Current Plan</h3>
+                            <span class="badge badge--pro">PRO DEMO</span>
+                        </div>
+                        <div class="card__content">
+                            <div class="current-plan-info">
+                                <div class="plan-details">
+                                    <div class="plan-name">Pro Plan (Demo)</div>
+                                    <div class="plan-price">$50/month</div>
+                                    <div class="plan-description">Full access to all Pro features during demo period</div>
+                                </div>
+                                
+                                <div class="plan-status mt-4">
+                                    <div class="demo-countdown">
+                                        <div class="countdown-label">Demo expires in:</div>
+                                        <div class="countdown-time">6 days, 14 hours</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="plan-actions mt-4">
+                                <button class="btn btn--primary">Upgrade to Pro</button>
+                                <button class="btn btn--outline">Contact Sales</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Available Plans -->
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">📊 Available Plans</h3>
+                        </div>
+                        <div class="card__content">
+                            <div class="plans-list">
+                                <div class="plan-option">
+                                    <div class="plan-header">
+                                        <h4 class="plan-title">Basic</h4>
+                                        <div class="plan-price">$30/month</div>
+                                    </div>
+                                    <div class="plan-features">
+                                        <div class="feature-item">✓ Mileage Calculator</div>
+                                        <div class="feature-item">✓ Route Optimizer</div>
+                                        <div class="feature-item">✓ AutoForms</div>
+                                    </div>
+                                </div>
+
+                                <div class="plan-option plan-option--current">
+                                    <div class="plan-header">
+                                        <h4 class="plan-title">Pro</h4>
+                                        <div class="plan-price">$50/month</div>
+                                        <span class="badge badge--success">CURRENT</span>
+                                    </div>
+                                    <div class="plan-features">
+                                        <div class="feature-item">✓ Everything in Basic</div>
+                                        <div class="feature-item">✓ Mobile Sync</div>
+                                        <div class="feature-item">✓ Comparables</div>
+                                        <div class="feature-item">✓ Priority Support</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications Panel -->
+            <div class="settings-panel" id="notifications-panel" style="display: none;">
+                <div class="grid grid--2">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">📧 Email Notifications</h3>
+                        </div>
+                        <div class="card__content">
+                            <div class="notification-categories">
+                                <div class="category-section">
+                                    <h4>Account & Security</h4>
+                                    <div class="notification-list">
+                                        <div class="notification-item">
+                                            <div class="notification-info">
+                                                <div class="notification-label">Login alerts</div>
+                                                <div class="notification-description">Get notified of new sign-ins</div>
+                                            </div>
+                                            <div class="toggle-switch">
+                                                <input type="checkbox" id="login-alerts" checked>
+                                                <label for="login-alerts" class="toggle-slider"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="notification-item">
+                                            <div class="notification-info">
+                                                <div class="notification-label">Security updates</div>
+                                                <div class="notification-description">Important security announcements</div>
+                                            </div>
+                                            <div class="toggle-switch">
+                                                <input type="checkbox" id="security-updates" checked>
+                                                <label for="security-updates" class="toggle-slider"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="category-section">
+                                    <h4>Job & Route Updates</h4>
+                                    <div class="notification-list">
+                                        <div class="notification-item">
+                                            <div class="notification-info">
+                                                <div class="notification-label">Job assignments</div>
+                                                <div class="notification-description">When new jobs are assigned</div>
+                                            </div>
+                                            <div class="toggle-switch">
+                                                <input type="checkbox" id="job-assignments" checked>
+                                                <label for="job-assignments" class="toggle-slider"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="notification-item">
+                                            <div class="notification-info">
+                                                <div class="notification-label">Sync status</div>
+                                                <div class="notification-description">Photo upload notifications</div>
+                                            </div>
+                                            <div class="toggle-switch">
+                                                <input type="checkbox" id="sync-status">
+                                                <label for="sync-status" class="toggle-slider"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h3 class="card__title">🔔 Push Notifications</h3>
+                        </div>
+                        <div class="card__content">
+                            <div class="push-notification-status">
+                                <div class="status-info">
+                                    <div class="status-icon">🔔</div>
+                                    <div class="status-details">
+                                        <div class="status-title">Browser notifications enabled</div>
+                                        <div class="status-description">You'll receive real-time updates</div>
+                                    </div>
+                                </div>
+                                <button class="btn btn--outline">Manage Permissions</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="../assets/js/helpers.js"></script>
+    
+    <!-- Authentication and initialization script -->
+    <script>
+        // Authentication check
+        if (localStorage.getItem('isAuthenticated') !== 'true') {
+            window.location.href = '../login.html';
+        }
+
+        // Initialize page with user context
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeUserContext();
+            setupLogoutHandler();
+            initializeSettings();
+        });
+
+        function initializeUserContext() {
+            const userType = localStorage.getItem('userType') || 'demo';
+            const userEmail = localStorage.getItem('userEmail') || 'demo@example.com';
+            const userName = userType === 'demo' ? 'Demo User' : userEmail.split('@')[0];
+            
+            // Set user type attribute
+            document.body.setAttribute('data-user-type', userType);
+            
+            // Update user display
+            const userNameEl = document.getElementById('user-name');
+            const userRoleEl = document.getElementById('user-role');
+            const userAvatarEl = document.getElementById('user-avatar');
+            
+            if (userNameEl) userNameEl.textContent = userName;
+            if (userRoleEl) userRoleEl.textContent = userType === 'demo' ? 'Demo Mode' : 'Pro User';
+            if (userAvatarEl) userAvatarEl.textContent = userName.substring(0, 2).toUpperCase();
+        }
+
+        function setupLogoutHandler() {
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    localStorage.removeItem('isAuthenticated');
+                    localStorage.removeItem('userType');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('demoStartTime');
+                    window.location.href = '../login.html';
+                });
+            }
+        }
+
+        function initializeSettings() {
+            const settingsTabs = document.querySelectorAll('.settings-tab');
+            const settingsPanels = document.querySelectorAll('.settings-panel');
+            
+            // Tab switching
+            settingsTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab') + '-panel';
+                    
+                    // Update active tab
+                    settingsTabs.forEach(t => t.classList.remove('settings-tab--active'));
+                    this.classList.add('settings-tab--active');
+                    
+                    // Show/hide panels
+                    settingsPanels.forEach(panel => {
+                        if (panel.id === tabId) {
+                            panel.style.display = 'block';
+                            panel.classList.add('settings-panel--active');
+                        } else {
+                            panel.style.display = 'none';
+                            panel.classList.remove('settings-panel--active');
+                        }
+                    });
+                });
+            });
+            
+            // Demo handlers for forms and buttons
+            const profileForm = document.getElementById('profile-form');
+            const routeRulesForm = document.getElementById('route-rules-form');
+            
+            if (profileForm) {
+                profileForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    showToast('Profile settings saved successfully!', 'success');
+                });
+            }
+            
+            if (routeRulesForm) {
+                routeRulesForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    showToast('Route optimization rules saved!', 'success');
+                });
+            }
+            
+            // Demo handlers for various buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.textContent.includes('Add Firm') || e.target.textContent.includes('Import Rates')) {
+                    e.preventDefault();
+                    showToast('Firm management is a demo feature', 'info');
+                }
+                
+                if (e.target.textContent.includes('Upgrade') || e.target.textContent.includes('Contact Sales')) {
+                    e.preventDefault();
+                    showToast('Billing features are demo functions', 'info');
+                }
+                
+                if (e.target.textContent.includes('Change Password') || e.target.textContent.includes('Reconfigure')) {
+                    e.preventDefault();
+                    showToast('Security settings are demo features', 'info');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

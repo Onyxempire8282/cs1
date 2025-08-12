@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Type Test - Claim Cipher</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../scripts/components/navigation.js"></script>
+</head>
+<body class="theme-dark">
+    <main class="main-content">
+        <header class="page-header">
+            <h1>🧪 User Type Testing</h1>
+            <p class="page-description">Test different user types to see Pro badge behavior</p>
+        </header>
+
+        <div class="test-container">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Current User Status</h3>
+                </div>
+                <div class="card-content">
+                    <div class="user-status">
+                        <div class="status-item">
+                            <strong>User Type:</strong> 
+                            <span id="currentUserType">Unknown</span>
+                        </div>
+                        <div class="status-item">
+                            <strong>Email:</strong> 
+                            <span id="currentUserEmail">Unknown</span>
+                        </div>
+                        <div class="status-item">
+                            <strong>Authentication:</strong> 
+                            <span id="currentAuthStatus">Unknown</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Test Different User Types</h3>
+                </div>
+                <div class="card-content">
+                    <div class="test-buttons">
+                        <button class="btn btn--warning btn--full-width" onclick="testBasicUser()">
+                            🟡 Test as Basic User
+                            <small>Should see Pro badges on Equipment & Mobile Sync</small>
+                        </button>
+                        
+                        <button class="btn btn--success btn--full-width" onclick="testProUser()">
+                            🟢 Test as Pro User  
+                            <small>Should see NO Pro badges</small>
+                        </button>
+                        
+                        <button class="btn btn--error btn--full-width" onclick="testAdminUser()">
+                            🔴 Test as Admin User
+                            <small>Should see NO Pro badges + admin pages</small>
+                        </button>
+                        
+                        <button class="btn btn--info btn--full-width" onclick="testDemoUser()">
+                            🔵 Test as Demo User
+                            <small>Should see NO Pro badges + demo banner</small>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Expected Behaviors</h3>
+                </div>
+                <div class="card-content">
+                    <div class="behavior-grid">
+                        <div class="behavior-item">
+                            <h4>🟡 Basic User</h4>
+                            <ul>
+                                <li>✅ Sees "Pro" badges on Equipment & Mobile Sync</li>
+                                <li>✅ Clicking restricted items shows upgrade modal</li>
+                                <li>✅ Directed to billing page on upgrade</li>
+                                <li>❌ No demo banner</li>
+                                <li>❌ No admin menu items</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="behavior-item">
+                            <h4>🟢 Pro User</h4>
+                            <ul>
+                                <li>✅ No "Pro" badges visible</li>
+                                <li>✅ Full access to all features</li>
+                                <li>✅ Can access Equipment & Mobile Sync</li>
+                                <li>❌ No demo banner</li>
+                                <li>❌ No admin menu items</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="behavior-item">
+                            <h4>🔴 Admin User</h4>
+                            <ul>
+                                <li>✅ No "Pro" badges visible</li>
+                                <li>✅ Full access to all features</li>
+                                <li>✅ Additional User Management menu</li>
+                                <li>✅ Additional System Analytics menu</li>
+                                <li>❌ No demo banner</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="behavior-item">
+                            <h4>🔵 Demo User</h4>
+                            <ul>
+                                <li>✅ No "Pro" badges visible</li>
+                                <li>✅ Full Pro access during trial</li>
+                                <li>✅ Demo banner with countdown</li>
+                                <li>✅ Upgrade prompts in banner</li>
+                                <li>❌ No admin menu items</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Reset to Login</h3>
+                </div>
+                <div class="card-content">
+                    <button class="btn btn--ghost btn--full-width" onclick="resetToLogin()">
+                        🔄 Clear Session & Return to Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Update status display
+        function updateStatus() {
+            document.getElementById('currentUserType').textContent = localStorage.getItem('userType') || 'None';
+            document.getElementById('currentUserEmail').textContent = localStorage.getItem('userEmail') || 'None';
+            document.getElementById('currentAuthStatus').textContent = localStorage.getItem('isAuthenticated') === 'true' ? 'Authenticated' : 'Not Authenticated';
+        }
+
+        // Test functions
+        function testBasicUser() {
+            localStorage.setItem('userType', 'basic');
+            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('userEmail', 'test@basic.com');
+            alert('🟡 Switched to Basic User\n\nLook for Pro badges on Equipment & Mobile Sync in the sidebar.\nTry clicking them to see the upgrade modal.');
+            window.location.href = 'dashboard.html';
+        }
+
+        function testProUser() {
+            localStorage.setItem('userType', 'pro');
+            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('userEmail', 'test@pro.com');
+            alert('🟢 Switched to Pro User\n\nNo Pro badges should be visible. All features accessible.');
+            window.location.href = 'dashboard.html';
+        }
+
+        function testAdminUser() {
+            localStorage.setItem('userType', 'admin');
+            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('userEmail', 'test@admin.com');
+            alert('🔴 Switched to Admin User\n\nNo Pro badges visible. Look for User Management & System Analytics in sidebar.');
+            window.location.href = 'dashboard.html';
+        }
+
+        function testDemoUser() {
+            localStorage.setItem('userType', 'demo');
+            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('userEmail', 'test@demo.com');
+            localStorage.setItem('demoExpiry', (Date.now() + 7 * 24 * 60 * 60 * 1000).toString());
+            alert('🔵 Switched to Demo User\n\nNo Pro badges visible. Look for demo banner at top of page.');
+            window.location.href = 'dashboard.html';
+        }
+
+        function resetToLogin() {
+            localStorage.clear();
+            alert('🔄 Session cleared. Redirecting to login...');
+            window.location.href = '../login.html';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatus();
+        });
+    </script>
+
+    <style>
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            gap: var(--space-lg);
+        }
+
+        .user-status {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .status-item {
+            color: var(--color-gray-300);
+        }
+
+        .status-item strong {
+            color: var(--color-gray-100);
+            min-width: 120px;
+            display: inline-block;
+        }
+
+        .test-buttons {
+            display: grid;
+            gap: var(--space-md);
+        }
+
+        .test-buttons .btn {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            padding: var(--space-lg);
+            gap: var(--space-sm);
+        }
+
+        .test-buttons small {
+            opacity: 0.8;
+            font-size: 0.8rem;
+            font-weight: normal;
+        }
+
+        .behavior-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .behavior-item {
+            background: var(--color-gray-800);
+            padding: var(--space-lg);
+            border-radius: var(--border-radius-md);
+        }
+
+        .behavior-item h4 {
+            color: var(--color-gray-100);
+            margin-bottom: var(--space-md);
+            font-size: 1.1rem;
+        }
+
+        .behavior-item ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .behavior-item li {
+            padding: var(--space-xs) 0;
+            font-size: 0.9rem;
+            color: var(--color-gray-300);
+        }
+
+        .behavior-item li:first-letter {
+            font-size: 1rem;
+        }
+    </style>
+</body>
+</html>

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Claim Cipher - Login</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="config/auth-config.js"></script>
 </head>
 <body class="theme-dark">
     <div class="login-container">
@@ -13,8 +14,9 @@
                 <h1 class="logo">Claim Cipher</h1>
                 <p class="login-subtitle">Your AI-powered claims management platform</p>
             </div>
-            
-            <form class="login-form" id="loginForm">
+
+            <!-- Login Form -->
+            <form class="login-form" id="loginForm" style="display: block;">
                 <div class="input-group">
                     <label for="email" class="input-label">Email</label>
                     <input type="email" id="email" name="email" class="input" placeholder="Enter your email" required>
@@ -23,6 +25,15 @@
                 <div class="input-group">
                     <label for="password" class="input-label">Password</label>
                     <input type="password" id="password" name="password" class="input" placeholder="Enter your password" required>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="rememberMe">
+                        <span class="checkmark"></span>
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-password" id="forgotPasswordLink">Forgot password?</a>
                 </div>
                 
                 <button type="submit" class="btn btn--primary btn--full-width">
@@ -33,61 +44,333 @@
                     <span>or</span>
                 </div>
                 
-                <button type="button" class="btn btn--outline btn--full-width" id="demoButton">
-                    Try Demo Mode
+                <button type="button" class="btn btn--outline btn--full-width" id="demoSignupButton">
+                    Start 7-Day Free Trial
+                </button>
+
+                <div class="login-attempts-warning" id="loginAttemptsWarning" style="display: none;">
+                    <span class="warning-icon">⚠️</span>
+                    <span id="attemptsText">Too many failed attempts. Try again in <span id="lockoutTimer"></span>.</span>
+                </div>
+            </form>
+
+            <!-- Demo Signup Form -->
+            <form class="demo-signup-form" id="demoSignupForm" style="display: none;">
+                <div class="form-header">
+                    <h3>Start Your 7-Day Free Trial</h3>
+                    <p>Get full Pro access for 7 days, no credit card required</p>
+                </div>
+
+                <div class="grid grid--2">
+                    <div class="input-group">
+                        <label for="firstName" class="input-label">First Name</label>
+                        <input type="text" id="firstName" name="firstName" class="input" placeholder="John" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="lastName" class="input-label">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" class="input" placeholder="Smith" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="demoEmail" class="input-label">Email</label>
+                    <input type="email" id="demoEmail" name="demoEmail" class="input" placeholder="john.smith@example.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="phoneNumber" class="input-label">Phone Number</label>
+                    <input type="tel" id="phoneNumber" name="phoneNumber" class="input" placeholder="(555) 123-4567" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="demoPassword" class="input-label">Create Password</label>
+                    <input type="password" id="demoPassword" name="demoPassword" class="input" placeholder="Create a secure password" required minlength="6">
+                </div>
+
+                <div class="input-group">
+                    <label for="confirmPassword" class="input-label">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" class="input" placeholder="Confirm your password" required>
+                </div>
+
+                <div class="terms-agreement">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="agreeTerms" required>
+                        <span class="checkmark"></span>
+                        I agree to the <a href="#" class="text-link">Terms of Service</a> and <a href="#" class="text-link">Privacy Policy</a>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn--primary btn--full-width">
+                    Start Free Trial
                 </button>
                 
-                <div class="login-footer">
-                    <small>Demo credentials: admin / password</small>
+                <button type="button" class="btn btn--ghost btn--full-width" id="backToLoginButton">
+                    ← Back to Login
+                </button>
+            </form>
+
+            <!-- Password Reset Form -->
+            <form class="password-reset-form" id="passwordResetForm" style="display: none;">
+                <div class="form-header">
+                    <h3>Reset Password</h3>
+                    <p>Enter your email to receive reset instructions</p>
                 </div>
+
+                <div class="input-group">
+                    <label for="resetEmail" class="input-label">Email</label>
+                    <input type="email" id="resetEmail" name="resetEmail" class="input" placeholder="Enter your email" required>
+                </div>
+                
+                <button type="submit" class="btn btn--primary btn--full-width">
+                    Send Reset Link
+                </button>
+                
+                <button type="button" class="btn btn--ghost btn--full-width" id="backFromResetButton">
+                    ← Back to Login
+                </button>
             </form>
         </div>
     </div>
 
     <script>
+        // Login attempt tracking
+        let loginAttempts = parseInt(localStorage.getItem('loginAttempts') || '0');
+        let lockoutExpiry = parseInt(localStorage.getItem('lockoutExpiry') || '0');
+
         document.addEventListener('DOMContentLoaded', function() {
             const loginForm = document.getElementById('loginForm');
-            const demoButton = document.getElementById('demoButton');
+            const demoSignupForm = document.getElementById('demoSignupForm');
+            const passwordResetForm = document.getElementById('passwordResetForm');
+            
+            const demoSignupButton = document.getElementById('demoSignupButton');
+            const backToLoginButton = document.getElementById('backToLoginButton');
+            const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+            const backFromResetButton = document.getElementById('backFromResetButton');
+            
+            const loginAttemptsWarning = document.getElementById('loginAttemptsWarning');
+            const lockoutTimer = document.getElementById('lockoutTimer');
 
-            // Handle form submission
+            // Check if currently locked out
+            checkLockoutStatus();
+
+            // Handle main login
             loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                
-                // Check for admin credentials
-                if (email === 'admin' || email === 'admin@example.com') {
-                    if (password === 'password') {
-                        // Set master login
-                        localStorage.setItem('isAuthenticated', 'true');
-                        localStorage.setItem('userType', 'master');
-                        localStorage.setItem('userEmail', email);
-                        
-                        console.log('✅ Admin login successful');
-                        window.location.href = './app/dashboard.html';
-                        return;
-                    }
+                if (isLockedOut()) {
+                    showLockoutWarning();
+                    return;
                 }
                 
-                // Invalid credentials
-                alert('Invalid credentials. Try admin / password or use Demo Mode.');
+                const email = document.getElementById('email').value.toLowerCase();
+                const password = document.getElementById('password').value;
+                const rememberMe = document.getElementById('rememberMe').checked;
+                
+                if (authenticateUser(email, password)) {
+                    // Reset login attempts on successful login
+                    resetLoginAttempts();
+                    
+                    // Set remember me
+                    if (rememberMe) {
+                        localStorage.setItem('rememberMe', 'true');
+                    }
+                    
+                    window.location.href = './app/dashboard.html';
+                } else {
+                    handleFailedLogin();
+                }
             });
 
-            // Handle demo mode
-            demoButton.addEventListener('click', function() {
+            // Handle demo signup
+            demoSignupForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const email = document.getElementById('demoEmail').value.toLowerCase();
+                const phone = document.getElementById('phoneNumber').value;
+                const password = document.getElementById('demoPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                // Validate passwords match
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match. Please try again.');
+                    return;
+                }
+                
+                // Create demo user
+                const demoStartTime = Date.now();
+                const demoExpiry = demoStartTime + (AUTH_CONFIG.userTypes.demo.trialDuration);
+                
+                // Store demo user data
+                const demoUserData = {
+                    email: email,
+                    password: password, // In production, this should be hashed
+                    firstName: firstName,
+                    lastName: lastName,
+                    phone: phone,
+                    userType: 'demo',
+                    demoStartTime: demoStartTime,
+                    demoExpiry: demoExpiry,
+                    createdAt: new Date().toISOString()
+                };
+                
+                // Store in localStorage (in production, this would be a database)
+                localStorage.setItem(`demoUser_${email}`, JSON.stringify(demoUserData));
+                
+                // Auto login the new demo user
                 localStorage.setItem('isAuthenticated', 'true');
                 localStorage.setItem('userType', 'demo');
-                localStorage.setItem('userEmail', 'demo@example.com');
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('demoStartTime', demoStartTime.toString());
+                localStorage.setItem('demoExpiry', demoExpiry.toString());
                 
-                console.log('✅ Demo mode activated');
+                console.log('✅ Demo user created and logged in');
                 window.location.href = './app/dashboard.html';
             });
-            
+
+            // Handle password reset
+            passwordResetForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('resetEmail').value;
+                
+                // In production, this would send an actual reset email
+                alert(`Password reset instructions have been sent to ${email}`);
+                showForm('login');
+            });
+
+            // Form navigation
+            demoSignupButton.addEventListener('click', () => showForm('demoSignup'));
+            backToLoginButton.addEventListener('click', () => showForm('login'));
+            forgotPasswordLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showForm('passwordReset');
+            });
+            backFromResetButton.addEventListener('click', () => showForm('login'));
+
             // Check if already logged in
             if (localStorage.getItem('isAuthenticated') === 'true') {
                 console.log('🔄 Already authenticated, redirecting...');
                 window.location.href = './app/dashboard.html';
+            }
+
+            function authenticateUser(email, password) {
+                // Check admin credentials
+                if (AUTH_CONFIG.adminCredentials[email]) {
+                    const adminConfig = AUTH_CONFIG.adminCredentials[email];
+                    if (adminConfig.passwords.includes(password)) {
+                        localStorage.setItem('isAuthenticated', 'true');
+                        localStorage.setItem('userType', 'admin');
+                        localStorage.setItem('userEmail', email);
+                        console.log('✅ Admin login successful');
+                        return true;
+                    }
+                }
+                
+                // Check demo users
+                const demoUserData = localStorage.getItem(`demoUser_${email}`);
+                if (demoUserData) {
+                    const userData = JSON.parse(demoUserData);
+                    if (userData.password === password) {
+                        // Check if demo period has expired
+                        if (Date.now() > userData.demoExpiry) {
+                            alert('Your 7-day trial has expired. Please upgrade to continue using Claim Cipher.');
+                            return false;
+                        }
+                        
+                        localStorage.setItem('isAuthenticated', 'true');
+                        localStorage.setItem('userType', 'demo');
+                        localStorage.setItem('userEmail', email);
+                        localStorage.setItem('demoStartTime', userData.demoStartTime.toString());
+                        localStorage.setItem('demoExpiry', userData.demoExpiry.toString());
+                        console.log('✅ Demo user login successful');
+                        return true;
+                    }
+                }
+                
+                // Check pro/basic users (placeholder - would be database in production)
+                // For now, any other email/password combo can be pro or basic
+                // This would be replaced with actual user database lookup
+                
+                return false;
+            }
+
+            function handleFailedLogin() {
+                loginAttempts++;
+                localStorage.setItem('loginAttempts', loginAttempts.toString());
+                
+                const remainingAttempts = AUTH_CONFIG.maxLoginAttempts - loginAttempts;
+                
+                if (remainingAttempts <= 0) {
+                    // Lock out user
+                    const lockoutExpiry = Date.now() + AUTH_CONFIG.lockoutDuration;
+                    localStorage.setItem('lockoutExpiry', lockoutExpiry.toString());
+                    showLockoutWarning();
+                } else {
+                    alert(`Invalid credentials. ${remainingAttempts} attempts remaining.`);
+                }
+            }
+
+            function isLockedOut() {
+                const now = Date.now();
+                const lockoutExpiry = parseInt(localStorage.getItem('lockoutExpiry') || '0');
+                return now < lockoutExpiry;
+            }
+
+            function showLockoutWarning() {
+                loginAttemptsWarning.style.display = 'block';
+                startLockoutTimer();
+            }
+
+            function startLockoutTimer() {
+                const lockoutExpiry = parseInt(localStorage.getItem('lockoutExpiry') || '0');
+                
+                const timer = setInterval(() => {
+                    const now = Date.now();
+                    const remaining = lockoutExpiry - now;
+                    
+                    if (remaining <= 0) {
+                        clearInterval(timer);
+                        resetLoginAttempts();
+                        loginAttemptsWarning.style.display = 'none';
+                    } else {
+                        const minutes = Math.floor(remaining / 60000);
+                        const seconds = Math.floor((remaining % 60000) / 1000);
+                        lockoutTimer.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                    }
+                }, 1000);
+            }
+
+            function resetLoginAttempts() {
+                loginAttempts = 0;
+                localStorage.removeItem('loginAttempts');
+                localStorage.removeItem('lockoutExpiry');
+            }
+
+            function checkLockoutStatus() {
+                if (isLockedOut()) {
+                    showLockoutWarning();
+                }
+            }
+
+            function showForm(formType) {
+                // Hide all forms
+                loginForm.style.display = 'none';
+                demoSignupForm.style.display = 'none';
+                passwordResetForm.style.display = 'none';
+                
+                // Show selected form
+                switch(formType) {
+                    case 'login':
+                        loginForm.style.display = 'block';
+                        break;
+                    case 'demoSignup':
+                        demoSignupForm.style.display = 'block';
+                        break;
+                    case 'passwordReset':
+                        passwordResetForm.style.display = 'block';
+                        break;
+                }
             }
         });
     </script>

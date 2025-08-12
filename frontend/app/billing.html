@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upgrade to Pro - Claim Cipher</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../scripts/components/navigation.js"></script>
+</head>
+<body class="theme-dark">
+    <main class="main-content">
+        <header class="page-header">
+            <h1>🚀 Upgrade to Pro</h1>
+            <p class="page-description">Unlock all features and take your claims management to the next level</p>
+        </header>
+
+        <div class="billing-container">
+            <!-- Current Plan -->
+            <div class="current-plan-card card">
+                <div class="card-header">
+                    <h3>Your Current Plan</h3>
+                    <div class="badge badge--warning">Basic</div>
+                </div>
+                <div class="card-content">
+                    <div class="plan-features">
+                        <h4>What you have access to:</h4>
+                        <ul class="feature-list feature-list--included">
+                            <li>✅ Dashboard & Analytics</li>
+                            <li>✅ Job Management</li>
+                            <li>✅ Route Optimization</li>
+                            <li>✅ Mileage Calculator</li>
+                            <li>✅ Auto Forms</li>
+                            <li>✅ Comparables Database</li>
+                            <li>✅ Firms & Rates</li>
+                            <li>✅ Settings & Help</li>
+                        </ul>
+                        <h4>What you're missing:</h4>
+                        <ul class="feature-list feature-list--missing">
+                            <li>❌ Equipment Management</li>
+                            <li>❌ Mobile Sync</li>
+                            <li>❌ Advanced Analytics</li>
+                            <li>❌ Priority Support</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing Plans -->
+            <div class="pricing-plans">
+                <div class="plan-card card card--featured">
+                    <div class="plan-badge">🌟 Most Popular</div>
+                    <div class="card-header">
+                        <h3>Pro Monthly</h3>
+                        <div class="plan-price">
+                            <span class="price">$24.99</span>
+                            <span class="period">/month</span>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <ul class="plan-features">
+                            <li>✅ Everything in Basic</li>
+                            <li>✅ Equipment Management</li>
+                            <li>✅ Mobile Sync</li>
+                            <li>✅ Advanced Analytics</li>
+                            <li>✅ Priority Email Support</li>
+                            <li>✅ Unlimited Projects</li>
+                            <li>✅ Export & Reporting</li>
+                        </ul>
+                        <button class="btn btn--primary btn--full-width" onclick="selectPlan('monthly')">
+                            Upgrade to Pro Monthly
+                        </button>
+                        <div class="plan-note">Cancel anytime</div>
+                    </div>
+                </div>
+
+                <div class="plan-card card">
+                    <div class="plan-badge plan-badge--save">💰 Save 33%</div>
+                    <div class="card-header">
+                        <h3>Pro Annual</h3>
+                        <div class="plan-price">
+                            <span class="price">$199</span>
+                            <span class="period">/year</span>
+                        </div>
+                        <div class="price-comparison">
+                            <span class="original-price">$299.88</span>
+                            <span class="savings">Save $100.88</span>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <ul class="plan-features">
+                            <li>✅ Everything in Pro Monthly</li>
+                            <li>✅ 2 months free</li>
+                            <li>✅ Phone support priority</li>
+                            <li>✅ Early access to new features</li>
+                            <li>✅ Custom integrations</li>
+                        </ul>
+                        <button class="btn btn--success btn--full-width" onclick="selectPlan('annual')">
+                            Upgrade to Pro Annual
+                        </button>
+                        <div class="plan-note">Best value • Cancel anytime</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Security -->
+            <div class="security-info card">
+                <div class="card-content">
+                    <div class="security-badges">
+                        <div class="security-badge">
+                            <span class="security-icon">🔒</span>
+                            <span>SSL Encrypted</span>
+                        </div>
+                        <div class="security-badge">
+                            <span class="security-icon">💳</span>
+                            <span>Stripe Secured</span>
+                        </div>
+                        <div class="security-badge">
+                            <span class="security-icon">🛡️</span>
+                            <span>PCI Compliant</span>
+                        </div>
+                    </div>
+                    <p class="security-text">
+                        Your payment information is encrypted and secure. We never store your credit card details.
+                    </p>
+                </div>
+            </div>
+
+            <!-- FAQ -->
+            <div class="faq-section card">
+                <div class="card-header">
+                    <h3>Frequently Asked Questions</h3>
+                </div>
+                <div class="card-content">
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            Can I cancel anytime?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Yes, you can cancel your subscription at any time. Your access will continue until the end of your current billing period.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            What happens to my data if I cancel?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Your data is always yours. If you cancel, you'll have 30 days to export your data before your account is archived.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            Can I upgrade or downgrade later?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Absolutely! You can change your plan at any time. Upgrades take effect immediately, downgrades at the next billing cycle.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function selectPlan(planType) {
+            // Show payment modal or redirect to payment processor
+            showPaymentModal(planType);
+        }
+
+        function showPaymentModal(planType) {
+            const planDetails = {
+                monthly: { name: 'Pro Monthly', price: '$24.99/month' },
+                annual: { name: 'Pro Annual', price: '$199/year' }
+            };
+
+            const modal = document.createElement('div');
+            modal.className = 'payment-modal-overlay';
+            modal.innerHTML = `
+                <div class="payment-modal">
+                    <div class="payment-modal-header">
+                        <h3>Complete Your Upgrade</h3>
+                        <button class="modal-close" onclick="closePaymentModal()">&times;</button>
+                    </div>
+                    <div class="payment-modal-content">
+                        <div class="selected-plan">
+                            <h4>${planDetails[planType].name}</h4>
+                            <div class="plan-price">${planDetails[planType].price}</div>
+                        </div>
+                        <div class="payment-form">
+                            <p class="payment-info">
+                                🚧 <strong>Demo Mode</strong><br>
+                                This is a demonstration. In production, this would integrate with Stripe or your preferred payment processor.
+                            </p>
+                            <button class="btn btn--primary btn--full-width" onclick="simulatePayment('${planType}')">
+                                Simulate Payment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+            setTimeout(() => modal.classList.add('payment-modal-overlay--show'), 10);
+        }
+
+        function closePaymentModal() {
+            const modal = document.querySelector('.payment-modal-overlay');
+            if (modal) {
+                modal.classList.remove('payment-modal-overlay--show');
+                setTimeout(() => document.body.removeChild(modal), 300);
+            }
+        }
+
+        function simulatePayment(planType) {
+            closePaymentModal();
+            
+            // Show success message
+            setTimeout(() => {
+                alert(`🎉 Payment successful! You've been upgraded to Pro ${planType}. Redirecting to dashboard...`);
+                
+                // In production, this would:
+                // 1. Process payment via Stripe/payment processor
+                // 2. Update user account in database
+                // 3. Send confirmation email
+                // 4. Redirect to dashboard with new permissions
+                
+                // For demo, just redirect to dashboard
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+            }, 500);
+        }
+
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.faq-icon');
+            
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+                icon.textContent = '+';
+                element.classList.remove('faq-question--open');
+            } else {
+                answer.style.display = 'block';
+                icon.textContent = '−';
+                element.classList.add('faq-question--open');
+            }
+        }
+    </script>
+
+    <style>
+        .billing-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            gap: var(--space-lg);
+        }
+
+        .current-plan-card {
+            margin-bottom: var(--space-lg);
+        }
+
+        .plan-features h4 {
+            color: var(--color-gray-200);
+            margin-bottom: var(--space-md);
+            font-size: 1rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: var(--space-lg);
+        }
+
+        .feature-list li {
+            padding: var(--space-sm) 0;
+            font-size: 0.9rem;
+        }
+
+        .feature-list--included li {
+            color: var(--color-success-300);
+        }
+
+        .feature-list--missing li {
+            color: var(--color-error-300);
+        }
+
+        .pricing-plans {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+
+        .plan-card {
+            position: relative;
+        }
+
+        .plan-card--featured {
+            border: 2px solid var(--color-primary-500);
+            transform: scale(1.02);
+        }
+
+        .plan-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-primary-500);
+            color: white;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--border-radius-full);
+            font-size: 0.8rem;
+            font-weight: var(--font-weight-medium);
+        }
+
+        .plan-badge--save {
+            background: var(--color-success-500);
+        }
+
+        .plan-price {
+            display: flex;
+            align-items: baseline;
+            gap: var(--space-xs);
+            margin: var(--space-md) 0;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary-400);
+        }
+
+        .period {
+            color: var(--color-gray-400);
+            font-size: 1rem;
+        }
+
+        .price-comparison {
+            display: flex;
+            gap: var(--space-sm);
+            align-items: center;
+            margin-top: var(--space-sm);
+        }
+
+        .original-price {
+            color: var(--color-gray-500);
+            text-decoration: line-through;
+            font-size: 0.9rem;
+        }
+
+        .savings {
+            background: var(--color-success-900);
+            color: var(--color-success-300);
+            padding: 2px 6px;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.8rem;
+            font-weight: var(--font-weight-medium);
+        }
+
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: var(--space-lg);
+        }
+
+        .plan-features li {
+            padding: var(--space-sm) 0;
+            color: var(--color-gray-300);
+            font-size: 0.9rem;
+        }
+
+        .plan-note {
+            text-align: center;
+            color: var(--color-gray-400);
+            font-size: 0.8rem;
+            margin-top: var(--space-sm);
+        }
+
+        .security-info {
+            text-align: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .security-badges {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            color: var(--color-gray-300);
+            font-size: 0.9rem;
+        }
+
+        .security-icon {
+            font-size: 1.2rem;
+        }
+
+        .security-text {
+            color: var(--color-gray-400);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .faq-section {
+            margin-bottom: var(--space-lg);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--color-gray-700);
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            color: var(--color-gray-200);
+            padding: var(--space-md) 0;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question:hover {
+            color: var(--color-primary-400);
+        }
+
+        .faq-question--open {
+            color: var(--color-primary-400);
+        }
+
+        .faq-icon {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .faq-answer {
+            display: none;
+            padding-bottom: var(--space-md);
+            color: var(--color-gray-400);
+            line-height: 1.5;
+        }
+
+        .payment-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .payment-modal-overlay--show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .payment-modal {
+            background: var(--color-surface);
+            border-radius: var(--border-radius-lg);
+            width: 90%;
+            max-width: 480px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .payment-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--color-gray-700);
+        }
+
+        .payment-modal-content {
+            padding: var(--space-lg);
+        }
+
+        .selected-plan {
+            text-align: center;
+            margin-bottom: var(--space-lg);
+            padding: var(--space-lg);
+            background: var(--color-gray-800);
+            border-radius: var(--border-radius-md);
+        }
+
+        .selected-plan h4 {
+            margin-bottom: var(--space-sm);
+            color: var(--color-gray-100);
+        }
+
+        .payment-info {
+            background: var(--color-warning-900);
+            color: var(--color-warning-200);
+            padding: var(--space-md);
+            border-radius: var(--border-radius-sm);
+            margin-bottom: var(--space-lg);
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .pricing-plans {
+                grid-template-columns: 1fr;
+            }
+            
+            .plan-card--featured {
+                transform: none;
+            }
+            
+            .security-badges {
+                flex-direction: column;
+                gap: var(--space-md);
+            }
+        }
+    </style>
+</body>
+</html>

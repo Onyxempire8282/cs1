@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoForms - Claim Cipher</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="theme-dark">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar__header">
+            <div class="sidebar__logo">
+                <a href="./dashboard.html">Claim Cipher</a>
+            </div>
+        </div>
+        
+        <ul class="sidebar__nav">
+            <li class="sidebar__nav-item">
+                <a href="./dashboard.html" class="sidebar__nav-link">
+                    <span>📊</span> Dashboard
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./mileage.html" class="sidebar__nav-link">
+                    <span>🚗</span> Mileage Calculator
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./routes.html" class="sidebar__nav-link">
+                    <span>🗺️</span> Route Optimizer
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./jobs.html" class="sidebar__nav-link">
+                    <span>📱</span> Mobile Sync
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./autoforms.html" class="sidebar__nav-link sidebar__nav-link--active">
+                    <span>📄</span> AutoForms
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./comparables.html" class="sidebar__nav-link">
+                    <span>🔍</span> Comparables
+                    <span class="badge badge--pro">PRO</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./firms.html" class="sidebar__nav-link">
+                    <span>🏢</span> Firms Directory
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./gear.html" class="sidebar__nav-link">
+                    <span>⚙️</span> Gear
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./help.html" class="sidebar__nav-link">
+                    <span>❓</span> Help
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
+                <a href="./settings.html" class="sidebar__nav-link">
+                    <span>⚙️</span> Settings
+                </a>
+            </li>
+        </ul>
+        
+        <!-- User info and logout -->
+        <div class="sidebar__footer">
+            <div class="sidebar__user" id="sidebar-user">
+                <div class="user-avatar" id="user-avatar">DU</div>
+                <div class="user-info">
+                    <div class="user-name" id="user-name">Demo User</div>
+                    <div class="user-role" id="user-role">Demo Mode</div>
+                </div>
+            </div>
+            <button class="sidebar__logout btn btn--ghost btn--sm" id="logout-btn">
+                <span>🚪</span> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">AutoForms</h1>
+            <p class="page-subtitle">Auto-fill PDF forms from CCC estimates and inspection reports</p>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="card mb-4">
+            <div class="card__header">
+                <h3 class="card__title">📄 Upload CCC Estimate</h3>
+                <span class="text-sm text-muted">Drag & drop or click to browse</span>
+            </div>
+            <div class="card__content">
+                <div class="upload-zone">
+                    <div class="upload-zone__content">
+                        <div class="upload-zone__icon">📄</div>
+                        <div class="upload-zone__text">
+                            <h4>Drop your CCC estimate here</h4>
+                            <p>or click to browse files</p>
+                        </div>
+                        <button class="btn btn--primary" id="choose-file-btn">
+                            📁 Choose File
+                        </button>
+                        <div class="upload-zone__note">
+                            <small>✓ Supports PDF, Excel, and CSV formats • Files are processed locally for privacy</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Processing Status -->
+        <div class="card mb-4" id="processing-card" style="display: none;">
+            <div class="card__header">
+                <h3 class="card__title">🔄 Processing</h3>
+            </div>
+            <div class="card__content">
+                <div class="processing-status">
+                    <div class="progress-bar mb-3">
+                        <div class="progress-fill" id="processing-progress" style="width: 45%;"></div>
+                    </div>
+                    <div class="processing-steps">
+                        <div class="step step--complete">
+                            <span class="step-icon">✓</span>
+                            <span class="step-text">File uploaded</span>
+                        </div>
+                        <div class="step step--active">
+                            <span class="step-icon">🔄</span>
+                            <span class="step-text">Extracting data from estimate</span>
+                        </div>
+                        <div class="step">
+                            <span class="step-icon">⏳</span>
+                            <span class="step-text">Mapping to form fields</span>
+                        </div>
+                        <div class="step">
+                            <span class="step-icon">⏳</span>
+                            <span class="step-text">Generating completed forms</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Extracted Data Preview -->
+        <div class="card mb-4">
+            <div class="card__header">
+                <h3 class="card__title">📋 Extracted Vehicle Data</h3>
+                <span class="text-sm text-muted">Review and edit extracted information</span>
+            </div>
+            <div class="card__content">
+                <div class="grid grid--2">
+                    <div class="input-group">
+                        <label class="input-label">Vehicle Year</label>
+                        <input type="text" class="input" value="2021" placeholder="Enter year">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Make</label>
+                        <input type="text" class="input" value="Honda" placeholder="Enter make">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Model</label>
+                        <input type="text" class="input" value="Accord" placeholder="Enter model">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Trim</label>
+                        <input type="text" class="input" value="Sport" placeholder="Enter trim">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">VIN</label>
+                        <input type="text" class="input" value="1HGCV1F30JA123456" placeholder="Enter VIN">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Mileage</label>
+                        <input type="text" class="input" value="45,231" placeholder="Enter mileage">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Claim Number</label>
+                        <input type="text" class="input" value="CLM-4891" placeholder="Enter claim #">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Date of Loss</label>
+                        <input type="date" class="input" value="2025-08-05">
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <div class="input-group">
+                        <label class="input-label">Damage Description</label>
+                        <textarea class="input" rows="3" placeholder="Enter damage description">Front end collision damage to bumper, hood, and right headlight assembly. Minor frame alignment required.</textarea>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2 mt-4">
+                    <button class="btn btn--outline">
+                        🔄 Re-scan Document
+                    </button>
+                    <button class="btn btn--primary">
+                        ✓ Confirm Data
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Forms -->
+        <div class="card">
+            <div class="card__header">
+                <h3 class="card__title">📋 Available Forms</h3>
+                <span class="text-sm text-muted">Select forms to auto-fill</span>
+            </div>
+            <div class="card__content">
+                <div class="forms-grid">
+                    <div class="form-card">
+                        <div class="form-card__header">
+                            <div class="form-icon">📄</div>
+                            <div class="form-info">
+                                <h4 class="form-title">State Farm Vehicle Inspection</h4>
+                                <p class="form-description">Standard vehicle inspection form</p>
+                            </div>
+                            <div class="form-status">
+                                <span class="badge badge--success">✓ Ready</span>
+                            </div>
+                        </div>
+                        <div class="form-card__actions">
+                            <button class="btn btn--outline btn--sm">Preview</button>
+                            <button class="btn btn--primary btn--sm">📄 Generate PDF</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-card">
+                        <div class="form-card__header">
+                            <div class="form-icon">📄</div>
+                            <div class="form-info">
+                                <h4 class="form-title">GEICO Damage Assessment</h4>
+                                <p class="form-description">Comprehensive damage report form</p>
+                            </div>
+                            <div class="form-status">
+                                <span class="badge badge--success">✓ Ready</span>
+                            </div>
+                        </div>
+                        <div class="form-card__actions">
+                            <button class="btn btn--outline btn--sm">Preview</button>
+                            <button class="btn btn--primary btn--sm">📄 Generate PDF</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-card">
+                        <div class="form-card__header">
+                            <div class="form-icon">📄</div>
+                            <div class="form-info">
+                                <h4 class="form-title">Progressive Claim Summary</h4>
+                                <p class="form-description">Detailed claim summary report</p>
+                            </div>
+                            <div class="form-status">
+                                <span class="badge badge--warning">⏳ Processing</span>
+                            </div>
+                        </div>
+                        <div class="form-card__actions">
+                            <button class="btn btn--outline btn--sm" disabled>Preview</button>
+                            <button class="btn btn--outline btn--sm" disabled>📄 Generate PDF</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-card">
+                        <div class="form-card__header">
+                            <div class="form-icon">📄</div>
+                            <div class="form-info">
+                                <h4 class="form-title">Generic Vehicle Report</h4>
+                                <p class="form-description">Universal vehicle inspection form</p>
+                            </div>
+                            <div class="form-status">
+                                <span class="badge badge--success">✓ Ready</span>
+                            </div>
+                        </div>
+                        <div class="form-card__actions">
+                            <button class="btn btn--outline btn--sm">Preview</button>
+                            <button class="btn btn--primary btn--sm">📄 Generate PDF</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bulk-actions mt-4">
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-muted">
+                            3 of 4 forms ready for generation
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="btn btn--outline">
+                                📁 Save All Data
+                            </button>
+                            <button class="btn btn--primary">
+                                📄 Generate All PDFs
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="../assets/js/helpers.js"></script>
+    
+    <!-- Authentication and initialization script -->
+    <script>
+        // Authentication check
+        if (localStorage.getItem('isAuthenticated') !== 'true') {
+            window.location.href = '../login.html';
+        }
+
+        // Initialize page with user context
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeUserContext();
+            setupLogoutHandler();
+            initializeAutoForms();
+        });
+
+        function initializeUserContext() {
+            const userType = localStorage.getItem('userType') || 'demo';
+            const userEmail = localStorage.getItem('userEmail') || 'demo@example.com';
+            const userName = userType === 'demo' ? 'Demo User' : userEmail.split('@')[0];
+            
+            // Set user type attribute
+            document.body.setAttribute('data-user-type', userType);
+            
+            // Update user display
+            const userNameEl = document.getElementById('user-name');
+            const userRoleEl = document.getElementById('user-role');
+            const userAvatarEl = document.getElementById('user-avatar');
+            
+            if (userNameEl) userNameEl.textContent = userName;
+            if (userRoleEl) userRoleEl.textContent = userType === 'demo' ? 'Demo Mode' : 'Pro User';
+            if (userAvatarEl) userAvatarEl.textContent = userName.substring(0, 2).toUpperCase();
+        }
+
+        function setupLogoutHandler() {
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    localStorage.removeItem('isAuthenticated');
+                    localStorage.removeItem('userType');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('demoStartTime');
+                    window.location.href = '../login.html';
+                });
+            }
+        }
+
+        function initializeAutoForms() {
+            // File upload handler
+            const chooseFileBtn = document.getElementById('choose-file-btn');
+            if (chooseFileBtn) {
+                chooseFileBtn.addEventListener('click', function() {
+                    // Demo behavior
+                    showToast('File upload is a demo feature', 'info');
+                    
+                    // Simulate processing
+                    const processingCard = document.getElementById('processing-card');
+                    if (processingCard) {
+                        processingCard.style.display = 'block';
+                        simulateProcessing();
+                    }
+                });
+            }
+        }
+
+        function simulateProcessing() {
+            const progressBar = document.getElementById('processing-progress');
+            const steps = document.querySelectorAll('.step');
+            let currentStep = 0;
+            let progress = 25;
+            
+            const interval = setInterval(() => {
+                progress += 25;
+                if (progressBar) progressBar.style.width = progress + '%';
+                
+                if (currentStep < steps.length) {
+                    // Mark current step as complete
+                    if (steps[currentStep]) {
+                        steps[currentStep].classList.remove('step--active');
+                        steps[currentStep].classList.add('step--complete');
+                        steps[currentStep].querySelector('.step-icon').textContent = '✓';
+                    }
+                    
+                    currentStep++;
+                    
+                    // Mark next step as active
+                    if (steps[currentStep]) {
+                        steps[currentStep].classList.add('step--active');
+                        steps[currentStep].querySelector('.step-icon').textContent = '🔄';
+                    }
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        const processingCard = document.getElementById('processing-card');
+                        if (processingCard) processingCard.style.display = 'none';
+                        showToast('Processing complete! Forms are ready for generation.', 'success');
+                    }, 1000);
+                }
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

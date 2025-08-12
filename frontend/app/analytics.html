@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Analytics - Claim Cipher</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../scripts/components/navigation.js"></script>
+</head>
+<body class="theme-dark">
+    <main class="main-content">
+        <header class="page-header">
+            <h1>System Analytics</h1>
+            <p class="page-description">System performance, usage statistics, and insights</p>
+        </header>
+
+        <div class="dashboard-grid">
+            <!-- System Performance -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>System Performance</h3>
+                </div>
+                <div class="card-content">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">99.9%</div>
+                            <div class="stat-label">Uptime</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1.2s</div>
+                            <div class="stat-label">Avg Response</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2,847</div>
+                            <div class="stat-label">Daily Requests</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Errors Today</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Usage Analytics -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Feature Usage (Last 30 Days)</h3>
+                </div>
+                <div class="card-content">
+                    <div class="feature-usage">
+                        <div class="usage-item">
+                            <div class="usage-info">
+                                <span class="usage-label">Mileage Calculator</span>
+                                <span class="usage-count">1,234 uses</span>
+                            </div>
+                            <div class="usage-bar">
+                                <div class="usage-fill" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="usage-item">
+                            <div class="usage-info">
+                                <span class="usage-label">Route Optimizer</span>
+                                <span class="usage-count">892 uses</span>
+                            </div>
+                            <div class="usage-bar">
+                                <div class="usage-fill" style="width: 68%"></div>
+                            </div>
+                        </div>
+                        <div class="usage-item">
+                            <div class="usage-info">
+                                <span class="usage-label">AutoForms</span>
+                                <span class="usage-count">567 uses</span>
+                            </div>
+                            <div class="usage-bar">
+                                <div class="usage-fill" style="width: 43%"></div>
+                            </div>
+                        </div>
+                        <div class="usage-item">
+                            <div class="usage-info">
+                                <span class="usage-label">Comparables</span>
+                                <span class="usage-count">234 uses</span>
+                            </div>
+                            <div class="usage-bar">
+                                <div class="usage-fill" style="width: 18%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Growth -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>User Growth Trends</h3>
+                </div>
+                <div class="card-content">
+                    <div class="growth-metrics">
+                        <div class="metric-row">
+                            <span class="metric-label">New Users This Week</span>
+                            <span class="metric-value success">+12</span>
+                            <span class="metric-change">↗ +24%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Trial Conversions</span>
+                            <span class="metric-value success">68%</span>
+                            <span class="metric-change">↗ +5%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">User Retention (30d)</span>
+                            <span class="metric-value">84%</span>
+                            <span class="metric-change">→ 0%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Upgrade Rate</span>
+                            <span class="metric-value success">23%</span>
+                            <span class="metric-change">↗ +8%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity Log -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Recent System Activity</h3>
+                </div>
+                <div class="card-content">
+                    <div class="activity-log" id="activityLog">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                    <button class="btn btn--outline btn--full-width" onclick="loadMoreActivity()">
+                        Load More Activity
+                    </button>
+                </div>
+            </div>
+
+            <!-- Revenue Analytics -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Revenue Analytics</h3>
+                </div>
+                <div class="card-content">
+                    <div class="revenue-stats">
+                        <div class="revenue-item">
+                            <div class="revenue-period">This Month</div>
+                            <div class="revenue-amount">$3,247</div>
+                            <div class="revenue-change success">+18% vs last month</div>
+                        </div>
+                        <div class="revenue-item">
+                            <div class="revenue-period">Annual Recurring Revenue</div>
+                            <div class="revenue-amount">$38,964</div>
+                            <div class="revenue-change success">+34% YoY</div>
+                        </div>
+                        <div class="revenue-item">
+                            <div class="revenue-period">Average Revenue Per User</div>
+                            <div class="revenue-amount">$24.50</div>
+                            <div class="revenue-change">+2% vs last month</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check admin access
+            if (localStorage.getItem('userType') !== 'admin') {
+                alert('Access denied. Admin privileges required.');
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            initializeAnalytics();
+        });
+
+        function initializeAnalytics() {
+            loadActivityLog();
+            updateRealTimeStats();
+            
+            // Update real-time stats every 30 seconds
+            setInterval(updateRealTimeStats, 30000);
+        }
+
+        function loadActivityLog() {
+            const activityContainer = document.getElementById('activityLog');
+            const activities = getRecentActivity();
+            
+            activityContainer.innerHTML = activities.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-icon ${activity.iconType}">${activity.icon}</div>
+                    <div class="activity-content">
+                        <div class="activity-title">${activity.title}</div>
+                        <div class="activity-details">${activity.details}</div>
+                        <div class="activity-time">${activity.time}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getRecentActivity() {
+            return [
+                {
+                    icon: '👤',
+                    iconType: 'success',
+                    title: 'New User Registration',
+                    details: 'sarah.johnson@email.com signed up for demo trial',
+                    time: '2 minutes ago'
+                },
+                {
+                    icon: '💰',
+                    iconType: 'success',
+                    title: 'Subscription Upgrade',
+                    details: 'mike.rodriguez@email.com upgraded to Pro plan',
+                    time: '15 minutes ago'
+                },
+                {
+                    icon: '🔧',
+                    iconType: 'info',
+                    title: 'System Maintenance',
+                    details: 'Database optimization completed successfully',
+                    time: '1 hour ago'
+                },
+                {
+                    icon: '📊',
+                    iconType: 'info',
+                    title: 'Usage Spike',
+                    details: 'Mileage Calculator usage increased by 45%',
+                    time: '2 hours ago'
+                },
+                {
+                    icon: '🚨',
+                    iconType: 'warning',
+                    title: 'Rate Limit Hit',
+                    details: 'API rate limit reached for Maps service',
+                    time: '3 hours ago'
+                },
+                {
+                    icon: '✅',
+                    iconType: 'success',
+                    title: 'System Recovery',
+                    details: 'All services restored to normal operation',
+                    time: '3 hours ago'
+                }
+            ];
+        }
+
+        function updateRealTimeStats() {
+            // Simulate real-time updates
+            // In production, this would fetch from your monitoring API
+            console.log('📈 Updating real-time analytics...');
+        }
+
+        function loadMoreActivity() {
+            alert('Loading more activity logs...');
+            // In production, this would load additional activity logs
+        }
+    </script>
+
+    <style>
+        .feature-usage {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+
+        .usage-item {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-1);
+        }
+
+        .usage-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .usage-label {
+            color: var(--color-gray-300);
+        }
+
+        .usage-count {
+            color: var(--color-gray-100);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .usage-bar {
+            height: 8px;
+            background-color: var(--color-gray-700);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .usage-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-primary-500), var(--color-primary-400));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .growth-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-2) 0;
+            border-bottom: 1px solid var(--color-gray-700);
+        }
+
+        .metric-row:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            color: var(--color-gray-300);
+            font-size: 0.9rem;
+        }
+
+        .metric-value {
+            color: var(--color-gray-100);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .metric-value.success {
+            color: var(--color-success-400);
+        }
+
+        .metric-change {
+            font-size: 0.8rem;
+            color: var(--color-gray-400);
+        }
+
+        .activity-log {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: var(--space-3);
+            padding: var(--space-2);
+            border-radius: var(--border-radius-sm);
+            background-color: var(--color-gray-800);
+        }
+
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .activity-icon.success {
+            background-color: rgba(34, 197, 94, 0.1);
+        }
+
+        .activity-icon.info {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        .activity-icon.warning {
+            background-color: rgba(245, 158, 11, 0.1);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            color: var(--color-gray-100);
+            font-weight: var(--font-weight-medium);
+            margin-bottom: var(--space-1);
+        }
+
+        .activity-details {
+            color: var(--color-gray-400);
+            font-size: 0.9rem;
+            margin-bottom: var(--space-1);
+        }
+
+        .activity-time {
+            color: var(--color-gray-500);
+            font-size: 0.8rem;
+        }
+
+        .revenue-stats {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+
+        .revenue-item {
+            text-align: center;
+        }
+
+        .revenue-period {
+            color: var(--color-gray-400);
+            font-size: 0.9rem;
+            margin-bottom: var(--space-1);
+        }
+
+        .revenue-amount {
+            color: var(--color-gray-100);
+            font-size: 2rem;
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--space-1);
+        }
+
+        .revenue-change {
+            font-size: 0.85rem;
+            color: var(--color-gray-400);
+        }
+
+        .revenue-change.success {
+            color: var(--color-success-400);
+        }
+    </style>
+</body>
+</html>
